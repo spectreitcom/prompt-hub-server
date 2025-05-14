@@ -99,6 +99,25 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## API Documentation with Swagger
+
+This project includes Swagger for API documentation. Once the application is running, you can access the Swagger UI at:
+
+```
+http://localhost:3000/api/docs
+```
+
+### Features
+
+- Interactive API documentation
+- Test API endpoints directly from the browser
+- Detailed information about request/response schemas
+- Authentication support
+
+### Adding Documentation to New Controllers
+
+See the example in `src/example/README.md` for detailed instructions on how to document your controllers and endpoints using Swagger decorators.
+
 ## Run tests
 
 ```bash
