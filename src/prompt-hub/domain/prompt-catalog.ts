@@ -1,16 +1,73 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { PromptId } from './value-objects';
+import {
+  CatalogId,
+  CatalogName,
+  CatalogTimestamps,
+  UserId,
+} from './value-objects';
+import { randomUUID } from 'crypto';
+import { CatalogCreatedEvent, CatalogRenamedEvent } from './events';
 
 export class PromptCatalog extends AggregateRoot {
-  constructor() {
+  private readonly id: CatalogId;
+  private name: CatalogName;
+  private readonly ownerId: UserId;
+  private timestamps: CatalogTimestamps;
+
+  constructor(
+    id: CatalogId,
+    name: CatalogName,
+    ownerId: UserId,
+    timestamps: CatalogTimestamps,
+  ) {
     super();
+    this.id = id;
+    this.name = name;
+    this.ownerId = ownerId;
+    this.timestamps = timestamps;
   }
 
-  addPrompt(promptId: PromptId): void {
-    //
+  static create(name: CatalogName, ownerId: UserId): PromptCatalog {
+    const catalog = new PromptCatalog(
+      CatalogId.create(randomUUID()),
+      name,
+      ownerId,
+      CatalogTimestamps.createNew(),
+    );
+
+    catalog.apply(new CatalogCreatedEvent(catalog.id, catalog.ownerId));
+
+    return catalog;
   }
 
-  removePrompt(promptId: PromptId): void {
-    //
+  rename(newName: CatalogName): void {
+    if (this.name.equals(newName)) {
+      return;
+    }
+
+    this.name = newName;
+    this.timestamps = this.timestamps.withUpdatedAt(new Date());
+
+    this.apply(new CatalogRenamedEvent(this.id, this.name));
+  }
+
+  isOwnedBy(userId: UserId): boolean {
+    return this.ownerId.equals(userId);
+  }
+
+  getId(): CatalogId {
+    return this.id;
+  }
+
+  getName(): CatalogName {
+    return this.name;
+  }
+
+  getOwnerId(): UserId {
+    return this.ownerId;
+  }
+
+  getTimestamps(): CatalogTimestamps {
+    return this.timestamps;
   }
 }

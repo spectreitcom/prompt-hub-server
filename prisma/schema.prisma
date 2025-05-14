@@ -35,6 +35,15 @@ model PromptCatalog {
   prompts PromptCatalogPrompt[]
 }
 
+model PromptCatalogItem {
+  id        String   @id @default(cuid())
+  catalogId String
+  promptId  String
+  addedAt   DateTime @default(now())
+
+  @@unique([catalogId, promptId])
+}
+
 model PromptCatalogPrompt {
   id        String   @id @default(cuid())
   catalogId String
