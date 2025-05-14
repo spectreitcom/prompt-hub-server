@@ -11,4 +11,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Define your models here
+// PromptHub Module
+
+model Prompt {
+  id        String       @id @default(cuid())
+  authorId  String // UWAGA: tylko ID użytkownika, bez relacji!
+  title     String       @db.VarChar(100)
+  content   String       @db.Text
+  isPublic  Boolean      @default(false)
+  status    PromptStatus @default(DRAFT)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  catalogs PromptCatalogPrompt[]
+}
+
+model PromptCatalog {
+  id        String   @id @default(cuid())
+  ownerId   String // UWAGA: tylko ID użytkownika, bez relacji!
+  name      String   @db.VarChar(100)
+  createdAt DateTime @default(now())
+
+  prompts PromptCatalogPrompt[]
+}
+
+model PromptCatalogPrompt {
+  id        String   @id @default(cuid())
+  catalogId String
+  promptId  String
+  addedAt   DateTime @default(now())
+
+  catalog PromptCatalog @relation(fields: [catalogId], references: [id], onDelete: Cascade)
+  prompt  Prompt        @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@unique([catalogId, promptId])
+}
+
+enum PromptStatus {
+  DRAFT
+  PUBLISHED
+}
+
+//===================================================
