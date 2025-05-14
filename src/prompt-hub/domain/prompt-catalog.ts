@@ -6,7 +6,11 @@ import {
   UserId,
 } from './value-objects';
 import { randomUUID } from 'crypto';
-import { CatalogCreatedEvent, CatalogRenamedEvent } from './events';
+import {
+  CatalogCreatedEvent,
+  CatalogDeletedEvent,
+  CatalogRenamedEvent,
+} from './events';
 
 export class PromptCatalog extends AggregateRoot {
   private readonly id: CatalogId;
@@ -49,6 +53,10 @@ export class PromptCatalog extends AggregateRoot {
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
 
     this.apply(new CatalogRenamedEvent(this.id, this.name));
+  }
+
+  delete(): void {
+    this.apply(new CatalogDeletedEvent(this.id));
   }
 
   isOwnedBy(userId: UserId): boolean {
