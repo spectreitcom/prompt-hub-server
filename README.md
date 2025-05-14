@@ -28,9 +28,63 @@
 
 ## Project setup
 
+### Standard Setup
+
 ```bash
 $ yarn install
 ```
+
+### Docker Setup
+
+The project includes Docker configuration for local development with the following services:
+- PostgreSQL database
+- Redis
+- Elasticsearch
+- NestJS application
+
+#### Prerequisites
+
+- Docker and Docker Compose installed on your machine
+
+#### Environment Variables
+
+Copy the example environment file:
+
+```bash
+$ cp .env-example .env
+```
+
+Modify the variables in `.env` if needed. The docker-compose.yml file is configured to use the .env file for all services.
+
+#### Running with Docker
+
+To start all services:
+
+```bash
+$ docker-compose up -d
+```
+
+This will start the application in watch mode (using the `start:dev` script from package.json), which automatically reloads when code changes are detected.
+
+To start only specific services:
+
+```bash
+$ docker-compose up -d [service_name]
+```
+
+To stop all services:
+
+```bash
+$ docker-compose down
+```
+
+To view logs:
+
+```bash
+$ docker-compose logs -f [service_name]
+```
+
+Available service names: `app`, `db`, `redis`, `elasticsearch`
 
 ## Compile and run the project
 
