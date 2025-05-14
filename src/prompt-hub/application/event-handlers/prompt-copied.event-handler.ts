@@ -9,6 +9,8 @@ export class PromptCopiedEventHandler
   private readonly logger = new Logger(PromptCopiedEventHandler.name);
 
   handle(event: PromptCopiedEvent) {
-    this.logger.debug(JSON.stringify(event));
+    this.logger.debug(
+      `Prompt ${event.promptId.getValue()} was copied by user ${event.byUserId.getValue()}`,
+    );
   }
 }

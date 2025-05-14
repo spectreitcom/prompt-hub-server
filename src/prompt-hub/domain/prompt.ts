@@ -12,12 +12,12 @@ import { PromptCopiedEvent, PromptPublishedEvent } from './events';
 import { randomUUID } from 'crypto';
 
 export class Prompt extends AggregateRoot {
-  private id: PromptId;
+  private readonly id: PromptId;
   private title: PromptTitle;
   private content: PromptContent;
   private status: PromptStatus;
-  private visibility: PromptVisibility;
-  private authorId: UserId;
+  private readonly visibility: PromptVisibility;
+  private readonly authorId: UserId;
   private timestamps: PromptTimestamps;
 
   constructor(
@@ -64,7 +64,7 @@ export class Prompt extends AggregateRoot {
 
     this.status = PromptStatus.published();
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
-    this.apply(new PromptPublishedEvent());
+    this.apply(new PromptPublishedEvent(this.id));
   }
 
   copy(byUserId: UserId): void {
@@ -72,7 +72,7 @@ export class Prompt extends AggregateRoot {
       throw new Error('Only published prompts can be copied.');
     }
 
-    this.apply(new PromptCopiedEvent());
+    this.apply(new PromptCopiedEvent(this.id, byUserId));
   }
 
   getId(): PromptId {
