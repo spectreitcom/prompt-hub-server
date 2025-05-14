@@ -9,6 +9,7 @@ import {
   PromptCopiedEventHandler,
   PromptPublishedEventHandler,
 } from './application';
+import { InfrastructureModule } from './infrastructure';
 
 const EventHandlers = [
   PromptCopiedEventHandler,
@@ -21,7 +22,7 @@ const EventHandlers = [
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, InfrastructureModule],
   providers: [...EventHandlers],
 })
 export class PromptHubModule {}
