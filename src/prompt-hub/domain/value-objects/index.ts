@@ -10,3 +10,6 @@ export * from './catalog-name.value-object';
 export * from './catalog-timestamps.value-object';
 export * from './prompt-catalog-item-id.value-object';
 export * from './catalog-item-timestamp.value-object';
+export * from './prompt-report-reason.value-object';
+export * from './prompt-report-id.value-object';
+export * from './prompt-report-status.value-object';

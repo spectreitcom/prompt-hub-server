@@ -56,6 +56,25 @@ model PromptCatalogPrompt {
   @@unique([catalogId, promptId])
 }
 
+model PromptReport {
+  id         String             @id @default(cuid())
+  promptId   String
+  reporterId String
+  reason     String             @db.VarChar(500)
+  status     PromptReportStatus @default(PENDING)
+  createdAt  DateTime           @default(now())
+
+  @@unique([promptId, reporterId]) // jeden user może zgłosić jeden prompt tylko raz
+  @@index([promptId])
+  @@index([reporterId])
+}
+
+enum PromptReportStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 enum PromptStatus {
   DRAFT
   PUBLISHED
