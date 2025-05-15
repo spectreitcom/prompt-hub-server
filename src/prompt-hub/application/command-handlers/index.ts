@@ -9,5 +9,3 @@ export * from './rename-prompt-catalog.command-handler';
 export * from './delete-prompt-catalog.command-handler';
 export * from './add-prompt-to-catalog.command-handler';
 export * from './remove-prompt-from-catalog.command-handler';
-export * from './accept-prompt-report.command-handler';
-export * from './reject-prompt-report.command-handler';

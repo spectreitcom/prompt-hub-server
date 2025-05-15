@@ -1,4 +1,5 @@
-import { PromptId, PromptReport, PromptReportId, UserId } from '../../domain';
+import { PromptReport, PromptReportId } from '../../domain';
+import { PromptId, UserId } from '../../../prompt-hub/domain/value-objects';
 
 export abstract class PromptReportRepository {
   abstract save(report: PromptReport): Promise<void>;

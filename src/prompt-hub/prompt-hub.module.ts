@@ -10,9 +10,6 @@ import {
   PromptDeletedEventHandler,
   PromptPublishedEventHandler,
   PromptVisibilityChangedEventHandler,
-  PromptReportCreatedEventHandler,
-  PromptReportAcceptedEventHandler,
-  PromptReportRejectedEventHandler,
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
   PublishPromptCommandHandler,
@@ -24,8 +21,6 @@ import {
   DeletePromptCatalogCommandHandler,
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
-  AcceptPromptReportCommandHandler,
-  RejectPromptReportCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -39,9 +34,6 @@ const EventHandlers = [
   CatalogDeletedEventHandler,
   CatalogItemAddedEventHandler,
   CatalogItemRemovedEventHandler,
-  PromptReportCreatedEventHandler,
-  PromptReportAcceptedEventHandler,
-  PromptReportRejectedEventHandler,
 ];
 
 const CommandHandlers = [
@@ -56,8 +48,6 @@ const CommandHandlers = [
   DeletePromptCatalogCommandHandler,
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
-  AcceptPromptReportCommandHandler,
-  RejectPromptReportCommandHandler,
 ];
 
 @Module({

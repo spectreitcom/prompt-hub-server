@@ -1,5 +1,6 @@
 import { IEvent } from '@nestjs/cqrs';
-import { PromptId, PromptReportId } from '../value-objects';
+import { PromptReportId } from '../value-objects';
+import { PromptId } from '../../../prompt-hub/domain/value-objects';
 
 export class PromptReportAcceptedEvent implements IEvent {
   constructor(

@@ -59,6 +59,14 @@ model PromptCatalogPrompt {
   @@unique([catalogId, promptId])
 }
 
+enum PromptStatus {
+  DRAFT
+  PUBLISHED
+}
+
+//===================================================
+
+// Prompt Report
 model PromptReport {
   id         String             @id @default(cuid())
   promptId   String
@@ -76,11 +84,6 @@ enum PromptReportStatus {
   PENDING
   ACCEPTED
   REJECTED
-}
-
-enum PromptStatus {
-  DRAFT
-  PUBLISHED
 }
 
 //===================================================

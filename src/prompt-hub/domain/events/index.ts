@@ -7,6 +7,3 @@ export * from './catalog-renamed.event';
 export * from './catalog-deleted.event';
 export * from './catalog-item-added.event';
 export * from './catalog-item-removed.event';
-export * from './prompt-report-created.event';
-export * from './prompt-report-accepted.event';
-export * from './prompt-report-rejected.event';
