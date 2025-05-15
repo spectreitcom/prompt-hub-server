@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { PromptRepository } from '../application';
-import { PrismaPromptRepository } from './persistence';
+import { PromptCatalogRepository, PromptRepository } from '../application';
+import {
+  PrismaPromptCatalogRepository,
+  PrismaPromptRepository,
+} from './persistence';
 
 @Module({
   imports: [PrismaModule],
@@ -10,7 +13,11 @@ import { PrismaPromptRepository } from './persistence';
       provide: PromptRepository,
       useClass: PrismaPromptRepository,
     },
+    {
+      provide: PromptCatalogRepository,
+      useClass: PrismaPromptCatalogRepository,
+    },
   ],
-  exports: [PromptRepository],
+  exports: [PromptRepository, PromptCatalogRepository],
 })
 export class InfrastructureModule {}
