@@ -10,3 +10,4 @@ export * from './delete-prompt-catalog.command';
 export * from './add-prompt-to-catalog.command';
 export * from './remove-prompt-from-catalog.command';
 export * from './accept-prompt-report.command';
+export * from './reject-prompt-report.command';
