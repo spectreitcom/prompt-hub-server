@@ -13,6 +13,7 @@ import {
   UpdatePromptCommandHandler,
   PublishPromptCommandHandler,
   SetPromptVisibilityCommandHandler,
+  CopyPromptCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -32,6 +33,7 @@ const CommandHandlers = [
   UpdatePromptCommandHandler,
   PublishPromptCommandHandler,
   SetPromptVisibilityCommandHandler,
+  CopyPromptCommandHandler,
 ];
 
 @Module({
