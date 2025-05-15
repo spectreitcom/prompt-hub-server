@@ -1,16 +1,17 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { randomUUID } from 'crypto';
 import {
+  PromptId,
   PromptReportId,
   PromptReportReason,
   PromptReportStatus,
+  UserId,
 } from './value-objects';
 import {
   PromptReportAcceptedEvent,
   PromptReportCreatedEvent,
   PromptReportRejectedEvent,
 } from './events';
-import { PromptId, UserId } from '../../prompt-hub/domain';
 
 export class PromptReport extends AggregateRoot {
   private readonly id: PromptReportId;

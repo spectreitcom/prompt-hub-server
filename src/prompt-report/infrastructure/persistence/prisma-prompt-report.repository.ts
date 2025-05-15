@@ -1,13 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
-import { PromptReportRepository } from '../../application/ports';
+import { PromptReportRepository } from '../../application';
 import {
+  PromptId,
   PromptReport,
   PromptReportId,
   PromptReportReason,
   PromptReportStatus,
+  UserId,
 } from '../../domain';
-import { PromptId, UserId } from '../../../prompt-hub/domain/value-objects';
 
 @Injectable()
 export class PrismaPromptReportRepository implements PromptReportRepository {

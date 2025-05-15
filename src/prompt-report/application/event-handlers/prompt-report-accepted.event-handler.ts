@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { PromptReportAcceptedEvent } from '../../domain/events';
+import { PromptReportAcceptedEvent } from '../../domain';
 import { Logger } from '@nestjs/common';
 
 @EventsHandler(PromptReportAcceptedEvent)
