@@ -24,14 +24,20 @@ export class PrismaPromptRepository implements PromptRepository {
 
   async exists(id: PromptId): Promise<boolean> {
     const count = await this.prisma.prompt.count({
-      where: { id: id.getValue() },
+      where: { 
+        id: id.getValue(),
+        isDeleted: false
+      },
     });
     return count > 0;
   }
 
   async getById(id: PromptId): Promise<Prompt | null> {
-    const promptData = await this.prisma.prompt.findUnique({
-      where: { id: id.getValue() },
+    const promptData = await this.prisma.prompt.findFirst({
+      where: { 
+        id: id.getValue(),
+        isDeleted: false
+      },
     });
 
     if (!promptData) {
@@ -84,5 +90,15 @@ export class PrismaPromptRepository implements PromptRepository {
       UserId.create(promptData.authorId),
       PromptTimestamps.create(promptData.createdAt, promptData.updatedAt),
     );
+  }
+
+  async softDelete(id: PromptId): Promise<void> {
+    await this.prisma.prompt.update({
+      where: { id: id.getValue() },
+      data: {
+        isDeleted: true,
+        deletedAt: new Date(),
+      },
+    });
   }
 }

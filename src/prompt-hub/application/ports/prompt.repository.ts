@@ -5,5 +5,6 @@ export abstract class PromptRepository {
   abstract getByIdOrFail(id: PromptId): Promise<Prompt>;
   abstract save(prompt: Prompt): Promise<void>;
   abstract delete(id: PromptId): Promise<void>;
+  abstract softDelete(id: PromptId): Promise<void>;
   abstract exists(id: PromptId): Promise<boolean>;
 }
