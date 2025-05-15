@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdatePromptCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptContent, PromptId, PromptTitle } from '../../domain';
+import { PromptContent, PromptId, PromptTitle, UserId } from '../../domain';
 
 @CommandHandler(UpdatePromptCommand)
 export class UpdatePromptCommandHandler
@@ -13,11 +13,19 @@ export class UpdatePromptCommandHandler
   ) {}
 
   async execute(command: UpdatePromptCommand): Promise<void> {
-    const { promptId, title, content } = command;
+    const { promptId, title, content, userId } = command;
 
     // Get the prompt by ID
     const promptIdObj = PromptId.create(promptId);
     const prompt = await this.promptRepository.getByIdOrFail(promptIdObj);
+
+    // Check if the user is the owner of the prompt
+    const userIdObj = UserId.create(userId);
+    if (!prompt.getAuthorId().equals(userIdObj)) {
+      throw new Error(
+        'Only the owner of the prompt can update it.',
+      );
+    }
 
     // Create value objects for title and content
     const promptTitle = PromptTitle.create(title);

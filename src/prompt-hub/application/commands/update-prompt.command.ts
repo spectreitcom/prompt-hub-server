@@ -5,5 +5,6 @@ export class UpdatePromptCommand implements ICommand {
     public readonly promptId: string,
     public readonly title: string,
     public readonly content: string,
+    public readonly userId: string,
   ) {}
 }

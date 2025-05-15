@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { SetPromptVisibilityCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptId } from '../../domain';
+import { PromptId, UserId } from '../../domain';
 
 @CommandHandler(SetPromptVisibilityCommand)
 export class SetPromptVisibilityCommandHandler
@@ -13,7 +13,7 @@ export class SetPromptVisibilityCommandHandler
   ) {}
 
   async execute(command: SetPromptVisibilityCommand): Promise<void> {
-    const { promptId, isPublic } = command;
+    const { promptId, isPublic, userId } = command;
 
     // Find the prompt
     const promptIdObj = PromptId.create(promptId);
@@ -21,6 +21,14 @@ export class SetPromptVisibilityCommandHandler
 
     if (!prompt) {
       throw new Error(`Prompt with id ${promptId} not found.`);
+    }
+
+    // Check if the user is the owner of the prompt
+    const userIdObj = UserId.create(userId);
+    if (!prompt.getAuthorId().equals(userIdObj)) {
+      throw new Error(
+        'Only the owner of the prompt can change its visibility.',
+      );
     }
 
     // Mark the prompt as an event publisher

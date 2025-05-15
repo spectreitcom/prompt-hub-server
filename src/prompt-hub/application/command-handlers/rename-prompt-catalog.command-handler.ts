@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { RenamePromptCatalogCommand } from '../commands';
 import { PromptCatalogRepository } from '../ports';
-import { CatalogId, CatalogName } from '../../domain';
+import { CatalogId, CatalogName, UserId } from '../../domain';
 
 @CommandHandler(RenamePromptCatalogCommand)
 export class RenamePromptCatalogCommandHandler
@@ -13,12 +13,18 @@ export class RenamePromptCatalogCommandHandler
   ) {}
 
   async execute(command: RenamePromptCatalogCommand): Promise<void> {
-    const { catalogId, newName } = command;
+    const { catalogId, newName, userId } = command;
 
     // Get the catalog by ID
     const catalogIdVO = CatalogId.create(catalogId);
     const catalog =
       await this.promptCatalogRepository.getByIdOrFail(catalogIdVO);
+
+    // Check if the user is the owner of the catalog
+    const userIdVO = UserId.create(userId);
+    if (!catalog.isOwnedBy(userIdVO)) {
+      throw new Error('Only the owner of the catalog can rename it.');
+    }
 
     // Create a new catalog name
     const catalogName = CatalogName.create(newName);

@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { RemovePromptFromCatalogCommand } from '../commands';
-import { PromptCatalogItemRepository } from '../ports';
-import { CatalogId, PromptId } from '../../domain';
+import { PromptCatalogItemRepository, PromptCatalogRepository } from '../ports';
+import { CatalogId, PromptId, UserId } from '../../domain';
 
 @CommandHandler(RemovePromptFromCatalogCommand)
 export class RemovePromptFromCatalogCommandHandler
@@ -9,16 +9,30 @@ export class RemovePromptFromCatalogCommandHandler
 {
   constructor(
     private readonly promptCatalogItemRepository: PromptCatalogItemRepository,
+    private readonly promptCatalogRepository: PromptCatalogRepository,
     private readonly eventPublisher: EventPublisher,
   ) {}
 
   async execute(command: RemovePromptFromCatalogCommand): Promise<void> {
-    const { catalogId, promptId } = command;
+    const { catalogId, promptId, userId } = command;
+
+    // Get the catalog by ID
+    const catalogIdVO = CatalogId.create(catalogId);
+    const catalog =
+      await this.promptCatalogRepository.getByIdOrFail(catalogIdVO);
+
+    // Check if the user is the owner of the catalog
+    const userIdVO = UserId.create(userId);
+    if (!catalog.isOwnedBy(userIdVO)) {
+      throw new Error(
+        'Only the owner of the catalog can remove prompts from it.',
+      );
+    }
 
     // Find the catalog item
     const catalogItem =
       await this.promptCatalogItemRepository.findByCatalogAndPrompt(
-        CatalogId.create(catalogId),
+        catalogIdVO,
         PromptId.create(promptId),
       );
 
