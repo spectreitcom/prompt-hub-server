@@ -1,1 +1,2 @@
-// Export domain entities and value objects
+export * from './value-objects';
+export * from './events';
