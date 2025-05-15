@@ -24,9 +24,9 @@ export class PrismaPromptRepository implements PromptRepository {
 
   async exists(id: PromptId): Promise<boolean> {
     const count = await this.prisma.prompt.count({
-      where: { 
+      where: {
         id: id.getValue(),
-        isDeleted: false
+        isDeleted: false,
       },
     });
     return count > 0;
@@ -34,9 +34,9 @@ export class PrismaPromptRepository implements PromptRepository {
 
   async getById(id: PromptId): Promise<Prompt | null> {
     const promptData = await this.prisma.prompt.findFirst({
-      where: { 
+      where: {
         id: id.getValue(),
-        isDeleted: false
+        isDeleted: false,
       },
     });
 
