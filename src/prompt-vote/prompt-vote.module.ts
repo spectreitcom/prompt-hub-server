@@ -4,6 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import {
   PromptVoteCreatedEventHandler,
   PromptVoteChangedEventHandler,
+  VotePromptCommandHandler,
 } from './application';
 
 const eventHandlers = [
@@ -11,9 +12,13 @@ const eventHandlers = [
   PromptVoteChangedEventHandler,
 ];
 
+const commandHandlers = [
+  VotePromptCommandHandler,
+];
+
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...eventHandlers],
+  providers: [...eventHandlers, ...commandHandlers],
   exports: [],
 })
 export class PromptVoteModule {}
