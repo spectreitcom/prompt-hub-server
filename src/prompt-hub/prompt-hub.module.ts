@@ -8,6 +8,7 @@ import {
   CatalogRenamedEventHandler,
   PromptCopiedEventHandler,
   PromptPublishedEventHandler,
+  CreatePromptCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -21,8 +22,12 @@ const EventHandlers = [
   CatalogItemRemovedEventHandler,
 ];
 
+const CommandHandlers = [
+  CreatePromptCommandHandler,
+];
+
 @Module({
   imports: [CqrsModule, InfrastructureModule],
-  providers: [...EventHandlers],
+  providers: [...EventHandlers, ...CommandHandlers],
 })
 export class PromptHubModule {}
