@@ -1,1 +1,1 @@
-export {};
+export * from './prompt-vote.repository';
