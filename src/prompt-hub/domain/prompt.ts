@@ -8,7 +8,11 @@ import {
   PromptVisibility,
   UserId,
 } from './value-objects';
-import { PromptCopiedEvent, PromptPublishedEvent } from './events';
+import {
+  PromptCopiedEvent,
+  PromptPublishedEvent,
+  PromptVisibilityChangedEvent,
+} from './events';
 import { randomUUID } from 'crypto';
 
 export class Prompt extends AggregateRoot {
@@ -16,7 +20,7 @@ export class Prompt extends AggregateRoot {
   private title: PromptTitle;
   private content: PromptContent;
   private status: PromptStatus;
-  private readonly visibility: PromptVisibility;
+  private visibility: PromptVisibility;
   private readonly authorId: UserId;
   private timestamps: PromptTimestamps;
 
@@ -73,6 +77,26 @@ export class Prompt extends AggregateRoot {
     }
 
     this.apply(new PromptCopiedEvent(this.id, byUserId));
+  }
+
+  makePrivate() {
+    this.visibility = PromptVisibility.private();
+    this.timestamps = this.timestamps.withUpdatedAt(new Date());
+    this.apply(new PromptVisibilityChangedEvent(this.id, this.visibility));
+  }
+
+  makePublic() {
+    this.visibility = PromptVisibility.public();
+    this.timestamps = this.timestamps.withUpdatedAt(new Date());
+    this.apply(new PromptVisibilityChangedEvent(this.id, this.visibility));
+  }
+
+  setVisibility(isPublic: boolean) {
+    if (isPublic) {
+      this.makePublic();
+    } else {
+      this.makePrivate();
+    }
   }
 
   getId(): PromptId {

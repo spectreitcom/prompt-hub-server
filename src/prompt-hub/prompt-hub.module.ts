@@ -8,15 +8,18 @@ import {
   CatalogRenamedEventHandler,
   PromptCopiedEventHandler,
   PromptPublishedEventHandler,
+  PromptVisibilityChangedEventHandler,
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
   PublishPromptCommandHandler,
+  SetPromptVisibilityCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
 const EventHandlers = [
   PromptCopiedEventHandler,
   PromptPublishedEventHandler,
+  PromptVisibilityChangedEventHandler,
   CatalogCreatedEventHandler,
   CatalogRenamedEventHandler,
   CatalogDeletedEventHandler,
@@ -28,6 +31,7 @@ const CommandHandlers = [
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
   PublishPromptCommandHandler,
+  SetPromptVisibilityCommandHandler,
 ];
 
 @Module({
