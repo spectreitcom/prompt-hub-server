@@ -5,6 +5,7 @@ export abstract class PromptCatalogRepository {
   abstract getByIdOrFail(id: CatalogId): Promise<PromptCatalog>;
   abstract save(catalog: PromptCatalog): Promise<void>;
   abstract exists(id: CatalogId): Promise<boolean>;
+  abstract delete(id: CatalogId): Promise<void>;
   abstract findByOwnerAndName(
     ownerId: UserId,
     name: string,

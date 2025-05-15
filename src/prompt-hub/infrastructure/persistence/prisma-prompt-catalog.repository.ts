@@ -87,4 +87,12 @@ export class PrismaPromptCatalogRepository implements PromptCatalogRepository {
       CatalogTimestamps.create(catalogData.createdAt, catalogData.createdAt),
     );
   }
+
+  async delete(id: CatalogId): Promise<void> {
+    await this.prisma.promptCatalog.delete({
+      where: {
+        id: id.getValue(),
+      },
+    });
+  }
 }

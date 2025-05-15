@@ -6,3 +6,4 @@ export * from './copy-prompt.command';
 export * from './delete-prompt.command';
 export * from './create-prompt-catalog.command';
 export * from './rename-prompt-catalog.command';
+export * from './delete-prompt-catalog.command';
