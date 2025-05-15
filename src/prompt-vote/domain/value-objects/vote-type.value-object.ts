@@ -1,5 +1,7 @@
+import { VoteTypeValue } from '../types';
+
 export class VoteType {
-  private constructor(private readonly value: 'UP' | 'DOWN') {}
+  private constructor(private readonly value: VoteTypeValue) {}
 
   static up(): VoteType {
     return new VoteType('UP');
@@ -14,7 +16,7 @@ export class VoteType {
     if (upper !== 'UP' && upper !== 'DOWN') {
       throw new Error('Invalid vote type');
     }
-    return new VoteType(upper as 'UP' | 'DOWN');
+    return new VoteType(upper as VoteTypeValue);
   }
 
   isUp(): boolean {
@@ -25,7 +27,7 @@ export class VoteType {
     return this.value === 'DOWN';
   }
 
-  getValue(): 'UP' | 'DOWN' {
+  getValue(): VoteTypeValue {
     return this.value;
   }
 
