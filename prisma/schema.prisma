@@ -101,3 +101,16 @@ model PromptVote {
 }
 
 //===================================================
+
+// Favorites
+model FavoritePrompt {
+  id        String   @id @default(cuid())
+  userId    String
+  promptId  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, promptId])
+  @@index([userId])
+}
+
+//===================================================
