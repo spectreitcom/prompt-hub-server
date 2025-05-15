@@ -87,3 +87,17 @@ enum PromptReportStatus {
 }
 
 //===================================================
+
+// Prompt Vote
+model PromptVote {
+  id        String   @id @default(cuid())
+  promptId  String
+  userId    String
+  voteType  String // 'UP' lub 'DOWN'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([promptId, userId])
+}
+
+//===================================================
