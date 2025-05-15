@@ -19,4 +19,4 @@ const commandHandlers = [VotePromptCommandHandler];
   providers: [...eventHandlers, ...commandHandlers],
   exports: [],
 })
-export class PromptVoteModule {}
+export class VotingModule {}
