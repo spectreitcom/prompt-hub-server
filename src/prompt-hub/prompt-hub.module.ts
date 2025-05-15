@@ -10,6 +10,7 @@ import {
   PromptPublishedEventHandler,
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
+  PublishPromptCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -26,6 +27,7 @@ const EventHandlers = [
 const CommandHandlers = [
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
+  PublishPromptCommandHandler,
 ];
 
 @Module({
