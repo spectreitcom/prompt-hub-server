@@ -12,9 +12,7 @@ const eventHandlers = [
   PromptVoteChangedEventHandler,
 ];
 
-const commandHandlers = [
-  VotePromptCommandHandler,
-];
+const commandHandlers = [VotePromptCommandHandler];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
