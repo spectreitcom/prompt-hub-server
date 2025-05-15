@@ -10,6 +10,9 @@ import {
   PromptDeletedEventHandler,
   PromptPublishedEventHandler,
   PromptVisibilityChangedEventHandler,
+  PromptReportCreatedEventHandler,
+  PromptReportAcceptedEventHandler,
+  PromptReportRejectedEventHandler,
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
   PublishPromptCommandHandler,
@@ -34,6 +37,9 @@ const EventHandlers = [
   CatalogDeletedEventHandler,
   CatalogItemAddedEventHandler,
   CatalogItemRemovedEventHandler,
+  PromptReportCreatedEventHandler,
+  PromptReportAcceptedEventHandler,
+  PromptReportRejectedEventHandler,
 ];
 
 const CommandHandlers = [
