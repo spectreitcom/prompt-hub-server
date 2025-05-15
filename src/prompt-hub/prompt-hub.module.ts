@@ -19,6 +19,8 @@ import {
   CreatePromptCatalogCommandHandler,
   RenamePromptCatalogCommandHandler,
   DeletePromptCatalogCommandHandler,
+  AddPromptToCatalogCommandHandler,
+  RemovePromptFromCatalogCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -44,6 +46,8 @@ const CommandHandlers = [
   CreatePromptCatalogCommandHandler,
   RenamePromptCatalogCommandHandler,
   DeletePromptCatalogCommandHandler,
+  AddPromptToCatalogCommandHandler,
+  RemovePromptFromCatalogCommandHandler,
 ];
 
 @Module({

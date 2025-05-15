@@ -7,3 +7,5 @@ export * from './delete-prompt.command-handler';
 export * from './create-prompt-catalog.command-handler';
 export * from './rename-prompt-catalog.command-handler';
 export * from './delete-prompt-catalog.command-handler';
+export * from './add-prompt-to-catalog.command-handler';
+export * from './remove-prompt-from-catalog.command-handler';
