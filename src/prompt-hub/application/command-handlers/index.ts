@@ -5,3 +5,4 @@ export * from './set-prompt-visibility.command-handler';
 export * from './copy-prompt.command-handler';
 export * from './delete-prompt.command-handler';
 export * from './create-prompt-catalog.command-handler';
+export * from './rename-prompt-catalog.command-handler';
