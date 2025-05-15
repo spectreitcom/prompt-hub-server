@@ -5,7 +5,7 @@ import {
   PromptCatalogRepository,
   PromptRepository,
 } from '../ports';
-import { CatalogId, PromptCatalogItem, PromptId } from '../../domain';
+import { CatalogId, PromptCatalogItem, PromptId, UserId } from '../../domain';
 
 @CommandHandler(AddPromptToCatalogCommand)
 export class AddPromptToCatalogCommandHandler
@@ -19,7 +19,7 @@ export class AddPromptToCatalogCommandHandler
   ) {}
 
   async execute(command: AddPromptToCatalogCommand): Promise<void> {
-    const { catalogId, promptId } = command;
+    const { catalogId, promptId, userId } = command;
 
     // Check if catalog exists
     const catalog = await this.promptCatalogRepository.getById(
@@ -37,6 +37,12 @@ export class AddPromptToCatalogCommandHandler
 
     if (!prompt) {
       throw new Error(`Prompt with id ${promptId} not found.`);
+    }
+
+    // Check if the user is the owner of the prompt
+    const userIdObj = UserId.create(userId);
+    if (!prompt.getAuthorId().equals(userIdObj)) {
+      throw new Error('Only the owner of the prompt can add it to a catalog.');
     }
 
     // Check if prompt is already in catalog

@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { PublishPromptCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptId } from '../../domain';
+import { PromptId, UserId } from '../../domain';
 
 @CommandHandler(PublishPromptCommand)
 export class PublishPromptCommandHandler
@@ -13,7 +13,7 @@ export class PublishPromptCommandHandler
   ) {}
 
   async execute(command: PublishPromptCommand): Promise<void> {
-    const { promptId } = command;
+    const { promptId, userId } = command;
 
     // Find the prompt
     const promptIdObj = PromptId.create(promptId);
@@ -21,6 +21,12 @@ export class PublishPromptCommandHandler
 
     if (!prompt) {
       throw new Error(`Prompt with id ${promptId} not found.`);
+    }
+
+    // Check if the user is the owner of the prompt
+    const userIdObj = UserId.create(userId);
+    if (!prompt.getAuthorId().equals(userIdObj)) {
+      throw new Error('Only the owner of the prompt can publish it.');
     }
 
     // Mark the prompt as an event publisher
