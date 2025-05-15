@@ -10,6 +10,7 @@ import {
 } from './value-objects';
 import {
   PromptCopiedEvent,
+  PromptDeletedEvent,
   PromptPublishedEvent,
   PromptVisibilityChangedEvent,
 } from './events';
@@ -125,5 +126,9 @@ export class Prompt extends AggregateRoot {
 
   getTimestamps(): PromptTimestamps {
     return this.timestamps;
+  }
+
+  delete(): void {
+    this.apply(new PromptDeletedEvent(this.id));
   }
 }
