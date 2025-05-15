@@ -1,7 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { PromptCatalogRepository, PromptRepository } from '../application';
 import {
+  PromptCatalogItemRepository,
+  PromptCatalogRepository,
+  PromptRepository,
+} from '../application';
+import {
+  PrismaPromptCatalogItemRepository,
   PrismaPromptCatalogRepository,
   PrismaPromptRepository,
 } from './persistence';
@@ -17,7 +22,15 @@ import {
       provide: PromptCatalogRepository,
       useClass: PrismaPromptCatalogRepository,
     },
+    {
+      provide: PromptCatalogItemRepository,
+      useClass: PrismaPromptCatalogItemRepository,
+    },
   ],
-  exports: [PromptRepository, PromptCatalogRepository],
+  exports: [
+    PromptRepository,
+    PromptCatalogRepository,
+    PromptCatalogItemRepository,
+  ],
 })
 export class InfrastructureModule {}
