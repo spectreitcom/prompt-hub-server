@@ -34,8 +34,12 @@ describe('UserId', () => {
 
     it('should throw an error if the UUID is invalid', () => {
       // Act & Assert
-      expect(() => UserId.create('invalid-uuid')).toThrow('User ID must be a valid UUID.');
-      expect(() => UserId.create('123e4567-e89b-12d3-a456-42661417400')).toThrow('User ID must be a valid UUID.');
+      expect(() => UserId.create('invalid-uuid')).toThrow(
+        'User ID must be a valid UUID.',
+      );
+      expect(() =>
+        UserId.create('123e4567-e89b-12d3-a456-42661417400'),
+      ).toThrow('User ID must be a valid UUID.');
     });
   });
 

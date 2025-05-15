@@ -28,7 +28,9 @@ describe('PromptReportId', () => {
 
     it('should throw an error if the UUID is empty', () => {
       // Act & Assert
-      expect(() => PromptReportId.create('')).toThrow('Prompt Report ID cannot be empty.');
+      expect(() => PromptReportId.create('')).toThrow(
+        'Prompt Report ID cannot be empty.',
+      );
       expect(() => PromptReportId.create('   ')).toThrow(
         'Prompt Report ID cannot be empty.',
       );

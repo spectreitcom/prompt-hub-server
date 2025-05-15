@@ -6,6 +6,7 @@ import {
   PromptReportRejectedEventHandler,
   AcceptPromptReportCommandHandler,
   RejectPromptReportCommandHandler,
+  CreatePromptReportCommandHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -18,6 +19,7 @@ const EventHandlers = [
 const CommandHandlers = [
   AcceptPromptReportCommandHandler,
   RejectPromptReportCommandHandler,
+  CreatePromptReportCommandHandler,
 ];
 
 @Module({
