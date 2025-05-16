@@ -1,7 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { RemovePromptFromFavoritesCommand } from '../commands';
 import { FavoritePromptRepository } from '../ports';
-import { PromptId, UserId } from '../../domain';
 
 @CommandHandler(RemovePromptFromFavoritesCommand)
 export class RemovePromptFromFavoritesCommandHandler
@@ -15,15 +14,11 @@ export class RemovePromptFromFavoritesCommandHandler
   async execute(command: RemovePromptFromFavoritesCommand): Promise<void> {
     const { promptId, userId } = command;
 
-    // Create value objects
-    const promptIdObj = PromptId.create(promptId);
-    const userIdObj = UserId.create(userId);
-
     // Check if the prompt is in favorites
     const favoritePrompt =
       await this.favoritePromptRepository.getByPromptIdAndUserId(
-        promptIdObj,
-        userIdObj,
+        promptId,
+        userId,
       );
 
     if (!favoritePrompt) {
