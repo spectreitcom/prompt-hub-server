@@ -1,21 +1,28 @@
 // Domain entity for User
 import { AggregateRoot } from '@nestjs/cqrs';
+import {
+  UserId,
+  EmailAddress,
+  PersonName,
+  AvatarUrl,
+  Provider,
+} from './value-objects';
 
 export class User extends AggregateRoot {
-  private readonly id: string;
-  private readonly email: string;
-  private readonly name: string;
-  private readonly avatarUrl?: string;
-  private readonly provider: string;
+  private readonly id: UserId;
+  private readonly email: EmailAddress;
+  private readonly name: PersonName;
+  private readonly avatarUrl?: AvatarUrl;
+  private readonly provider: Provider;
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
 
   constructor(
-    id: string,
-    email: string,
-    name: string,
-    avatarUrl: string | undefined,
-    provider: string,
+    id: UserId,
+    email: EmailAddress,
+    name: PersonName,
+    avatarUrl: AvatarUrl | undefined,
+    provider: Provider,
     createdAt: Date,
     updatedAt: Date,
   ) {
@@ -30,23 +37,23 @@ export class User extends AggregateRoot {
   }
 
   getId(): string {
-    return this.id;
+    return this.id.getValue();
   }
 
   getEmail(): string {
-    return this.email;
+    return this.email.getValue();
   }
 
   getName(): string {
-    return this.name;
+    return this.name.getValue();
   }
 
   getAvatarUrl(): string | undefined {
-    return this.avatarUrl;
+    return this.avatarUrl?.getValue();
   }
 
   getProvider(): string {
-    return this.provider;
+    return this.provider.getValue();
   }
 
   getCreatedAt(): Date {

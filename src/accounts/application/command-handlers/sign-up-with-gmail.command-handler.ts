@@ -3,7 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { SignUpWithGmailCommand } from '../commands';
 import { UserRepository } from '../ports';
-import { AvatarUrl, EmailAddress, UserId, User } from '../../domain';
+import {
+  AvatarUrl,
+  EmailAddress,
+  UserId,
+  User,
+  PersonName,
+  Provider,
+} from '../../domain';
 
 @Injectable()
 @CommandHandler(SignUpWithGmailCommand)
@@ -27,6 +34,8 @@ export class SignUpWithGmailCommandHandler
 
     // Create a new user
     const userId = UserId.create(uuidv4());
+    const personName = PersonName.create(name);
+    const provider = Provider.google();
     const now = new Date();
 
     // Create avatar URL value object if provided
@@ -34,11 +43,11 @@ export class SignUpWithGmailCommandHandler
 
     // Create new user
     const user = new User(
-      userId.getValue(),
-      emailAddress.getValue(),
-      name,
-      userAvatarUrl?.getValue(),
-      'google',
+      userId,
+      emailAddress,
+      personName,
+      userAvatarUrl,
+      provider,
       now,
       now,
     );
