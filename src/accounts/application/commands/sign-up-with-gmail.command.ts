@@ -1,8 +1,10 @@
+import { AvatarUrl, EmailAddress, GoogleId, PersonName } from '../../domain';
+
 export class SignUpWithGmailCommand {
   constructor(
-    public readonly googleId: string,
-    public readonly email: string,
-    public readonly name: string,
-    public readonly avatarUrl?: string,
+    public readonly googleId: GoogleId,
+    public readonly email: EmailAddress,
+    public readonly name: PersonName,
+    public readonly avatarUrl?: AvatarUrl,
   ) {}
 }

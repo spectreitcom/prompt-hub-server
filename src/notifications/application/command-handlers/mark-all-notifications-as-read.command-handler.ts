@@ -19,8 +19,6 @@ export class MarkAllNotificationsAsReadCommandHandler
       `Marking all notifications as read for user: ${command.userId}`,
     );
 
-    const userId = UserId.create(command.userId);
-
-    await this.repository.markAllAsRead(userId);
+    await this.repository.markAllAsRead(command.userId);
   }
 }

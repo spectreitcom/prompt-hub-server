@@ -23,11 +23,8 @@ export class SignUpWithGmailCommandHandler
   async execute(command: SignUpWithGmailCommand): Promise<void> {
     const { googleId, email, name, avatarUrl } = command;
 
-    // Create value objects
-    const emailAddress = EmailAddress.create(email);
-
     // Check if user already exists
-    const existingUser = await this.userRepository.findByEmail(emailAddress);
+    const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {
       // User already exists, no need to create a new one
       return;
@@ -35,21 +32,16 @@ export class SignUpWithGmailCommandHandler
 
     // Create a new user
     const userId = UserId.create(uuidv4());
-    const personName = PersonName.create(name);
-    const googleIdValue = GoogleId.create(googleId);
     const provider = Provider.google();
     const now = new Date();
-
-    // Create avatar URL value object if provided
-    const userAvatarUrl = avatarUrl ? AvatarUrl.create(avatarUrl) : undefined;
 
     // Create new user
     const user = new User(
       userId,
-      emailAddress,
-      personName,
-      userAvatarUrl,
-      googleIdValue,
+      email,
+      name,
+      avatarUrl,
+      googleId,
       provider,
       now,
       now,

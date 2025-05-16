@@ -3,7 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SignUpWithGmailCommand } from '../commands';
 import { GetPublicUserViewQuery } from '../queries';
 import { UserRepository } from '../ports';
-import { EmailAddress } from '../../domain';
+import { EmailAddress, GoogleId, PersonName, AvatarUrl } from '../../domain';
 import { UserProfileView } from '../../views';
 
 @Injectable()
@@ -30,10 +30,10 @@ export class AccountsService {
     avatarUrl?: string,
   ): Promise<void> {
     const command = new SignUpWithGmailCommand(
-      googleId,
-      email,
-      name,
-      avatarUrl,
+      GoogleId.create(googleId),
+      EmailAddress.create(email),
+      PersonName.create(name),
+      avatarUrl ? AvatarUrl.create(avatarUrl) : undefined,
     );
 
     await this.commandBus.execute(command);
