@@ -8,11 +8,12 @@ export class PromptId {
       throw new Error('Prompt ID cannot be empty.');
     }
 
-    if (!isUUID(id, '4')) {
+    const trimmedId = id.trim();
+    if (!isUUID(trimmedId, '4')) {
       throw new Error('Prompt ID must be a valid UUID.');
     }
 
-    return new PromptId(id.trim());
+    return new PromptId(trimmedId);
   }
 
   getValue(): string {

@@ -8,11 +8,12 @@ export class UserId {
       throw new Error('User ID cannot be empty.');
     }
 
-    if (!isUUID(id, '4')) {
+    const trimmedId = id.trim();
+    if (!isUUID(trimmedId, '4')) {
       throw new Error('User ID must be a valid UUID.');
     }
 
-    return new UserId(id.trim());
+    return new UserId(trimmedId);
   }
 
   getValue(): string {

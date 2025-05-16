@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { InfrastructureModule } from './infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
-import { SignUpWithGmailCommandHandler } from './application';
+import { AccountsService, SignUpWithGmailCommandHandler } from './application';
 
 const eventHandlers = [];
 
@@ -9,7 +9,7 @@ const commandHandlers = [SignUpWithGmailCommandHandler];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...eventHandlers, ...commandHandlers],
-  exports: [],
+  providers: [...eventHandlers, ...commandHandlers, AccountsService],
+  exports: [AccountsService],
 })
 export class AccountsModule {}

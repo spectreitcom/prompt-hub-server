@@ -1,2 +1,2 @@
 export * from './accounts.module';
-export * from './domain/value-objects';
+export { AccountsService } from './application';

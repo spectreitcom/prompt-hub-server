@@ -8,11 +8,12 @@ export class FavoritePromptId {
       throw new Error('Favorite Prompt ID cannot be empty.');
     }
 
-    if (!isUUID(id, '4')) {
+    const trimmedId = id.trim();
+    if (!isUUID(trimmedId, '4')) {
       throw new Error('Favorite Prompt ID must be a valid UUID.');
     }
 
-    return new FavoritePromptId(id.trim());
+    return new FavoritePromptId(trimmedId);
   }
 
   getValue(): string {
