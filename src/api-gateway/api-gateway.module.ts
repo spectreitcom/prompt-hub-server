@@ -4,6 +4,7 @@ import { PromptReportModule } from '../prompt-report';
 import { VotingModule } from '../voting';
 import { SearchModule } from '../search';
 import { NotificationsModule } from '../notifications';
+import { AccountsModule } from '../accounts';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { NotificationsModule } from '../notifications';
     VotingModule,
     SearchModule,
     NotificationsModule,
+    AccountsModule,
   ],
 })
 export class ApiGatewayModule {}

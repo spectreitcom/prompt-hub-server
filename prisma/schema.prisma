@@ -159,3 +159,17 @@ model UserNotification {
 }
 
 //===================================================
+
+// Accounts
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  googleId  String
+  provider  String   @default("google")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//===================================================
