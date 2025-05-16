@@ -4,6 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import {
   EventHandlers,
   CommandHandlers,
+  QueryHandlers,
   NotificationsService,
 } from './application';
 
@@ -11,9 +12,16 @@ const eventHandlers = [...EventHandlers];
 
 const commandHandlers = [...CommandHandlers];
 
+const queryHandlers = [...QueryHandlers];
+
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...eventHandlers, ...commandHandlers, NotificationsService],
+  providers: [
+    ...eventHandlers,
+    ...commandHandlers,
+    ...queryHandlers,
+    NotificationsService,
+  ],
   exports: [NotificationsService],
 })
 export class NotificationsModule {}
