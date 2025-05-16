@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { UserNotificationRepository } from '../application';
-import { PrismaUserNotificationRepository } from './persistence';
+import {
+  UserNotificationRepository,
+  UserNotificationReadRepository,
+} from '../application';
+import {
+  PrismaUserNotificationRepository,
+  PrismaUserNotificationReadRepository,
+} from './persistence';
 
 @Module({
   imports: [PrismaModule],
@@ -10,7 +16,11 @@ import { PrismaUserNotificationRepository } from './persistence';
       provide: UserNotificationRepository,
       useClass: PrismaUserNotificationRepository,
     },
+    {
+      provide: UserNotificationReadRepository,
+      useClass: PrismaUserNotificationReadRepository,
+    },
   ],
-  exports: [UserNotificationRepository],
+  exports: [UserNotificationRepository, UserNotificationReadRepository],
 })
 export class InfrastructureModule {}

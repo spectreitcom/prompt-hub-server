@@ -19,9 +19,6 @@ export class MarkNotificationAsReadCommandHandler
       `Marking notification as read: ${JSON.stringify(command)}`,
     );
 
-    const notificationId = UserNotificationId.create(command.notificationId);
-    const userId = UserId.create(command.userId);
-
-    await this.repository.markAsRead(notificationId, userId);
+    await this.repository.markAsRead(command.notificationId, command.userId);
   }
 }

@@ -1,8 +1,9 @@
 import { ICommand } from '@nestjs/cqrs';
+import { UserId, UserNotificationId } from '../../domain';
 
 export class MarkNotificationAsReadCommand implements ICommand {
   constructor(
-    public readonly notificationId: string,
-    public readonly userId: string,
+    public readonly notificationId: UserNotificationId,
+    public readonly userId: UserId,
   ) {}
 }
