@@ -1,9 +1,9 @@
 import { isUUID } from 'class-validator';
 
-export class NotificationId {
+export class UserNotificationId {
   private constructor(private readonly value: string) {}
 
-  static create(id: string): NotificationId {
+  static create(id: string): UserNotificationId {
     if (!id || id.trim() === '') {
       throw new Error('Notification ID cannot be empty.');
     }
@@ -12,14 +12,14 @@ export class NotificationId {
       throw new Error('Notification ID must be a valid UUID.');
     }
 
-    return new NotificationId(id.trim());
+    return new UserNotificationId(id.trim());
   }
 
   getValue(): string {
     return this.value;
   }
 
-  equals(other: NotificationId): boolean {
+  equals(other: UserNotificationId): boolean {
     return this.value === other.getValue();
   }
 }

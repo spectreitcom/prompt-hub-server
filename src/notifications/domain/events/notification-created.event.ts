@@ -1,10 +1,10 @@
-import { NotificationId } from '../value-objects';
+import { UserNotificationId } from '../value-objects';
 import { UserId } from '../value-objects';
 import { NotificationType } from '../value-objects';
 
 export class NotificationCreatedEvent {
   constructor(
-    public readonly id: NotificationId,
+    public readonly id: UserNotificationId,
     public readonly userId: UserId,
     public readonly type: NotificationType,
     public readonly payload: Record<string, any>,

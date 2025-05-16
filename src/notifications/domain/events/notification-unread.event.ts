@@ -1,8 +1,8 @@
-import { NotificationId, UserId } from '../value-objects';
+import { UserNotificationId, UserId } from '../value-objects';
 
 export class NotificationUnreadEvent {
   constructor(
-    public readonly id: NotificationId,
+    public readonly id: UserNotificationId,
     public readonly userId: UserId,
   ) {}
 }

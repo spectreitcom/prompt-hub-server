@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { randomUUID } from 'crypto';
-import { NotificationId } from './value-objects';
+import { UserNotificationId } from './value-objects';
 import { UserId } from './value-objects';
 import { NotificationType } from './value-objects';
 import {
@@ -10,7 +10,7 @@ import {
 } from './events';
 
 export class UserNotification extends AggregateRoot {
-  private readonly id: NotificationId;
+  private readonly id: UserNotificationId;
   private readonly userId: UserId;
   private readonly type: NotificationType;
   private readonly payload: Record<string, any>;
@@ -18,7 +18,7 @@ export class UserNotification extends AggregateRoot {
   private readonly createdAt: Date;
 
   constructor(
-    id: NotificationId,
+    id: UserNotificationId,
     userId: UserId,
     type: NotificationType,
     payload: Record<string, any>,
@@ -39,7 +39,7 @@ export class UserNotification extends AggregateRoot {
     type: NotificationType,
     payload: Record<string, any>,
   ): UserNotification {
-    const id = NotificationId.create(randomUUID());
+    const id = UserNotificationId.create(randomUUID());
     const createdAt = new Date();
     const notification = new UserNotification(
       id,
@@ -75,7 +75,7 @@ export class UserNotification extends AggregateRoot {
     this.apply(new NotificationUnreadEvent(this.id, this.userId));
   }
 
-  getId(): NotificationId {
+  getId(): UserNotificationId {
     return this.id;
   }
 
