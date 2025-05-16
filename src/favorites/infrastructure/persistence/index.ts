@@ -1,1 +1,1 @@
-// Repositories will be exported here
+export * from './prisma-favorite-prompt.repository';
