@@ -117,16 +117,18 @@ model FavoritePrompt {
 
 // Search
 model SearchPromptEntry {
-  id          String   @id
-  title       String   @db.VarChar(200)
-  content     String   @db.Text
-  authorId    String
-  isPublic    Boolean  @default(false)
-  status      String   @db.VarChar(20)
-  copiedCount Int      @default(0)
-  likedCount  Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id
+  title           String   @db.VarChar(200)
+  content         String   @db.Text
+  authorId        String
+  authorName      String   @db.VarChar(100)
+  authorAvatarUrl String?  @db.VarChar(255)
+  isPublic        Boolean  @default(false)
+  status          String   @db.VarChar(20)
+  copiedCount     Int      @default(0)
+  likedCount      Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   tags SearchPromptTag[]
 }
