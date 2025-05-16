@@ -21,6 +21,7 @@ import {
   DeletePromptCatalogCommandHandler,
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
+  PromptHubService,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -52,6 +53,7 @@ const CommandHandlers = [
 
 @Module({
   imports: [CqrsModule, InfrastructureModule],
-  providers: [...EventHandlers, ...CommandHandlers],
+  providers: [...EventHandlers, ...CommandHandlers, PromptHubService],
+  exports: [PromptHubService],
 })
 export class PromptHubModule {}
