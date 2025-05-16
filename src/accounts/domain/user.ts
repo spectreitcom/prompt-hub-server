@@ -6,6 +6,7 @@ import {
   PersonName,
   AvatarUrl,
   Provider,
+  GoogleId,
 } from './value-objects';
 
 export class User extends AggregateRoot {
@@ -13,6 +14,7 @@ export class User extends AggregateRoot {
   private readonly email: EmailAddress;
   private readonly name: PersonName;
   private readonly avatarUrl?: AvatarUrl;
+  private readonly googleId: GoogleId;
   private readonly provider: Provider;
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
@@ -22,6 +24,7 @@ export class User extends AggregateRoot {
     email: EmailAddress,
     name: PersonName,
     avatarUrl: AvatarUrl | undefined,
+    googleId: GoogleId,
     provider: Provider,
     createdAt: Date,
     updatedAt: Date,
@@ -31,6 +34,7 @@ export class User extends AggregateRoot {
     this.email = email;
     this.name = name;
     this.avatarUrl = avatarUrl;
+    this.googleId = googleId;
     this.provider = provider;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -50,6 +54,10 @@ export class User extends AggregateRoot {
 
   getAvatarUrl(): string | undefined {
     return this.avatarUrl?.getValue();
+  }
+
+  getGoogleId(): string {
+    return this.googleId.getValue();
   }
 
   getProvider(): string {

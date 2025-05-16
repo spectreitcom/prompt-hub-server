@@ -10,6 +10,7 @@ import {
   User,
   PersonName,
   Provider,
+  GoogleId,
 } from '../../domain';
 
 @Injectable()
@@ -35,6 +36,7 @@ export class SignUpWithGmailCommandHandler
     // Create a new user
     const userId = UserId.create(uuidv4());
     const personName = PersonName.create(name);
+    const googleIdValue = GoogleId.create(googleId);
     const provider = Provider.google();
     const now = new Date();
 
@@ -47,6 +49,7 @@ export class SignUpWithGmailCommandHandler
       emailAddress,
       personName,
       userAvatarUrl,
+      googleIdValue,
       provider,
       now,
       now,

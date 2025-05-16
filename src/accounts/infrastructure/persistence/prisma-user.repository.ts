@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
 import { UserRepository } from '../../application';
-import { User, EmailAddress, UserId, PersonName, AvatarUrl, Provider } from '../../domain';
+import {
+  User,
+  EmailAddress,
+  UserId,
+  PersonName,
+  AvatarUrl,
+  Provider,
+  GoogleId,
+} from '../../domain';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
@@ -34,6 +42,7 @@ export class PrismaUserRepository implements UserRepository {
         email: user.getEmail(),
         name: user.getName(),
         avatarUrl: user.getAvatarUrl(),
+        googleId: user.getGoogleId(),
         provider: user.getProvider(),
         updatedAt: user.getUpdatedAt(),
       },
@@ -42,6 +51,7 @@ export class PrismaUserRepository implements UserRepository {
         email: user.getEmail(),
         name: user.getName(),
         avatarUrl: user.getAvatarUrl(),
+        googleId: user.getGoogleId(),
         provider: user.getProvider(),
         createdAt: user.getCreatedAt(),
         updatedAt: user.getUpdatedAt(),
@@ -55,6 +65,7 @@ export class PrismaUserRepository implements UserRepository {
       EmailAddress.create(userData.email),
       PersonName.create(userData.name),
       userData.avatarUrl ? AvatarUrl.create(userData.avatarUrl) : undefined,
+      GoogleId.create(userData.googleId),
       Provider.create(userData.provider),
       userData.createdAt,
       userData.updatedAt,
