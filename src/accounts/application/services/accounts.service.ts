@@ -3,7 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SignUpWithGmailCommand } from '../commands';
 import { GetPublicUserViewQuery } from '../queries';
 import { UserRepository } from '../ports';
-import { EmailAddress, UserId } from '../../domain';
+import { EmailAddress } from '../../domain';
 import { UserProfileView } from '../../views';
 
 @Injectable()
