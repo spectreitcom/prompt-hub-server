@@ -69,9 +69,7 @@ describe('UserNotificationId', () => {
 
     it('should return false for different notification IDs', () => {
       const notificationId1 = UserNotificationId.create(validUuid);
-      const notificationId2 = UserNotificationId.create(
-        uuidv4(),
-      );
+      const notificationId2 = UserNotificationId.create(uuidv4());
       expect(notificationId1.equals(notificationId2)).toBe(false);
     });
   });
