@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SignUpWithGmailCommand } from '../commands';
+import { GetPublicUserViewQuery } from '../queries';
 import { UserRepository } from '../ports';
-import { EmailAddress } from '../../domain';
+import { EmailAddress, UserId } from '../../domain';
+import { UserProfileView } from '../../views';
 
 @Injectable()
 export class AccountsService {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -44,5 +47,16 @@ export class AccountsService {
    */
   async findByEmail(email: string) {
     return this.userRepository.findByEmail(EmailAddress.create(email));
+  }
+
+  /**
+   * Gets the public view of a user by their ID.
+   *
+   * @param {string} userId - The ID of the user to get the public view for.
+   * @return {Promise<UserProfileView|null>} A promise that resolves to the user's public view if found, or null if no user is found.
+   */
+  async getPublicUserView(userId: string): Promise<UserProfileView> {
+    const query = new GetPublicUserViewQuery(userId);
+    return this.queryBus.execute(query);
   }
 }
