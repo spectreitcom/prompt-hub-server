@@ -1,7 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { MarkNotificationAsReadCommand } from '../commands';
 import { UserNotificationRepository } from '../ports';
-import { UserId, UserNotificationId } from '../../domain';
 import { Logger } from '@nestjs/common';
 
 @CommandHandler(MarkNotificationAsReadCommand)

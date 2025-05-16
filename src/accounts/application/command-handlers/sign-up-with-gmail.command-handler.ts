@@ -3,15 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { SignUpWithGmailCommand } from '../commands';
 import { UserRepository } from '../ports';
-import {
-  AvatarUrl,
-  EmailAddress,
-  UserId,
-  User,
-  PersonName,
-  Provider,
-  GoogleId,
-} from '../../domain';
+import { UserId, User, Provider } from '../../domain';
 
 @Injectable()
 @CommandHandler(SignUpWithGmailCommand)
