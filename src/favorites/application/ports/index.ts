@@ -1,1 +1,1 @@
-export {};
+export * from './favorite-prompt.repository';

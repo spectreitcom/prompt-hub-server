@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { InfrastructureModule } from './infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
-import { eventHandlers } from './application';
-
-const commandHandlers = [];
+import { eventHandlers, commandHandlers } from './application';
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
