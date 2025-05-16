@@ -145,3 +145,17 @@ model SearchPromptTag {
 }
 
 //===================================================
+
+// Notifications
+model UserNotification {
+  id        String   @id @default(cuid())
+  userId    String
+  // type      String   // np. 'PROMPT_REPORTED' | 'COMMENT_ADDED' | 'PROMPT_COPIED'
+  payload   Json // dane zależne od typu notyfikacji
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+//===================================================
