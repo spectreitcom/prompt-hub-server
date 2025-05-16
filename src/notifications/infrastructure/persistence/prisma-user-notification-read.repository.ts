@@ -37,4 +37,13 @@ export class PrismaUserNotificationReadRepository
         ),
     );
   }
+
+  async countUnreadForUser(id: UserId): Promise<number> {
+    return this.prisma.userNotification.count({
+      where: {
+        userId: id.getValue(),
+        isRead: false,
+      },
+    });
+  }
 }

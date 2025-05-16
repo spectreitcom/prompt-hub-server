@@ -7,4 +7,6 @@ export abstract class UserNotificationReadRepository {
     take: number,
     skip: number,
   ): Promise<NotificationView[]>;
+
+  abstract countUnreadForUser(id: UserId): Promise<number>;
 }
