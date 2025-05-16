@@ -69,7 +69,14 @@ export class Prompt extends AggregateRoot {
 
     this.status = PromptStatus.published();
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
-    this.apply(new PromptPublishedEvent(this.id));
+    this.apply(
+      new PromptPublishedEvent(
+        this.id,
+        this.authorId,
+        this.title,
+        this.content,
+      ),
+    );
   }
 
   copy(byUserId: UserId): void {

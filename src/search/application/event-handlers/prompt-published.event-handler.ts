@@ -6,6 +6,7 @@ export class PromptPublishedEventHandler
   implements IEventHandler<PromptPublishedEvent>
 {
   handle(event: PromptPublishedEvent) {
+    const { promptId } = event;
     // todo: should update status or create a new record
   }
 }
