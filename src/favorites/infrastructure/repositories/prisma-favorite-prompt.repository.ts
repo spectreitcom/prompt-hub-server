@@ -88,4 +88,12 @@ export class PrismaFavoritePromptRepository
       favoritePrompt.createdAt,
     );
   }
+
+  async remove(id: FavoritePromptId): Promise<void> {
+    await this.prisma.favoritePrompt.delete({
+      where: {
+        id: id.getValue(),
+      },
+    });
+  }
 }

@@ -12,4 +12,5 @@ export abstract class FavoritePromptRepository {
     promptId: PromptId,
     userId: UserId,
   ): Promise<FavoritePrompt | null>;
+  abstract remove(id: FavoritePromptId): Promise<void>;
 }
