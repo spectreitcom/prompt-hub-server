@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { InfrastructureModule } from './infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
-import { EventHandlers } from './application';
+import { EventHandlers, CommandHandlers } from './application';
 
 const eventHandlers = [...EventHandlers];
 
-const commandHandlers = [];
+const commandHandlers = [...CommandHandlers];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
