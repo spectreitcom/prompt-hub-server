@@ -1,18 +1,33 @@
-import { isUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsUUID,
+  validateSync,
+  ValidationError,
+} from 'class-validator';
 
 export class UserId {
-  private constructor(private readonly value: string) {}
+  @IsNotEmpty({ message: 'User ID cannot be empty.' })
+  @IsUUID('4', { message: 'User ID must be a valid UUID.' })
+  private readonly value: string;
+
+  private constructor(id: string) {
+    this.value = id.trim();
+    this.validate();
+  }
 
   static create(id: string): UserId {
-    if (!id || id.trim() === '') {
-      throw new Error('User ID cannot be empty.');
-    }
+    return new UserId(id);
+  }
 
-    if (!isUUID(id, '4')) {
-      throw new Error('User ID must be a valid UUID.');
+  private validate(): void {
+    const errors: ValidationError[] = validateSync(this);
+    if (errors.length > 0) {
+      throw new Error(
+        errors
+          .map((error) => Object.values(error.constraints).join(', '))
+          .join(', '),
+      );
     }
-
-    return new UserId(id.trim());
   }
 
   getValue(): string {

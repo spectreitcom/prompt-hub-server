@@ -1,12 +1,27 @@
+import { IsNotEmpty, validateSync, ValidationError } from 'class-validator';
+
 export class GoogleId {
-  private constructor(private readonly value: string) {}
+  @IsNotEmpty({ message: 'GoogleId cannot be empty.' })
+  private readonly value: string;
+
+  private constructor(value: string) {
+    this.value = value.trim();
+    this.validate();
+  }
 
   static create(googleId: string): GoogleId {
-    if (!googleId || googleId.trim() === '') {
-      throw new Error('GoogleId cannot be empty.');
-    }
+    return new GoogleId(googleId);
+  }
 
-    return new GoogleId(googleId.trim());
+  private validate(): void {
+    const errors: ValidationError[] = validateSync(this);
+    if (errors.length > 0) {
+      throw new Error(
+        errors
+          .map((error) => Object.values(error.constraints).join(', '))
+          .join(', '),
+      );
+    }
   }
 
   getValue(): string {

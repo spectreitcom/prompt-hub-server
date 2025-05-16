@@ -1,18 +1,33 @@
-import { isEmail } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  validateSync,
+  ValidationError,
+} from 'class-validator';
 
 export class EmailAddress {
-  private constructor(private readonly value: string) {}
+  @IsNotEmpty({ message: 'Email address cannot be empty.' })
+  @IsEmail({}, { message: 'Invalid email address format.' })
+  private readonly value: string;
+
+  private constructor(email: string) {
+    this.value = email.trim().toLowerCase();
+    this.validate();
+  }
 
   static create(email: string): EmailAddress {
-    if (!email || email.trim() === '') {
-      throw new Error('Email address cannot be empty.');
-    }
+    return new EmailAddress(email);
+  }
 
-    if (!isEmail(email.trim())) {
-      throw new Error('Invalid email address format.');
+  private validate(): void {
+    const errors: ValidationError[] = validateSync(this);
+    if (errors.length > 0) {
+      throw new Error(
+        errors
+          .map((error) => Object.values(error.constraints).join(', '))
+          .join(', '),
+      );
     }
-
-    return new EmailAddress(email.trim().toLowerCase());
   }
 
   getValue(): string {

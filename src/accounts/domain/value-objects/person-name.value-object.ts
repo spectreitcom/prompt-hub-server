@@ -1,29 +1,40 @@
+import {
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  Matches,
+  validateSync,
+  ValidationError,
+} from 'class-validator';
+
 export class PersonName {
-  private constructor(private readonly value: string) {}
+  @IsNotEmpty({ message: 'Person name cannot be empty.' })
+  @MinLength(2, { message: 'Person name must be at least 2 characters long.' })
+  @MaxLength(100, { message: 'Person name cannot exceed 100 characters.' })
+  @Matches(/^[a-zA-Z\s'-]+$/, {
+    message:
+      'Person name can only contain letters, spaces, hyphens, and apostrophes.',
+  })
+  private readonly value: string;
+
+  private constructor(name: string) {
+    this.value = name.trim();
+    this.validate();
+  }
 
   static create(name: string): PersonName {
-    if (!name || name.trim() === '') {
-      throw new Error('Person name cannot be empty.');
-    }
+    return new PersonName(name);
+  }
 
-    const trimmedName = name.trim();
-
-    if (trimmedName.length < 2) {
-      throw new Error('Person name must be at least 2 characters long.');
-    }
-
-    if (trimmedName.length > 100) {
-      throw new Error('Person name cannot exceed 100 characters.');
-    }
-
-    // Allow letters, spaces, hyphens, and apostrophes (common in names)
-    if (!/^[a-zA-Z\s'-]+$/.test(trimmedName)) {
+  private validate(): void {
+    const errors: ValidationError[] = validateSync(this);
+    if (errors.length > 0) {
       throw new Error(
-        'Person name can only contain letters, spaces, hyphens, and apostrophes.',
+        errors
+          .map((error) => Object.values(error.constraints).join(', '))
+          .join(', '),
       );
     }
-
-    return new PersonName(trimmedName);
   }
 
   getValue(): string {

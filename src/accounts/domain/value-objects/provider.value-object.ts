@@ -1,25 +1,39 @@
+import {
+  IsNotEmpty,
+  IsIn,
+  validateSync,
+  ValidationError,
+} from 'class-validator';
+
 export class Provider {
-  private constructor(private readonly value: string) {}
+  @IsNotEmpty({ message: 'Provider cannot be empty.' })
+  @IsIn(['google'], {
+    message: 'Invalid provider. Currently only "google" is supported.',
+  })
+  private readonly value: string;
+
+  private constructor(provider: string) {
+    this.value = provider.trim().toLowerCase();
+    this.validate();
+  }
 
   static create(provider: string): Provider {
-    if (!provider || provider.trim() === '') {
-      throw new Error('Provider cannot be empty.');
-    }
-
-    const trimmedProvider = provider.trim().toLowerCase();
-
-    // Currently only 'google' is supported
-    if (trimmedProvider !== 'google') {
-      throw new Error(
-        'Invalid provider. Currently only "google" is supported.',
-      );
-    }
-
-    return new Provider(trimmedProvider);
+    return new Provider(provider);
   }
 
   static google() {
     return new Provider('google');
+  }
+
+  private validate(): void {
+    const errors: ValidationError[] = validateSync(this);
+    if (errors.length > 0) {
+      throw new Error(
+        errors
+          .map((error) => Object.values(error.constraints).join(', '))
+          .join(', '),
+      );
+    }
   }
 
   getValue(): string {

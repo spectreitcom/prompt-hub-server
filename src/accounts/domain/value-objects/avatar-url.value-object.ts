@@ -1,38 +1,50 @@
-import { isURL } from 'class-validator';
+import {
+  IsUrl,
+  ValidateIf,
+  Matches,
+  validateSync,
+  ValidationError,
+} from 'class-validator';
 
 export class AvatarUrl {
-  private constructor(private readonly value: string) {}
+  @ValidateIf((o) => o.value !== '')
+  @IsUrl(
+    {
+      protocols: ['http', 'https'],
+      require_protocol: true,
+    },
+    { message: 'Avatar URL must be a valid HTTP or HTTPS URL.' },
+  )
+  @ValidateIf((o) => o.value !== '')
+  @Matches(/\.(jpg|jpeg|png|gif|webp|svg)$/i, {
+    message:
+      'Avatar URL must point to an image file (jpg, jpeg, png, gif, webp, svg).',
+  })
+  private readonly value: string;
+
+  private constructor(url: string) {
+    this.value = url ? url.trim() : '';
+    this.validate();
+  }
 
   static create(url: string): AvatarUrl {
-    // Allow empty avatar URL (user might not have an avatar)
-    if (!url || url.trim() === '') {
-      return new AvatarUrl('');
+    return new AvatarUrl(url);
+  }
+
+  private validate(): void {
+    // Skip validation for empty values
+    if (this.value === '') {
+      return;
     }
 
-    const trimmedUrl = url.trim();
-
-    if (
-      !isURL(trimmedUrl, {
-        protocols: ['http', 'https'],
-        require_protocol: true,
-      })
-    ) {
-      throw new Error('Avatar URL must be a valid HTTP or HTTPS URL.');
-    }
-
-    // Check if URL points to an image file
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
-    const hasImageExtension = imageExtensions.some((ext) =>
-      trimmedUrl.toLowerCase().endsWith(ext),
-    );
-
-    if (!hasImageExtension) {
+    const errors: ValidationError[] = validateSync(this);
+    if (errors.length > 0) {
       throw new Error(
-        'Avatar URL must point to an image file (jpg, jpeg, png, gif, webp, svg).',
+        errors
+          .map((error) => Object.values(error.constraints).join(', '))
+          .join(', '),
       );
     }
-
-    return new AvatarUrl(trimmedUrl);
   }
 
   getValue(): string {
