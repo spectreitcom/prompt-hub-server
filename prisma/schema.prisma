@@ -114,3 +114,32 @@ model FavoritePrompt {
 }
 
 //===================================================
+
+// Search
+model SearchPromptEntry {
+  id          String   @id
+  title       String   @db.VarChar(200)
+  content     String   @db.Text
+  authorId    String
+  isPublic    Boolean  @default(false)
+  status      String   @db.VarChar(20)
+  copiedCount Int      @default(0)
+  likedCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tags SearchPromptTag[]
+}
+
+model SearchPromptTag {
+  id       String @id @default(cuid())
+  promptId String
+  name     String @db.VarChar(50)
+
+  prompt SearchPromptEntry @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, name])
+  @@index([name])
+}
+
+//===================================================
