@@ -117,4 +117,50 @@ export class PrismaPromptListItemViewRepository
       },
     });
   }
+
+  async getUsersList(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptListItemView[]> {
+    const where: Prisma.PromptListItemViewWhereInput = {
+      authorId: userId,
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { contentPreview: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
+    };
+
+    const promptListItems = await this.prisma.promptListItemView.findMany({
+      where,
+      orderBy: {
+        likedCount: 'desc', // Sort by most likes first
+      },
+      take,
+      skip,
+    });
+
+    return promptListItems.map(
+      (item) =>
+        new PromptListItemView(
+          item.id,
+          item.title,
+          item.contentPreview,
+          item.likedCount,
+          item.copiedCount,
+          item.viewCount,
+          item.createdAt,
+          new PromptUserPublicView(
+            item.authorId,
+            item.authorName,
+            item.authorAvatarUrl || undefined,
+          ),
+        ),
+    );
+  }
 }

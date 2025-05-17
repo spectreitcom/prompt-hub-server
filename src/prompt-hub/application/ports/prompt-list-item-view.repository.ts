@@ -12,4 +12,11 @@ export abstract class PromptListItemViewRepository {
   abstract findById(id: string): Promise<PromptListItemView>;
 
   abstract delete(id: string): Promise<void>;
+
+  abstract getUsersList(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptListItemView[]>;
 }
