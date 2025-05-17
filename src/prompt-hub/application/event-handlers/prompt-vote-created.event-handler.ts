@@ -8,7 +8,7 @@ export class PromptVoteCreatedEventHandler
 {
   private readonly logger = new Logger(PromptVoteCreatedEventHandler.name);
 
-  handle(event: PromptVoteCreatedEvent) {
-    //....
+  async handle(event: PromptVoteCreatedEvent) {
+    const { promptId, voteType } = event;
   }
 }
