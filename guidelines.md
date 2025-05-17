@@ -11,7 +11,7 @@ The application follows a clean architecture pattern with Domain-Driven Design (
 ### Key Architectural Components:
 
 1. **API Gateway**: Acts as an entry point for all API requests and routes them to the appropriate domain modules.
-2. **Domain Modules**: Separate modules for different domains (accounts, prompt-hub, notifications, voting, etc.).
+2. **Domain Modules**: Separate modules for different domains (accounts, favorites, prompt-hub, notifications, prompt-report, search, voting, etc.).
 3. **Clean Architecture Layers**:
    - **Domain Layer**: Contains domain models, entities, value objects, and domain events.
    - **Application Layer**: Contains application services, commands, command handlers, events, and event handlers.
@@ -28,15 +28,52 @@ The codebase is organized as follows:
 ```
 src/
 ├── accounts/               # Accounts domain module
+│   ├── application/        # Application layer
+│   │   ├── command-handlers/ # Command handlers
+│   │   ├── commands/       # Command definitions
+│   │   ├── event-handlers/ # Event handlers
+│   │   ├── ports/          # Repository interfaces
+│   │   ├── queries/        # Query definitions
+│   │   ├── query-handlers/ # Query handlers
+│   │   └── services/       # Application services
+│   ├── domain/             # Domain layer
+│   │   ├── events/         # Domain events
+│   │   ├── types/          # Domain types
+│   │   └── value-objects/  # Value objects
+│   ├── infrastructure/     # Infrastructure layer
+│   │   └── persistence/    # Repository implementations
+│   └── views/              # Views layer
 ├── api-gateway/            # API Gateway module
+│   ├── controllers/        # API controllers
+│   └── dtos/               # Data Transfer Objects
 ├── favorites/              # Favorites domain module
+│   ├── application/        # Application layer
+│   │   ├── command-handlers/ # Command handlers
+│   │   ├── commands/       # Command definitions
+│   │   ├── event-handlers/ # Event handlers
+│   │   ├── ports/          # Repository interfaces
+│   │   ├── queries/        # Query definitions
+│   │   ├── query-handlers/ # Query handlers
+│   │   └── services/       # Application services
+│   ├── domain/             # Domain layer
+│   │   ├── events/         # Domain events
+│   │   ├── types/          # Domain types
+│   │   └── value-objects/  # Value objects
+│   ├── infrastructure/     # Infrastructure layer
+│   │   └── persistence/    # Repository implementations
+│   └── views/              # Views layer
 ├── notifications/          # Notifications domain module
 │   ├── application/        # Application layer
 │   │   ├── command-handlers/ # Command handlers
 │   │   ├── commands/       # Command definitions
 │   │   ├── event-handlers/ # Event handlers
-│   │   └── ports/          # Repository interfaces
+│   │   ├── ports/          # Repository interfaces
+│   │   ├── queries/        # Query definitions
+│   │   ├── query-handlers/ # Query handlers
+│   │   └── services/       # Application services
 │   ├── domain/             # Domain layer
+│   │   ├── events/         # Domain events
+│   │   ├── types/          # Domain types
 │   │   └── value-objects/  # Value objects
 │   ├── infrastructure/     # Infrastructure layer
 │   │   └── persistence/    # Repository implementations
@@ -151,7 +188,13 @@ The application uses JWT tokens for authentication. There are two types of token
    - Use pagination for large result sets
    - Use caching where appropriate
 
-8. **API Design**:
+8. **Views Layer**:
+   - Use view models for read operations
+   - Keep view models separate from domain entities
+   - Use mappers to transform domain entities to view models
+   - Design view models to meet the specific needs of the UI or API consumers
+
+9. **API Design**:
    - Use RESTful principles for API design
    - Use DTOs for request and response data
    - Document all API endpoints with Swagger
