@@ -2,6 +2,7 @@ import { IEvent } from '@nestjs/cqrs';
 import {
   PromptContent,
   PromptId,
+  PromptStatus,
   PromptTimestamps,
   PromptTitle,
   UserId,
@@ -14,5 +15,6 @@ export class PromptPublishedEvent implements IEvent {
     public readonly title: PromptTitle,
     public readonly content: PromptContent,
     public readonly timestamps: PromptTimestamps,
+    public readonly status: PromptStatus,
   ) {}
 }
