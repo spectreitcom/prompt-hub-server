@@ -75,6 +75,7 @@ export class Prompt extends AggregateRoot {
         this.authorId,
         this.title,
         this.content,
+        this.timestamps,
       ),
     );
   }
