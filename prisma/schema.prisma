@@ -113,6 +113,15 @@ model FavoritePrompt {
   @@index([userId])
 }
 
+model FavoritePromptEntry {
+  userId    String
+  promptId  String
+  title     String
+  createdAt DateTime
+
+  @@id([userId, promptId])
+}
+
 //===================================================
 
 // Search
