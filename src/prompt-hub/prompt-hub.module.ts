@@ -25,6 +25,7 @@ import {
   UserCreatedEventHandler,
   GetPromptListQueryHandler,
   PromptVoteCreatedEventHandler,
+  PromptVoteChangedEventHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -40,6 +41,7 @@ const EventHandlers = [
   CatalogItemRemovedEventHandler,
   UserCreatedEventHandler,
   PromptVoteCreatedEventHandler,
+  PromptVoteChangedEventHandler,
 ];
 
 const CommandHandlers = [
