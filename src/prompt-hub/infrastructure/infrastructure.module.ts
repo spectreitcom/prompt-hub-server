@@ -8,6 +8,7 @@ import {
   PromptListItemViewRepository,
   PromptRepository,
   PromptUserPublicRepository,
+  PromptCatalogItemViewRepository,
 } from '../application';
 import {
   PrismaPromptCatalogItemRepository,
@@ -17,6 +18,7 @@ import {
   PrismaPromptListItemViewRepository,
   PrismaPromptRepository,
   PrismaPromptUserPublicRepository,
+  PrismaPromptCatalogItemViewRepository,
 } from './persistence';
 
 @Module({
@@ -50,6 +52,10 @@ import {
       provide: PromptCatalogViewRepository,
       useClass: PrismaPromptCatalogViewRepository,
     },
+    {
+      provide: PromptCatalogItemViewRepository,
+      useClass: PrismaPromptCatalogItemViewRepository,
+    },
   ],
   exports: [
     PromptRepository,
@@ -59,6 +65,7 @@ import {
     PromptListItemViewRepository,
     PromptDetailsViewRepository,
     PromptCatalogViewRepository,
+    PromptCatalogItemViewRepository,
   ],
 })
 export class InfrastructureModule {}

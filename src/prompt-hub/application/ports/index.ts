@@ -5,3 +5,4 @@ export * from './prompt-list-item-view.repository';
 export * from './prompt-user-public.repository';
 export * from './prompt-details-view.repository';
 export * from './prompt-catalog-view.repository';
+export * from './prompt-catalog-item-view.repository';

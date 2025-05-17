@@ -1,5 +1,9 @@
-import { PromptCatalogItemId } from '../value-objects';
+import { CatalogId, PromptCatalogItemId, PromptId } from '../value-objects';
 
 export class CatalogItemRemovedEvent {
-  constructor(public readonly catalogItemId: PromptCatalogItemId) {}
+  constructor(
+    public readonly catalogItemId: PromptCatalogItemId,
+    public readonly catalogId: CatalogId,
+    public readonly promptId: PromptId,
+  ) {}
 }

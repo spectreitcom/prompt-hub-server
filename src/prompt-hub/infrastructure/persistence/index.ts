@@ -5,3 +5,4 @@ export * from './prisma-prompt-user-public.repository';
 export * from './prisma-prompt-list-item-view.repository';
 export * from './prisma-prompt-details-view.repository';
 export * from './prisma-prompt-catalog-view.repository';
+export * from './prisma-prompt-catalog-item-view.repository';
