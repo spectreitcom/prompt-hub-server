@@ -68,4 +68,12 @@ export class PrismaPromptCatalogItemViewRepository extends PromptCatalogItemView
       },
     });
   }
+
+  async deleteByCatalogId(catalogId: string): Promise<void> {
+    await this.prisma.promptCatalogItemView.deleteMany({
+      where: {
+        catalogId,
+      },
+    });
+  }
 }
