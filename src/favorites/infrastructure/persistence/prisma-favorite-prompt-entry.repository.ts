@@ -34,7 +34,7 @@ export class PrismaFavoritePromptEntryRepository
           new FavoriteUserPublicView(
             favoritePrompt.authorId,
             favoritePrompt.authorName,
-            favoritePrompt.authorAvatarUrl || undefined
+            favoritePrompt.authorAvatarUrl || undefined,
           ),
           favoritePrompt.userId,
         ),
@@ -101,7 +101,7 @@ export class PrismaFavoritePromptEntryRepository
       new FavoriteUserPublicView(
         favoritePrompt.authorId,
         favoritePrompt.authorName,
-        favoritePrompt.authorAvatarUrl || undefined
+        favoritePrompt.authorAvatarUrl || undefined,
       ),
       favoritePrompt.userId,
     );
