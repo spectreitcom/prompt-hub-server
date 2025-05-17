@@ -1,3 +1,5 @@
+import { PromptUserPublicView } from './prompt-user-public.view';
+
 export class PromptListItemView {
   constructor(
     public readonly id: string,
@@ -6,9 +8,7 @@ export class PromptListItemView {
     public readonly likedCount: number,
     public readonly copiedCount: number,
     public readonly viewCount: number,
-    public readonly authorId: string,
-    public readonly authorName: string,
     public readonly createdAt: Date,
-    public readonly authorAvatarUrl?: string,
+    public readonly author: PromptUserPublicView,
   ) {}
 }
