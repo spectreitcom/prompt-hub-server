@@ -12,6 +12,7 @@ import {
   PromptCopiedEvent,
   PromptDeletedEvent,
   PromptPublishedEvent,
+  PromptUpdatedEvent,
   PromptVisibilityChangedEvent,
 } from './events';
 import { randomUUID } from 'crypto';
@@ -60,6 +61,15 @@ export class Prompt extends AggregateRoot {
     this.title = title;
     this.content = content;
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
+    this.apply(
+      new PromptUpdatedEvent(
+        this.id,
+        this.authorId,
+        this.title,
+        this.content,
+        this.timestamps,
+      ),
+    );
   }
 
   makePublished(): void {
