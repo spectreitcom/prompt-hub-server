@@ -3,6 +3,8 @@ import { FavoritePromptEntryView } from '../../views';
 export abstract class FavoritePromptEntryRepository {
   abstract findForUser(
     userId: string,
+    skip: number,
+    take: number,
     search?: string, // search by title
     authorId?: string,
   ): Promise<FavoritePromptEntryView[]>;

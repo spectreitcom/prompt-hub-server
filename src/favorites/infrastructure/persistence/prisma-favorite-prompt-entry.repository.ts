@@ -11,6 +11,8 @@ export class PrismaFavoritePromptEntryRepository
 
   async findForUser(
     userId: string,
+    skip: number,
+    take: number,
     search?: string,
     authorId?: string,
   ): Promise<FavoritePromptEntryView[]> {
@@ -20,6 +22,8 @@ export class PrismaFavoritePromptEntryRepository
         ...(search && { title: { contains: search, mode: 'insensitive' } }),
         ...(authorId && { authorId }),
       },
+      skip,
+      take,
     });
 
     return favoritePrompts.map(
