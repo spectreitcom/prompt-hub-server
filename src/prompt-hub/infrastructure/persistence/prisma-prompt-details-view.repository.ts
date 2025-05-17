@@ -72,4 +72,12 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
       ),
     );
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.promptDetailsView.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

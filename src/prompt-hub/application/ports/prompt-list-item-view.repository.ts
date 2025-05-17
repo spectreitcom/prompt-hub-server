@@ -10,4 +10,6 @@ export abstract class PromptListItemViewRepository {
   ): Promise<PromptListItemView[]>;
 
   abstract findById(id: string): Promise<PromptListItemView>;
+
+  abstract delete(id: string): Promise<void>;
 }

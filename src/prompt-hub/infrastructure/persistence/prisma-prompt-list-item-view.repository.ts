@@ -109,4 +109,12 @@ export class PrismaPromptListItemViewRepository
       ),
     );
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.promptListItemView.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

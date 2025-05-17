@@ -1,14 +1,23 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { PromptDeletedEvent } from '../../domain';
-import { Logger } from '@nestjs/common';
+import {
+  PromptDetailsViewRepository,
+  PromptListItemViewRepository,
+} from '../ports';
 
 @EventsHandler(PromptDeletedEvent)
 export class PromptDeletedEventHandler
   implements IEventHandler<PromptDeletedEvent>
 {
-  private readonly logger = new Logger(PromptDeletedEventHandler.name);
+  constructor(
+    private readonly promptListItemViewRepository: PromptListItemViewRepository,
+    private readonly promptDetailsViewRepository: PromptDetailsViewRepository,
+  ) {}
 
-  handle(event: PromptDeletedEvent) {
-    this.logger.debug(`Prompt ${event.promptId.getValue()} was deleted`);
+  async handle(event: PromptDeletedEvent) {
+    const { promptId } = event;
+
+    await this.promptListItemViewRepository.delete(promptId.getValue());
+    await this.promptDetailsViewRepository.delete(promptId.getValue());
   }
 }
