@@ -9,3 +9,4 @@ export * from './catalog-deleted.event-handler';
 export * from './catalog-item-added.event-handler';
 export * from './catalog-item-removed.event-handler';
 export * from './user-created.event-handler';
+export * from './prompt-vote-created.event-handler';
