@@ -8,4 +8,6 @@ export abstract class PromptListItemViewRepository {
     skip: number,
     search?: string,
   ): Promise<PromptListItemView[]>;
+
+  abstract findById(id: string): Promise<PromptListItemView>;
 }
