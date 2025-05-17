@@ -109,6 +109,26 @@ model PromptDetailsView {
   @@index([authorId])
 }
 
+model PromptCatalogView {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PromptCatalogItemView {
+  promptId    String
+  promptTitle String
+  catalogId   String
+  catalogName String
+  addedAt     DateTime
+
+  @@id([promptId, catalogId])
+  @@index([catalogId])
+}
+
 //===================================================
 
 // Prompt Report
