@@ -13,7 +13,7 @@ export class PromptVisibility {
     return isPublic ? this.public() : this.private();
   }
 
-  get isPublic(): boolean {
+  isPublic(): boolean {
     return this.value === 'public';
   }
 
