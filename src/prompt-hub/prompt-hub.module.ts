@@ -22,6 +22,7 @@ import {
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
   PromptHubService,
+  UserCreatedEventHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -35,6 +36,7 @@ const EventHandlers = [
   CatalogDeletedEventHandler,
   CatalogItemAddedEventHandler,
   CatalogItemRemovedEventHandler,
+  UserCreatedEventHandler,
 ];
 
 const CommandHandlers = [

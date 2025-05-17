@@ -4,11 +4,13 @@ import {
   PromptCatalogItemRepository,
   PromptCatalogRepository,
   PromptRepository,
+  PromptUserPublicRepository,
 } from '../application';
 import {
   PrismaPromptCatalogItemRepository,
   PrismaPromptCatalogRepository,
   PrismaPromptRepository,
+  PrismaPromptUserPublicRepository,
 } from './persistence';
 
 @Module({
@@ -26,11 +28,16 @@ import {
       provide: PromptCatalogItemRepository,
       useClass: PrismaPromptCatalogItemRepository,
     },
+    {
+      provide: PromptUserPublicRepository,
+      useClass: PrismaPromptUserPublicRepository,
+    },
   ],
   exports: [
     PromptRepository,
     PromptCatalogRepository,
     PromptCatalogItemRepository,
+    PromptUserPublicRepository,
   ],
 })
 export class InfrastructureModule {}
