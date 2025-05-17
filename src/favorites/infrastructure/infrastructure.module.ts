@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
 import {
   PrismaFavoritePromptRepository,
-  PrismaFavoritePromptReadRepository,
+  PrismaFavoritePromptEntryRepository,
 } from './persistence';
 import {
   FavoritePromptRepository,
-  FavoritePromptReadRepository,
+  FavoritePromptEntryRepository,
 } from '../application';
 
 @Module({
@@ -17,10 +17,10 @@ import {
       useClass: PrismaFavoritePromptRepository,
     },
     {
-      provide: FavoritePromptReadRepository,
-      useClass: PrismaFavoritePromptReadRepository,
+      provide: FavoritePromptEntryRepository,
+      useClass: PrismaFavoritePromptEntryRepository,
     },
   ],
-  exports: [FavoritePromptRepository, FavoritePromptReadRepository],
+  exports: [FavoritePromptRepository, FavoritePromptEntryRepository],
 })
 export class InfrastructureModule {}

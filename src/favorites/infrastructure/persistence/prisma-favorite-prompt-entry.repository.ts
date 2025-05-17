@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
-import { FavoritePromptReadRepository } from '../../application';
+import { FavoritePromptEntryRepository } from '../../application';
 import { UserId } from '../../domain';
-import { UserFavoritePromptView } from '../../views';
+import { FavoritePromptEntryView } from '../../views';
 
 @Injectable()
-export class PrismaFavoritePromptReadRepository
-  implements FavoritePromptReadRepository
+export class PrismaFavoritePromptEntryRepository
+  implements FavoritePromptEntryRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -14,7 +14,7 @@ export class PrismaFavoritePromptReadRepository
     userId: UserId,
     search?: string,
     authorId?: UserId,
-  ): Promise<UserFavoritePromptView[]> {
+  ): Promise<FavoritePromptEntryView[]> {
     const favoritePrompts = await this.prisma.favoritePromptEntry.findMany({
       where: {
         userId: userId.getValue(),
@@ -25,7 +25,7 @@ export class PrismaFavoritePromptReadRepository
 
     return favoritePrompts.map(
       (favoritePrompt) =>
-        new UserFavoritePromptView(
+        new FavoritePromptEntryView(
           favoritePrompt.promptId,
           favoritePrompt.title,
           favoritePrompt.authorId,

@@ -1,1 +1,1 @@
-export * from './user-favorite-prompt.view';
+export * from './favorite-prompt-entry.view';

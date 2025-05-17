@@ -133,6 +133,13 @@ model FavoriteUserPublicView {
   avatarUrl String?
 }
 
+model FavoritePromptView {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime
+  authorId  String
+}
+
 //===================================================
 
 // Search

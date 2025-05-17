@@ -1,4 +1,4 @@
-export class UserFavoritePromptView {
+export class FavoritePromptEntryView {
   constructor(
     public readonly promptId: string,
     public readonly title: string,
