@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { PromptCopiedEvent, PromptId } from '../../domain';
+import { PromptCopiedEvent, PromptId, UserId } from '../../domain';
 import {
   PromptDetailsViewRepository,
   PromptListItemViewRepository,
@@ -16,13 +16,13 @@ export class PromptCopiedEventHandler
   ) {}
 
   async handle(event: PromptCopiedEvent) {
-    const { promptId } = event;
+    const { promptId, byUserId } = event;
 
-    await this.updatePromptListItemView(promptId);
-    await this.updatePromptDetailsView(promptId);
+    await this.updatePromptListItemView(promptId, byUserId);
+    await this.updatePromptDetailsView(promptId, byUserId);
   }
 
-  private async updatePromptListItemView(promptId: PromptId) {
+  private async updatePromptListItemView(promptId: PromptId, byUserId: UserId) {
     // prompt list item view
     const promptListItemView = await this.promptListItemViewRepository.findById(
       promptId.getValue(),
@@ -30,12 +30,18 @@ export class PromptCopiedEventHandler
 
     if (!promptListItemView) return;
 
+    // Don't increment copiedCount if the prompt is copied by its owner
+    const isOwner = promptListItemView.author.id === byUserId.getValue();
+    const newCopiedCount = isOwner
+      ? promptListItemView.copiedCount
+      : promptListItemView.copiedCount + 1;
+
     const promptListItemViewToUpdate = new PromptListItemView(
       promptListItemView.id,
       promptListItemView.title,
       promptListItemView.contentPreview,
       promptListItemView.likedCount,
-      promptListItemView.copiedCount + 1,
+      newCopiedCount,
       promptListItemView.viewCount,
       promptListItemView.createdAt,
       promptListItemView.author,
@@ -44,13 +50,19 @@ export class PromptCopiedEventHandler
     await this.promptListItemViewRepository.save(promptListItemViewToUpdate);
   }
 
-  private async updatePromptDetailsView(promptId: PromptId) {
+  private async updatePromptDetailsView(promptId: PromptId, byUserId: UserId) {
     // prompt details view
     const promptDetailsView = await this.promptDetailsViewRepository.findById(
       promptId.getValue(),
     );
 
     if (!promptDetailsView) return;
+
+    // Don't increment copiedCount if the prompt is copied by its owner
+    const isOwner = promptDetailsView.author.id === byUserId.getValue();
+    const newCopiedCount = isOwner
+      ? promptDetailsView.copiedCount
+      : promptDetailsView.copiedCount + 1;
 
     const promptDetailsViewToUpdate = new PromptDetailsView(
       promptDetailsView.id,
@@ -60,7 +72,7 @@ export class PromptCopiedEventHandler
       promptDetailsView.status,
       promptDetailsView.createdAt,
       promptDetailsView.likedCount,
-      promptDetailsView.copiedCount + 1,
+      newCopiedCount,
       promptDetailsView.viewCount,
       promptDetailsView.author,
     );
