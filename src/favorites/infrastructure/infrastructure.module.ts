@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { PrismaFavoritePromptRepository, PrismaFavoritePromptReadRepository } from './persistence';
-import { FavoritePromptRepository, FavoritePromptReadRepository } from '../application';
+import {
+  PrismaFavoritePromptRepository,
+  PrismaFavoritePromptReadRepository,
+} from './persistence';
+import {
+  FavoritePromptRepository,
+  FavoritePromptReadRepository,
+} from '../application';
 
 @Module({
   imports: [PrismaModule],
