@@ -5,9 +5,10 @@ import {
   AccountsService,
   SignUpWithGmailCommandHandler,
   GetPublicUserViewQueryHandler,
+  UserCreatedEventHandler,
 } from './application';
 
-const eventHandlers = [];
+const eventHandlers = [UserCreatedEventHandler];
 
 const commandHandlers = [SignUpWithGmailCommandHandler];
 

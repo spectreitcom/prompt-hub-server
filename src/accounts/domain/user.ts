@@ -8,6 +8,7 @@ import {
   Provider,
   GoogleId,
 } from './value-objects';
+import { UserCreatedEvent } from './events';
 
 export class User extends AggregateRoot {
   private readonly id: UserId;
@@ -19,7 +20,7 @@ export class User extends AggregateRoot {
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
 
-  constructor(
+  private constructor(
     id: UserId,
     email: EmailAddress,
     name: PersonName,
@@ -38,6 +39,33 @@ export class User extends AggregateRoot {
     this.provider = provider;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+  }
+
+  static create(
+    id: UserId,
+    email: EmailAddress,
+    name: PersonName,
+    avatarUrl: AvatarUrl | undefined,
+    googleId: GoogleId,
+    provider: Provider,
+  ): User {
+    const now = new Date();
+    const user = new User(
+      id,
+      email,
+      name,
+      avatarUrl,
+      googleId,
+      provider,
+      now,
+      now,
+    );
+
+    user.apply(
+      new UserCreatedEvent(id, email, name, avatarUrl, googleId, provider, now),
+    );
+
+    return user;
   }
 
   getId(): string {
