@@ -90,6 +90,25 @@ model PromptUserPublic {
   avatarUrl String?
 }
 
+model PromptDetailsView {
+  id        String   @id
+  title     String
+  content   String   @db.Text
+  isPublic  Boolean
+  status    String
+  createdAt DateTime
+
+  likedCount  Int
+  copiedCount Int
+  viewCount   Int
+
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+
+  @@index([authorId])
+}
+
 //===================================================
 
 // Prompt Report
