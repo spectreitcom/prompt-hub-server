@@ -4,7 +4,9 @@ import {
   AddPromptToFavoritesCommand,
   RemovePromptFromFavoritesCommand,
 } from '../commands';
+import { GetFavoritePromptsQuery } from '../queries';
 import { PromptId, UserId } from '../../domain';
+import { FavoritePromptEntryView } from '../../views';
 
 @Injectable()
 export class FavoritesService {
@@ -44,5 +46,32 @@ export class FavoritesService {
       UserId.create(userId),
     );
     return this.commandBus.execute(command);
+  }
+
+  /**
+   * Gets the favorite prompts for a user.
+   *
+   * @param {string} userId - The unique identifier of the user.
+   * @param {number} skip - The number of records to skip for pagination.
+   * @param {number} take - The number of records to take for pagination.
+   * @param {string} search - Optional search term to filter prompts.
+   * @param {string} authorId - Optional author ID to filter prompts by author.
+   * @return {Promise<FavoritePromptEntryView[]>} A promise that resolves to an array of favorite prompt entries.
+   */
+  async getFavoritePrompts(
+    userId: string,
+    skip: number = 0,
+    take: number = 10,
+    search?: string,
+    authorId?: string,
+  ): Promise<FavoritePromptEntryView[]> {
+    const query = new GetFavoritePromptsQuery(
+      userId,
+      skip,
+      take,
+      search,
+      authorId,
+    );
+    return this.queryBus.execute(query);
   }
 }
