@@ -44,9 +44,7 @@ export class FavoritePromptCreatedEventHandler
     const favoritePromptEntryViewToCreate = new FavoritePromptEntryView(
       promptId.getValue(),
       favoritePromptView.title,
-      favoritePromptView.authorId,
-      favoriteUserPublicView.name,
-      favoriteUserPublicView.avatarUrl,
+      favoriteUserPublicView,
       userId.getValue(),
     );
 
