@@ -60,15 +60,19 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   private mapToDomain(userData: any): User {
-    return new User(
+    const user = User.create(
       UserId.create(userData.id),
       EmailAddress.create(userData.email),
       PersonName.create(userData.name),
       userData.avatarUrl ? AvatarUrl.create(userData.avatarUrl) : undefined,
       GoogleId.create(userData.googleId),
       Provider.create(userData.provider),
-      userData.createdAt,
-      userData.updatedAt,
     );
+
+    // Since we're loading from the database, we need to clear the events
+    // to avoid re-publishing them
+    user.commit();
+
+    return user;
   }
 }

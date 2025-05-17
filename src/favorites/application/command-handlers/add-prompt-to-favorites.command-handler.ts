@@ -2,7 +2,6 @@ import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { AddPromptToFavoritesCommand } from '../commands';
 import { FavoritePromptRepository } from '../ports';
 import { FavoritePrompt } from '../../domain';
-import { PromptId, UserId } from '../../domain';
 
 @CommandHandler(AddPromptToFavoritesCommand)
 export class AddPromptToFavoritesCommandHandler
@@ -16,15 +15,11 @@ export class AddPromptToFavoritesCommandHandler
   async execute(command: AddPromptToFavoritesCommand): Promise<void> {
     const { promptId, userId } = command;
 
-    // Create value objects
-    const promptIdObj = PromptId.create(promptId);
-    const userIdObj = UserId.create(userId);
-
     // Check if the prompt is already in favorites
     const exists =
       await this.favoritePromptRepository.existsByPromptIdAndUserId(
-        promptIdObj,
-        userIdObj,
+        promptId,
+        userId,
       );
 
     if (exists) {
@@ -34,7 +29,7 @@ export class AddPromptToFavoritesCommandHandler
     }
 
     // Create a new favorite prompt
-    const favoritePrompt = FavoritePrompt.create(promptIdObj, userIdObj);
+    const favoritePrompt = FavoritePrompt.create(promptId, userId);
 
     // Mark the favorite prompt as an event publisher
     const favoritePromptWithEvents =

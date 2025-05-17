@@ -1,5 +1,6 @@
 export * from './prompt-copied.event-handler';
 export * from './prompt-published.event-handler';
+export * from './prompt-updated.event-handler';
 export * from './prompt-visibility-changed.event-handler';
 export * from './prompt-deleted.event-handler';
 export * from './catalog-created.event-handler';

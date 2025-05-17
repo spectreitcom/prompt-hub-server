@@ -7,7 +7,7 @@ import {
   UserId,
 } from '../value-objects';
 
-export class PromptPublishedEvent implements IEvent {
+export class PromptUpdatedEvent implements IEvent {
   constructor(
     public readonly promptId: PromptId,
     public readonly authorId: UserId,

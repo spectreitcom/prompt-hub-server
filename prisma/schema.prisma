@@ -113,6 +113,33 @@ model FavoritePrompt {
   @@index([userId])
 }
 
+model FavoritePromptEntry {
+  userId    String
+  promptId  String
+  title     String
+  createdAt DateTime
+
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+
+  @@id([userId, promptId])
+  @@index([authorId])
+}
+
+model FavoriteUserPublicView {
+  id        String  @id @default(cuid())
+  name      String
+  avatarUrl String?
+}
+
+model FavoritePromptView {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime
+  authorId  String
+}
+
 //===================================================
 
 // Search

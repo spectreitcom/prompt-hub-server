@@ -25,18 +25,15 @@ export class SignUpWithGmailCommandHandler
     // Create a new user
     const userId = UserId.create(uuidv4());
     const provider = Provider.google();
-    const now = new Date();
 
-    // Create new user
-    const user = new User(
+    // Create new user using factory method
+    const user = User.create(
       userId,
       email,
       name,
       avatarUrl,
       googleId,
       provider,
-      now,
-      now,
     );
 
     // Save the user
