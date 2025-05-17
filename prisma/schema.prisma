@@ -127,6 +127,12 @@ model FavoritePromptEntry {
   @@index([authorId])
 }
 
+model FavoriteUserPublicView {
+  id        String  @id @default(cuid())
+  name      String
+  avatarUrl String?
+}
+
 //===================================================
 
 // Search
