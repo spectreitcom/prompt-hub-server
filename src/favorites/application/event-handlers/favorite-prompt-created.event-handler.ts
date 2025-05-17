@@ -1,16 +1,57 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { Logger } from '@nestjs/common';
 import { FavoritePromptCreatedEvent } from '../../domain';
+import {
+  FavoritePromptEntryRepository,
+  FavoritePromptViewRepository,
+  FavoriteUserPublicRepository,
+} from '../ports';
+import { FavoritePromptEntryView } from '../../views';
 
 @EventsHandler(FavoritePromptCreatedEvent)
 export class FavoritePromptCreatedEventHandler
   implements IEventHandler<FavoritePromptCreatedEvent>
 {
-  private readonly logger = new Logger(FavoritePromptCreatedEventHandler.name);
+  constructor(
+    private readonly favoritePromptEntryRepository: FavoritePromptEntryRepository,
+    private readonly favoritePromptViewRepository: FavoritePromptViewRepository,
+    private readonly favoriteUserPublicRepository: FavoriteUserPublicRepository,
+  ) {}
 
-  handle(event: FavoritePromptCreatedEvent) {
-    this.logger.debug(
-      `Favorite prompt ${event.id.getValue()} created for prompt ${event.promptId.getValue()} by user ${event.userId.getValue()}`,
+  async handle(event: FavoritePromptCreatedEvent) {
+    const { promptId, userId } = event;
+
+    const favoritePromptEntryView =
+      await this.favoritePromptEntryRepository.findByUserAndPrompt(
+        userId.getValue(),
+        promptId.getValue(),
+      );
+
+    if (favoritePromptEntryView) return;
+
+    const favoritePromptView = await this.favoritePromptViewRepository.findById(
+      promptId.getValue(),
+    );
+
+    if (!favoritePromptView) return;
+
+    const favoriteUserPublicView =
+      await this.favoriteUserPublicRepository.findById(
+        favoritePromptView.authorId,
+      );
+
+    if (!favoriteUserPublicView) return;
+
+    const favoritePromptEntryViewToCreate = new FavoritePromptEntryView(
+      promptId.getValue(),
+      favoritePromptView.title,
+      favoritePromptView.authorId,
+      favoriteUserPublicView.name,
+      favoriteUserPublicView.avatarUrl,
+      userId.getValue(),
+    );
+
+    await this.favoritePromptEntryRepository.save(
+      favoritePromptEntryViewToCreate,
     );
   }
 }

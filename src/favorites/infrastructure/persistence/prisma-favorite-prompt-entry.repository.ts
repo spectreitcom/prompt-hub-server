@@ -60,4 +60,42 @@ export class PrismaFavoritePromptEntryRepository
       },
     });
   }
+
+  async delete(userId: string, promptId: string): Promise<void> {
+    await this.prisma.favoritePromptEntry.delete({
+      where: {
+        userId_promptId: {
+          userId,
+          promptId,
+        },
+      },
+    });
+  }
+
+  async findByUserAndPrompt(
+    userId: string,
+    promptId: string,
+  ): Promise<FavoritePromptEntryView> {
+    const favoritePrompt = await this.prisma.favoritePromptEntry.findUnique({
+      where: {
+        userId_promptId: {
+          userId,
+          promptId,
+        },
+      },
+    });
+
+    if (!favoritePrompt) {
+      return null;
+    }
+
+    return new FavoritePromptEntryView(
+      favoritePrompt.promptId,
+      favoritePrompt.title,
+      favoritePrompt.authorId,
+      favoritePrompt.authorName,
+      favoritePrompt.authorAvatarUrl || '',
+      favoritePrompt.userId,
+    );
+  }
 }

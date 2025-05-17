@@ -8,4 +8,11 @@ export abstract class FavoritePromptEntryRepository {
   ): Promise<FavoritePromptEntryView[]>;
 
   abstract save(favoritePromptEntry: FavoritePromptEntryView): Promise<void>;
+
+  abstract findByUserAndPrompt(
+    userId: string,
+    promptId: string,
+  ): Promise<FavoritePromptEntryView>;
+
+  abstract delete(userId: string, promptId: string): Promise<void>;
 }
