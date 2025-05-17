@@ -1,10 +1,11 @@
-import { UserId } from '../../domain';
 import { FavoritePromptEntryView } from '../../views';
 
 export abstract class FavoritePromptEntryRepository {
   abstract findForUser(
-    userId: UserId,
+    userId: string,
     search?: string, // search by title
-    authorId?: UserId,
+    authorId?: string,
   ): Promise<FavoritePromptEntryView[]>;
+
+  abstract save(favoritePromptEntry: FavoritePromptEntryView): Promise<void>;
 }

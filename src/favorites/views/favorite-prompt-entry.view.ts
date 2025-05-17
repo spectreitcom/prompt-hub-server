@@ -5,5 +5,6 @@ export class FavoritePromptEntryView {
     public readonly authorId: string,
     public readonly authorName: string,
     public readonly authorAvatarUrl: string,
+    public readonly userId: string,
   ) {}
 }

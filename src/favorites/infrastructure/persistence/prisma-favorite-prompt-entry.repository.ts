@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
 import { FavoritePromptEntryRepository } from '../../application';
-import { UserId } from '../../domain';
 import { FavoritePromptEntryView } from '../../views';
 
 @Injectable()
@@ -11,15 +10,15 @@ export class PrismaFavoritePromptEntryRepository
   constructor(private readonly prisma: PrismaService) {}
 
   async findForUser(
-    userId: UserId,
+    userId: string,
     search?: string,
-    authorId?: UserId,
+    authorId?: string,
   ): Promise<FavoritePromptEntryView[]> {
     const favoritePrompts = await this.prisma.favoritePromptEntry.findMany({
       where: {
-        userId: userId.getValue(),
+        userId,
         ...(search && { title: { contains: search, mode: 'insensitive' } }),
-        ...(authorId && { authorId: authorId.getValue() }),
+        ...(authorId && { authorId }),
       },
     });
 
@@ -31,7 +30,34 @@ export class PrismaFavoritePromptEntryRepository
           favoritePrompt.authorId,
           favoritePrompt.authorName,
           favoritePrompt.authorAvatarUrl || '',
+          favoritePrompt.userId,
         ),
     );
+  }
+
+  async save(favoritePromptEntry: FavoritePromptEntryView): Promise<void> {
+    await this.prisma.favoritePromptEntry.upsert({
+      where: {
+        userId_promptId: {
+          userId: favoritePromptEntry.userId,
+          promptId: favoritePromptEntry.promptId,
+        },
+      },
+      update: {
+        title: favoritePromptEntry.title,
+        authorId: favoritePromptEntry.authorId,
+        authorName: favoritePromptEntry.authorName,
+        authorAvatarUrl: favoritePromptEntry.authorAvatarUrl,
+      },
+      create: {
+        userId: favoritePromptEntry.userId,
+        promptId: favoritePromptEntry.promptId,
+        title: favoritePromptEntry.title,
+        authorId: favoritePromptEntry.authorId,
+        authorName: favoritePromptEntry.authorName,
+        authorAvatarUrl: favoritePromptEntry.authorAvatarUrl,
+        createdAt: new Date(),
+      },
+    });
   }
 }
