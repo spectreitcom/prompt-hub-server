@@ -119,7 +119,12 @@ model FavoritePromptEntry {
   title     String
   createdAt DateTime
 
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+
   @@id([userId, promptId])
+  @@index([authorId])
 }
 
 //===================================================
