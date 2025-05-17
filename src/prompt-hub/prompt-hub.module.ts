@@ -25,6 +25,7 @@ import {
   UserCreatedEventHandler,
   GetPromptListQueryHandler,
   GetUserPromptsQueryHandler,
+  GetPromptDetailsQueryHandler,
   PromptVoteCreatedEventHandler,
   PromptVoteChangedEventHandler,
 } from './application';
@@ -59,7 +60,7 @@ const CommandHandlers = [
   RemovePromptFromCatalogCommandHandler,
 ];
 
-const QueryHandlers = [GetPromptListQueryHandler, GetUserPromptsQueryHandler];
+const QueryHandlers = [GetPromptListQueryHandler, GetUserPromptsQueryHandler, GetPromptDetailsQueryHandler];
 
 @Module({
   imports: [CqrsModule, InfrastructureModule],
