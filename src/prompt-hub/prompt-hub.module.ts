@@ -60,7 +60,11 @@ const CommandHandlers = [
   RemovePromptFromCatalogCommandHandler,
 ];
 
-const QueryHandlers = [GetPromptListQueryHandler, GetUserPromptsQueryHandler, GetPromptDetailsQueryHandler];
+const QueryHandlers = [
+  GetPromptListQueryHandler,
+  GetUserPromptsQueryHandler,
+  GetPromptDetailsQueryHandler,
+];
 
 @Module({
   imports: [CqrsModule, InfrastructureModule],
