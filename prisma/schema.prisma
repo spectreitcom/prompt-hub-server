@@ -64,6 +64,26 @@ enum PromptStatus {
   PUBLISHED
 }
 
+model PromptListItemView {
+  id             String   @id // promptId
+  title          String
+  contentPreview String   @db.VarChar(200) // np. pierwsze 160–200 znaków
+  copiedCount    Int
+  likedCount     Int
+  viewCount      Int
+  createdAt      DateTime
+
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+
+  @@index([createdAt])
+  @@index([copiedCount])
+  @@index([likedCount])
+  @@index([viewCount])
+  @@index([authorId])
+}
+
 //===================================================
 
 // Prompt Report
