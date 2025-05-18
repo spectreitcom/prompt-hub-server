@@ -1,16 +1,31 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { Logger } from '@nestjs/common';
 import { PromptVoteChangedEvent } from '../../domain';
+import { PromptVoteEntryViewRepository } from '../ports';
+import { PromptVoteEntryView } from '../../views';
 
 @EventsHandler(PromptVoteChangedEvent)
 export class PromptVoteChangedEventHandler
   implements IEventHandler<PromptVoteChangedEvent>
 {
-  private readonly logger = new Logger(PromptVoteChangedEventHandler.name);
+  constructor(
+    private readonly promptVoteEntryViewRepository: PromptVoteEntryViewRepository,
+  ) {}
 
-  handle(event: PromptVoteChangedEvent) {
-    this.logger.debug(
-      `Vote ${event.voteId.getValue()} for prompt ${event.promptId.getValue()} by user ${event.userId.getValue()} changed from ${event.oldVoteType.getValue()} to ${event.newVoteType.getValue()}`,
+  async handle(event: PromptVoteChangedEvent): Promise<void> {
+    const { promptId, userId, newVoteType } = event;
+
+    // Convert vote type to numeric value (1 for UP, -1 for DOWN)
+    const voteValue = newVoteType.isUp() ? 1 : -1;
+
+    // Create a new vote entry view with updated vote value
+    const promptVoteEntryView = new PromptVoteEntryView(
+      userId.getValue(),
+      promptId.getValue(),
+      voteValue,
+      new Date(),
     );
+
+    // Save the updated vote entry view
+    await this.promptVoteEntryViewRepository.save(promptVoteEntryView);
   }
 }
