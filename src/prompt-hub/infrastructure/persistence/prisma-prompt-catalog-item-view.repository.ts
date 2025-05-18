@@ -76,4 +76,43 @@ export class PrismaPromptCatalogItemViewRepository extends PromptCatalogItemView
       },
     });
   }
+
+  async findForCatalog(
+    catalogId: string,
+    skip: number,
+    take: number,
+    search?: string,
+  ): Promise<PromptCatalogItemView[]> {
+    const whereClause: any = {
+      catalogId,
+    };
+
+    if (search) {
+      whereClause.promptTitle = {
+        contains: search,
+        mode: 'insensitive',
+      };
+    }
+
+    const promptCatalogItemViews =
+      await this.prisma.promptCatalogItemView.findMany({
+        where: whereClause,
+        orderBy: {
+          addedAt: 'desc',
+        },
+        skip,
+        take,
+      });
+
+    return promptCatalogItemViews.map(
+      (view) =>
+        new PromptCatalogItemView(
+          view.promptId,
+          view.promptTitle,
+          view.catalogId,
+          view.catalogName,
+          view.addedAt,
+        ),
+    );
+  }
 }
