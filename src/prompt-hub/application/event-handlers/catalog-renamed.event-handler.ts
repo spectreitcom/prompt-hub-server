@@ -1,16 +1,32 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { CatalogRenamedEvent } from '../../domain';
-import { Logger } from '@nestjs/common';
+import { PromptCatalogViewRepository } from '../ports';
+import { PromptCatalogView } from '../../views';
 
 @EventsHandler(CatalogRenamedEvent)
 export class CatalogRenamedEventHandler
   implements IEventHandler<CatalogRenamedEvent>
 {
-  private readonly logger = new Logger(CatalogRenamedEventHandler.name);
+  constructor(
+    private readonly promptCatalogViewRepository: PromptCatalogViewRepository,
+  ) {}
 
-  handle(event: CatalogRenamedEvent) {
-    this.logger.debug(
-      `Catalog ${event.catalogId.getValue()} was renamed to "${event.newName.getValue()}"`,
+  async handle(event: CatalogRenamedEvent): Promise<void> {
+    const catalogId = event.catalogId.getValue();
+    const existingCatalog =
+      await this.promptCatalogViewRepository.findById(catalogId);
+
+    if (!existingCatalog) {
+      return;
+    }
+
+    const updatedCatalog = new PromptCatalogView(
+      existingCatalog.id,
+      event.newName.getValue(),
+      existingCatalog.userId,
+      existingCatalog.createdAt,
     );
+
+    await this.promptCatalogViewRepository.save(updatedCatalog);
   }
 }

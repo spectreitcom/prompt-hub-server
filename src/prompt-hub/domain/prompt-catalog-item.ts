@@ -44,7 +44,9 @@ export class PromptCatalogItem extends AggregateRoot {
   }
 
   remove(): void {
-    this.apply(new CatalogItemRemovedEvent(this.id));
+    this.apply(
+      new CatalogItemRemovedEvent(this.id, this.catalogId, this.promptId),
+    );
   }
 
   getId(): PromptCatalogItemId {

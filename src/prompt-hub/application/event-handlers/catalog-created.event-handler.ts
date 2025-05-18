@@ -1,16 +1,24 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { CatalogCreatedEvent } from '../../domain';
-import { Logger } from '@nestjs/common';
+import { PromptCatalogViewRepository } from '../ports';
+import { PromptCatalogView } from '../../views';
 
 @EventsHandler(CatalogCreatedEvent)
 export class CatalogCreatedEventHandler
   implements IEventHandler<CatalogCreatedEvent>
 {
-  private readonly logger = new Logger(CatalogCreatedEventHandler.name);
+  constructor(
+    private readonly promptCatalogViewRepository: PromptCatalogViewRepository,
+  ) {}
 
-  handle(event: CatalogCreatedEvent) {
-    this.logger.debug(
-      `Catalog ${event.catalogId.getValue()} was created by user ${event.ownerId.getValue()}`,
+  async handle(event: CatalogCreatedEvent): Promise<void> {
+    const catalogView = new PromptCatalogView(
+      event.catalogId.getValue(),
+      'New Catalog', // Default name since we don't have access to the actual name
+      event.ownerId.getValue(),
+      new Date(),
     );
+
+    await this.promptCatalogViewRepository.save(catalogView);
   }
 }

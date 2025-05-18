@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
 import { FavoritePromptEntryRepository } from '../../application';
-import { FavoritePromptEntryView } from '../../views';
+import { FavoritePromptEntryView, FavoriteUserPublicView } from '../../views';
 
 @Injectable()
 export class PrismaFavoritePromptEntryRepository
@@ -31,9 +31,11 @@ export class PrismaFavoritePromptEntryRepository
         new FavoritePromptEntryView(
           favoritePrompt.promptId,
           favoritePrompt.title,
-          favoritePrompt.authorId,
-          favoritePrompt.authorName,
-          favoritePrompt.authorAvatarUrl || '',
+          new FavoriteUserPublicView(
+            favoritePrompt.authorId,
+            favoritePrompt.authorName,
+            favoritePrompt.authorAvatarUrl || undefined,
+          ),
           favoritePrompt.userId,
         ),
     );
@@ -49,17 +51,17 @@ export class PrismaFavoritePromptEntryRepository
       },
       update: {
         title: favoritePromptEntry.title,
-        authorId: favoritePromptEntry.authorId,
-        authorName: favoritePromptEntry.authorName,
-        authorAvatarUrl: favoritePromptEntry.authorAvatarUrl,
+        authorId: favoritePromptEntry.author.id,
+        authorName: favoritePromptEntry.author.name,
+        authorAvatarUrl: favoritePromptEntry.author.avatarUrl,
       },
       create: {
         userId: favoritePromptEntry.userId,
         promptId: favoritePromptEntry.promptId,
         title: favoritePromptEntry.title,
-        authorId: favoritePromptEntry.authorId,
-        authorName: favoritePromptEntry.authorName,
-        authorAvatarUrl: favoritePromptEntry.authorAvatarUrl,
+        authorId: favoritePromptEntry.author.id,
+        authorName: favoritePromptEntry.author.name,
+        authorAvatarUrl: favoritePromptEntry.author.avatarUrl,
         createdAt: new Date(),
       },
     });
@@ -96,9 +98,11 @@ export class PrismaFavoritePromptEntryRepository
     return new FavoritePromptEntryView(
       favoritePrompt.promptId,
       favoritePrompt.title,
-      favoritePrompt.authorId,
-      favoritePrompt.authorName,
-      favoritePrompt.authorAvatarUrl || '',
+      new FavoriteUserPublicView(
+        favoritePrompt.authorId,
+        favoritePrompt.authorName,
+        favoritePrompt.authorAvatarUrl || undefined,
+      ),
       favoritePrompt.userId,
     );
   }

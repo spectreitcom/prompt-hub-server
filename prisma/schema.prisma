@@ -64,6 +64,71 @@ enum PromptStatus {
   PUBLISHED
 }
 
+model PromptListItemView {
+  id             String   @id // promptId
+  title          String
+  contentPreview String   @db.VarChar(200) // np. pierwsze 160–200 znaków
+  copiedCount    Int
+  likedCount     Int
+  viewCount      Int
+  createdAt      DateTime
+
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+
+  @@index([createdAt])
+  @@index([copiedCount])
+  @@index([likedCount])
+  @@index([viewCount])
+  @@index([authorId])
+}
+
+model PromptUserPublic {
+  id        String  @id
+  name      String
+  avatarUrl String?
+}
+
+model PromptDetailsView {
+  id        String   @id
+  title     String
+  content   String   @db.Text
+  isPublic  Boolean
+  status    String
+  createdAt DateTime
+
+  likedCount  Int
+  copiedCount Int
+  viewCount   Int
+
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+
+  @@index([authorId])
+}
+
+model PromptCatalogView {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PromptCatalogItemView {
+  promptId    String
+  promptTitle String
+  catalogId   String
+  catalogName String
+  addedAt     DateTime
+
+  @@id([promptId, catalogId])
+  @@index([catalogId])
+}
+
 //===================================================
 
 // Prompt Report

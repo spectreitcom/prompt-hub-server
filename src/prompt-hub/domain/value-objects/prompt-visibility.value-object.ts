@@ -1,5 +1,5 @@
 export class PromptVisibility {
-  private constructor(private readonly _value: 'public' | 'private') {}
+  private constructor(private readonly value: 'public' | 'private') {}
 
   static public(): PromptVisibility {
     return new PromptVisibility('public');
@@ -13,15 +13,15 @@ export class PromptVisibility {
     return isPublic ? this.public() : this.private();
   }
 
-  get isPublic(): boolean {
-    return this._value === 'public';
+  isPublic(): boolean {
+    return this.value === 'public';
   }
 
-  get value(): 'public' | 'private' {
-    return this._value;
+  getValue(): 'public' | 'private' {
+    return this.value;
   }
 
   equals(other: PromptVisibility): boolean {
-    return this._value === other._value;
+    return this.value === other.getValue();
   }
 }

@@ -64,7 +64,7 @@ export class PrismaPromptRepository implements PromptRepository {
         title: prompt.getTitle().getValue(),
         content: prompt.getContent().getValue(),
         status: prompt.getStatus().getValue(),
-        isPublic: prompt.getVisibility().isPublic,
+        isPublic: prompt.getVisibility().isPublic(),
         updatedAt: prompt.getTimestamps().getUpdatedAt(),
       },
       create: {
@@ -72,7 +72,7 @@ export class PrismaPromptRepository implements PromptRepository {
         title: prompt.getTitle().getValue(),
         content: prompt.getContent().getValue(),
         status: prompt.getStatus().getValue(),
-        isPublic: prompt.getVisibility().isPublic,
+        isPublic: prompt.getVisibility().isPublic(),
         authorId: prompt.getAuthorId().getValue(),
         createdAt: prompt.getTimestamps().getCreatedAt(),
         updatedAt: prompt.getTimestamps().getUpdatedAt(),

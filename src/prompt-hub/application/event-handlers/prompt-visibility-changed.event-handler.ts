@@ -1,16 +1,38 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { PromptVisibilityChangedEvent } from '../../domain';
-import { Logger } from '@nestjs/common';
+import { PromptDetailsViewRepository } from '../ports';
+import { PromptDetailsView } from '../../views';
 
 @EventsHandler(PromptVisibilityChangedEvent)
 export class PromptVisibilityChangedEventHandler
   implements IEventHandler<PromptVisibilityChangedEvent>
 {
-  private readonly logger = new Logger(PromptVisibilityChangedEventHandler.name);
+  constructor(
+    private readonly promptDetailsViewRepository: PromptDetailsViewRepository,
+  ) {}
 
-  handle(event: PromptVisibilityChangedEvent) {
-    this.logger.debug(
-      `Prompt ${event.promptId.getValue()} visibility changed to ${event.visibility.value}`,
+  async handle(event: PromptVisibilityChangedEvent) {
+    const { promptId, visibility } = event;
+
+    const promptDetailsView = await this.promptDetailsViewRepository.findById(
+      promptId.getValue(),
     );
+
+    if (!promptDetailsView) return;
+
+    const promptDetailsViewToUpdate = new PromptDetailsView(
+      promptDetailsView.id,
+      promptDetailsView.title,
+      promptDetailsView.content,
+      visibility.isPublic(),
+      promptDetailsView.status,
+      promptDetailsView.createdAt,
+      promptDetailsView.likedCount,
+      promptDetailsView.copiedCount,
+      promptDetailsView.viewCount,
+      promptDetailsView.author,
+    );
+
+    await this.promptDetailsViewRepository.save(promptDetailsViewToUpdate);
   }
 }

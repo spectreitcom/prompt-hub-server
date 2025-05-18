@@ -1,14 +1,18 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { CatalogDeletedEvent } from '../../domain';
-import { Logger } from '@nestjs/common';
+import { PromptCatalogItemViewRepository } from '../ports';
 
 @EventsHandler(CatalogDeletedEvent)
 export class CatalogDeletedEventHandler
   implements IEventHandler<CatalogDeletedEvent>
 {
-  private readonly logger = new Logger(CatalogDeletedEventHandler.name);
+  constructor(
+    private readonly promptCatalogItemViewRepository: PromptCatalogItemViewRepository,
+  ) {}
 
-  handle(event: CatalogDeletedEvent) {
-    this.logger.debug(`Catalog ${event.catalogId.getValue()} was deleted`);
+  async handle(event: CatalogDeletedEvent): Promise<void> {
+    const catalogId = event.catalogId.getValue();
+
+    await this.promptCatalogItemViewRepository.deleteByCatalogId(catalogId);
   }
 }

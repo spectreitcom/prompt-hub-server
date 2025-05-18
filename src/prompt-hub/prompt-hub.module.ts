@@ -22,6 +22,15 @@ import {
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
   PromptHubService,
+  UserCreatedEventHandler,
+  GetPromptListQueryHandler,
+  GetUserPromptsQueryHandler,
+  GetPromptDetailsQueryHandler,
+  GetUserPromptCatalogsQueryHandler,
+  GetPromptsByCatalogQueryHandler,
+  GetPromptCatalogByIdQueryHandler,
+  PromptVoteCreatedEventHandler,
+  PromptVoteChangedEventHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -35,6 +44,9 @@ const EventHandlers = [
   CatalogDeletedEventHandler,
   CatalogItemAddedEventHandler,
   CatalogItemRemovedEventHandler,
+  UserCreatedEventHandler,
+  PromptVoteCreatedEventHandler,
+  PromptVoteChangedEventHandler,
 ];
 
 const CommandHandlers = [
@@ -51,9 +63,23 @@ const CommandHandlers = [
   RemovePromptFromCatalogCommandHandler,
 ];
 
+const QueryHandlers = [
+  GetPromptListQueryHandler,
+  GetUserPromptsQueryHandler,
+  GetPromptDetailsQueryHandler,
+  GetUserPromptCatalogsQueryHandler,
+  GetPromptsByCatalogQueryHandler,
+  GetPromptCatalogByIdQueryHandler,
+];
+
 @Module({
   imports: [CqrsModule, InfrastructureModule],
-  providers: [...EventHandlers, ...CommandHandlers, PromptHubService],
+  providers: [
+    ...EventHandlers,
+    ...CommandHandlers,
+    ...QueryHandlers,
+    PromptHubService,
+  ],
   exports: [PromptHubService],
 })
 export class PromptHubModule {}
