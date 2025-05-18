@@ -26,6 +26,7 @@ import {
   GetPromptListQueryHandler,
   GetUserPromptsQueryHandler,
   GetPromptDetailsQueryHandler,
+  GetUserPromptCatalogsQueryHandler,
   PromptVoteCreatedEventHandler,
   PromptVoteChangedEventHandler,
 } from './application';
@@ -64,6 +65,7 @@ const QueryHandlers = [
   GetPromptListQueryHandler,
   GetUserPromptsQueryHandler,
   GetPromptDetailsQueryHandler,
+  GetUserPromptCatalogsQueryHandler,
 ];
 
 @Module({
