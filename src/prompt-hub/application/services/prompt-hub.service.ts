@@ -13,6 +13,20 @@ import {
   AddPromptToCatalogCommand,
   RemovePromptFromCatalogCommand,
 } from '../commands';
+import {
+  GetPromptListQuery,
+  GetUserPromptsQuery,
+  GetPromptDetailsQuery,
+  GetUserPromptCatalogsQuery,
+  GetPromptsByCatalogQuery,
+  GetPromptCatalogByIdQuery,
+} from '../queries';
+import {
+  PromptListItemView,
+  PromptDetailsView,
+  PromptCatalogView,
+  PromptCatalogItemView,
+} from '../../views';
 
 @Injectable()
 export class PromptHubService {
@@ -181,5 +195,97 @@ export class PromptHubService {
       userId,
     );
     return this.commandBus.execute(command);
+  }
+
+  /**
+   * Gets a list of prompts with pagination and optional search.
+   *
+   * @param {number} take - The number of prompts to take.
+   * @param {number} skip - The number of prompts to skip.
+   * @param {string} [search] - Optional search term to filter prompts.
+   * @return {Promise<PromptListItemView[]>} A list of prompt items.
+   */
+  async getPromptList(
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptListItemView[]> {
+    const query = new GetPromptListQuery(take, skip, search);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets a list of prompts for a specific user with pagination and optional search.
+   *
+   * @param {string} userId - The unique identifier of the user.
+   * @param {number} take - The number of prompts to take.
+   * @param {number} skip - The number of prompts to skip.
+   * @param {string} [search] - Optional search term to filter prompts.
+   * @return {Promise<PromptListItemView[]>} A list of prompt items for the user.
+   */
+  async getUserPrompts(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptListItemView[]> {
+    const query = new GetUserPromptsQuery(userId, take, skip, search);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets detailed information about a specific prompt.
+   *
+   * @param {string} promptId - The unique identifier of the prompt.
+   * @return {Promise<PromptDetailsView>} Detailed information about the prompt.
+   */
+  async getPromptDetails(promptId: string): Promise<PromptDetailsView> {
+    const query = new GetPromptDetailsQuery(promptId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets a list of prompt catalogs for a specific user.
+   *
+   * @param {string} userId - The unique identifier of the user.
+   * @return {Promise<PromptCatalogView[]>} A list of prompt catalogs for the user.
+   */
+  async getUserPromptCatalogs(userId: string): Promise<PromptCatalogView[]> {
+    const query = new GetUserPromptCatalogsQuery(userId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets a list of prompts for a specific catalog with pagination and optional search.
+   *
+   * @param {string} catalogId - The unique identifier of the catalog.
+   * @param {number} skip - The number of prompts to skip.
+   * @param {number} take - The number of prompts to take.
+   * @param {string} [search] - Optional search term to filter prompts.
+   * @return {Promise<PromptCatalogItemView[]>} A list of prompt items for the catalog.
+   */
+  async getPromptsByCatalog(
+    catalogId: string,
+    skip: number,
+    take: number,
+    search?: string,
+  ): Promise<PromptCatalogItemView[]> {
+    const query = new GetPromptsByCatalogQuery(catalogId, skip, take, search);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets detailed information about a specific prompt catalog.
+   *
+   * @param {string} catalogId - The unique identifier of the catalog.
+   * @param {string} userId - The unique identifier of the user.
+   * @return {Promise<PromptCatalogView>} Detailed information about the prompt catalog.
+   */
+  async getPromptCatalogById(
+    catalogId: string,
+    userId: string,
+  ): Promise<PromptCatalogView> {
+    const query = new GetPromptCatalogByIdQuery(catalogId, userId);
+    return this.queryBus.execute(query);
   }
 }
