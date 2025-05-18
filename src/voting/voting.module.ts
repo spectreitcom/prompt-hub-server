@@ -5,6 +5,7 @@ import {
   PromptVoteCreatedEventHandler,
   PromptVoteChangedEventHandler,
   VotePromptCommandHandler,
+  GetPromptVoteStatusQueryHandler,
 } from './application';
 
 const eventHandlers = [
@@ -14,9 +15,11 @@ const eventHandlers = [
 
 const commandHandlers = [VotePromptCommandHandler];
 
+const queryHandlers = [GetPromptVoteStatusQueryHandler];
+
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...eventHandlers, ...commandHandlers],
+  providers: [...eventHandlers, ...commandHandlers, ...queryHandlers],
   exports: [],
 })
 export class VotingModule {}
