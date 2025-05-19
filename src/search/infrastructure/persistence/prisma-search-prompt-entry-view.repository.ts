@@ -82,14 +82,17 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
     take: number,
     search?: string,
   ): Promise<SearchPromptEntryView[]> {
-    const where: Prisma.SearchPromptEntryWhereInput = search
-      ? {
-          OR: [
-            { title: { contains: search, mode: 'insensitive' } },
-            { content: { contains: search, mode: 'insensitive' } },
-          ],
-        }
-      : {};
+    const where: Prisma.SearchPromptEntryWhereInput = {
+      isPublic: true,
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { content: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
+    };
 
     const searchPromptEntries = await this.prisma.searchPromptEntry.findMany({
       where,
