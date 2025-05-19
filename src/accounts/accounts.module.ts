@@ -5,6 +5,7 @@ import {
   AccountsService,
   SignUpWithGmailCommandHandler,
   GetPublicUserViewQueryHandler,
+  GetUserByIdQueryHandler,
   UserCreatedEventHandler,
 } from './application';
 
@@ -12,7 +13,7 @@ const eventHandlers = [UserCreatedEventHandler];
 
 const commandHandlers = [SignUpWithGmailCommandHandler];
 
-const queryHandlers = [GetPublicUserViewQueryHandler];
+const queryHandlers = [GetPublicUserViewQueryHandler, GetUserByIdQueryHandler];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],

@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SignUpWithGmailCommand } from '../commands';
-import { GetPublicUserViewQuery } from '../queries';
+import { GetPublicUserViewQuery, GetUserByIdQuery } from '../queries';
 import { UserRepository } from '../ports';
-import { EmailAddress, GoogleId, PersonName, AvatarUrl } from '../../domain';
+import {
+  EmailAddress,
+  GoogleId,
+  PersonName,
+  AvatarUrl,
+  User,
+} from '../../domain';
 import { UserProfileView } from '../../views';
 
 @Injectable()
@@ -57,6 +63,17 @@ export class AccountsService {
    */
   async getPublicUserView(userId: string): Promise<UserProfileView> {
     const query = new GetPublicUserViewQuery(userId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets a user by their ID.
+   *
+   * @param {string} userId - The ID of the user to retrieve.
+   * @return {Promise<User>} A promise that resolves to the user if found, or throws an error if no user is found.
+   */
+  async getUserById(userId: string): Promise<User> {
+    const query = new GetUserByIdQuery(userId);
     return this.queryBus.execute(query);
   }
 }
