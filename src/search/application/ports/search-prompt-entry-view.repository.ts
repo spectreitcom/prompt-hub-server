@@ -8,4 +8,6 @@ export abstract class SearchPromptEntryViewRepository {
     take: number,
     search?: string,
   ): Promise<SearchPromptEntryView[]>;
+  abstract count(search?: string): Promise<number>;
+  abstract delete(id: string): Promise<void>;
 }

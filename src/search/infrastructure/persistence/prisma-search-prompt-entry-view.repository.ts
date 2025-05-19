@@ -124,4 +124,30 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
         ),
     );
   }
+
+  async count(search?: string): Promise<number> {
+    const where: Prisma.SearchPromptEntryWhereInput = {
+      isPublic: true,
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { content: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
+    };
+
+    return this.prisma.searchPromptEntry.count({
+      where,
+    });
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.searchPromptEntry.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
