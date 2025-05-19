@@ -6,3 +6,4 @@ export * from './prompt-updated.event-handler';
 export * from './prompt-visibility-changed.event-handler';
 export * from './prompt-vote-changed.event-handler';
 export * from './prompt-vote-created.event-handler';
+export * from './prompt-viewed.event-handler';
