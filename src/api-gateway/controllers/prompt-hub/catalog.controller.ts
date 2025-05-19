@@ -19,7 +19,7 @@ import {
   CreateCatalogDto,
   AddPromptToCatalogDto,
   CatalogIdParamDto,
-  PromptIdParamDto,
+  RemovePromptFromCatalogParamDto,
 } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
@@ -127,13 +127,12 @@ export class CatalogController {
     description: 'User not authorized to remove this prompt from the catalog',
   })
   async removePromptFromCatalog(
-    @Param('catalogId') catalogId: string,
-    @Param('promptId') promptId: string,
+    @Param() params: RemovePromptFromCatalogParamDto,
     @GetUserId() userId: string,
   ): Promise<void> {
     return this.promptHubService.removePromptFromCatalog(
-      catalogId,
-      promptId,
+      params.catalogId,
+      params.promptId,
       userId,
     );
   }
