@@ -4,3 +4,5 @@ export * from './prompt-copied.event-handler';
 export * from './prompt-deleted.event-handler';
 export * from './prompt-updated.event-handler';
 export * from './prompt-visibility-changed.event-handler';
+export * from './prompt-vote-changed.event-handler';
+export * from './prompt-vote-created.event-handler';
