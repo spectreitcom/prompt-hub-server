@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { SearchPromptEntryRepository } from '../application';
-import { PrismaSearchPromptEntryRepository } from './persistence';
+import {
+  SearchPromptEntryRepository,
+  UserSearchViewRepository,
+} from '../application';
+import {
+  PrismaSearchPromptEntryRepository,
+  PrismaUserSearchViewRepository,
+} from './persistence';
 
 @Module({
   imports: [PrismaModule],
@@ -10,7 +16,11 @@ import { PrismaSearchPromptEntryRepository } from './persistence';
       provide: SearchPromptEntryRepository,
       useClass: PrismaSearchPromptEntryRepository,
     },
+    {
+      provide: UserSearchViewRepository,
+      useClass: PrismaUserSearchViewRepository,
+    },
   ],
-  exports: [SearchPromptEntryRepository],
+  exports: [SearchPromptEntryRepository, UserSearchViewRepository],
 })
 export class InfrastructureModule {}
