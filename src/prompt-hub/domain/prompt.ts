@@ -111,6 +111,10 @@ export class Prompt extends AggregateRoot {
     this.apply(new PromptVisibilityChangedEvent(this.id, this.visibility));
   }
 
+  viewed(byUserId: UserId) {
+    // todo: emit an event that prompt was viewed
+  }
+
   setVisibility(isPublic: boolean) {
     if (isPublic) {
       this.makePublic();
