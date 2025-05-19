@@ -12,7 +12,7 @@ export class PromptViewedEventHandler
   ) {}
 
   async handle(event: PromptViewedEvent) {
-    const { promptId } = event;
+    const { promptId, byUserId } = event;
 
     // Find the existing entry
     const existingEntry = await this.searchPromptEntryViewRepository.findById(
@@ -23,7 +23,15 @@ export class PromptViewedEventHandler
       return;
     }
 
-    // Create a new entry with incremented viewCount
+    // Check if the viewer is the owner of the prompt
+    const isOwner = existingEntry.author.id === byUserId.getValue();
+
+    // Only increment the view count if the viewer is not the owner
+    const newViewCount = isOwner
+      ? existingEntry.viewCount
+      : existingEntry.viewCount + 1;
+
+    // Create a new entry with potentially incremented viewCount
     const updatedEntry = new SearchPromptEntryView(
       existingEntry.id,
       existingEntry.title,
@@ -32,7 +40,7 @@ export class PromptViewedEventHandler
       existingEntry.isPublic,
       existingEntry.status,
       existingEntry.copiedCount,
-      existingEntry.viewCount + 1,
+      newViewCount,
       existingEntry.likedCount,
       existingEntry.createdAt,
       existingEntry.updatedAt,
