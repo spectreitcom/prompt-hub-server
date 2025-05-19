@@ -9,6 +9,7 @@ import {
   PromptCopiedEventHandler,
   PromptDeletedEventHandler,
   PromptPublishedEventHandler,
+  PromptViewedEventHandler,
   PromptVisibilityChangedEventHandler,
   CreatePromptCommandHandler,
   UpdatePromptCommandHandler,
@@ -21,6 +22,7 @@ import {
   DeletePromptCatalogCommandHandler,
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
+  PromptViewedCommandHandler,
   PromptHubService,
   UserCreatedEventHandler,
   GetPromptListQueryHandler,
@@ -39,6 +41,7 @@ const EventHandlers = [
   PromptPublishedEventHandler,
   PromptVisibilityChangedEventHandler,
   PromptDeletedEventHandler,
+  PromptViewedEventHandler,
   CatalogCreatedEventHandler,
   CatalogRenamedEventHandler,
   CatalogDeletedEventHandler,
@@ -61,6 +64,7 @@ const CommandHandlers = [
   DeletePromptCatalogCommandHandler,
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
+  PromptViewedCommandHandler,
 ];
 
 const QueryHandlers = [

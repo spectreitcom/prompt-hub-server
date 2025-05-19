@@ -1,16 +1,26 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { SearchPromptEntryRepository } from '../application';
-import { PrismaSearchPromptEntryRepository } from './persistence';
+import {
+  UserSearchViewRepository,
+  SearchPromptEntryViewRepository,
+} from '../application';
+import {
+  PrismaUserSearchViewRepository,
+  PrismaSearchPromptEntryViewRepository,
+} from './persistence';
 
 @Module({
   imports: [PrismaModule],
   providers: [
     {
-      provide: SearchPromptEntryRepository,
-      useClass: PrismaSearchPromptEntryRepository,
+      provide: UserSearchViewRepository,
+      useClass: PrismaUserSearchViewRepository,
+    },
+    {
+      provide: SearchPromptEntryViewRepository,
+      useClass: PrismaSearchPromptEntryViewRepository,
     },
   ],
-  exports: [SearchPromptEntryRepository],
+  exports: [UserSearchViewRepository, SearchPromptEntryViewRepository],
 })
 export class InfrastructureModule {}

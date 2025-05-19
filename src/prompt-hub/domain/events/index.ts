@@ -3,6 +3,7 @@ export * from './prompt-copied.event';
 export * from './prompt-visibility-changed.event';
 export * from './prompt-deleted.event';
 export * from './prompt-updated.event';
+export * from './prompt-viewed.event';
 export * from './catalog-created.event';
 export * from './catalog-renamed.event';
 export * from './catalog-deleted.event';

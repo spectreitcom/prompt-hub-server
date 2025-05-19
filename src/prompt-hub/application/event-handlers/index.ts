@@ -11,3 +11,4 @@ export * from './catalog-item-removed.event-handler';
 export * from './user-created.event-handler';
 export * from './prompt-vote-created.event-handler';
 export * from './prompt-vote-changed.event-handler';
+export * from './prompt-viewed.event-handler';

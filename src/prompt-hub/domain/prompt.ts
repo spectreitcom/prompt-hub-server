@@ -13,6 +13,7 @@ import {
   PromptDeletedEvent,
   PromptPublishedEvent,
   PromptUpdatedEvent,
+  PromptViewedEvent,
   PromptVisibilityChangedEvent,
 } from './events';
 import { randomUUID } from 'crypto';
@@ -109,6 +110,10 @@ export class Prompt extends AggregateRoot {
     this.visibility = PromptVisibility.public();
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
     this.apply(new PromptVisibilityChangedEvent(this.id, this.visibility));
+  }
+
+  viewed(byUserId: UserId): void {
+    this.apply(new PromptViewedEvent(this.id, byUserId));
   }
 
   setVisibility(isPublic: boolean) {

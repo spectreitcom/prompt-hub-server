@@ -229,21 +229,28 @@ model SearchPromptEntry {
   status          String   @db.VarChar(20)
   copiedCount     Int      @default(0)
   likedCount      Int      @default(0)
+  viewCount       Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  tags SearchPromptTag[]
+  // tags SearchPromptTag[]
 }
 
-model SearchPromptTag {
-  id       String @id @default(cuid())
-  promptId String
-  name     String @db.VarChar(50)
+// model SearchPromptTag {
+//   id       String @id @default(cuid())
+//   promptId String
+//   name     String @db.VarChar(50)
+//
+//   prompt SearchPromptEntry @relation(fields: [promptId], references: [id], onDelete: Cascade)
+//
+//   @@unique([promptId, name])
+//   @@index([name])
+// }
 
-  prompt SearchPromptEntry @relation(fields: [promptId], references: [id], onDelete: Cascade)
-
-  @@unique([promptId, name])
-  @@index([name])
+model UserSearchView {
+  id        String  @id
+  name      String
+  avatarUrl String?
 }
 
 //===================================================
