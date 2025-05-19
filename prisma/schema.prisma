@@ -246,6 +246,12 @@ model SearchPromptTag {
   @@index([name])
 }
 
+model UserSearchView {
+  id        String  @id
+  name      String
+  avatarUrl String?
+}
+
 //===================================================
 
 // Notifications
