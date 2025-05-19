@@ -232,19 +232,19 @@ model SearchPromptEntry {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  tags SearchPromptTag[]
+  // tags SearchPromptTag[]
 }
 
-model SearchPromptTag {
-  id       String @id @default(cuid())
-  promptId String
-  name     String @db.VarChar(50)
-
-  prompt SearchPromptEntry @relation(fields: [promptId], references: [id], onDelete: Cascade)
-
-  @@unique([promptId, name])
-  @@index([name])
-}
+// model SearchPromptTag {
+//   id       String @id @default(cuid())
+//   promptId String
+//   name     String @db.VarChar(50)
+//
+//   prompt SearchPromptEntry @relation(fields: [promptId], references: [id], onDelete: Cascade)
+//
+//   @@unique([promptId, name])
+//   @@index([name])
+// }
 
 model UserSearchView {
   id        String  @id
