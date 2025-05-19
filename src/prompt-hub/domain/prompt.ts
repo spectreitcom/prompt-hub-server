@@ -13,6 +13,7 @@ import {
   PromptDeletedEvent,
   PromptPublishedEvent,
   PromptUpdatedEvent,
+  PromptViewedEvent,
   PromptVisibilityChangedEvent,
 } from './events';
 import { randomUUID } from 'crypto';
@@ -111,8 +112,8 @@ export class Prompt extends AggregateRoot {
     this.apply(new PromptVisibilityChangedEvent(this.id, this.visibility));
   }
 
-  viewed(byUserId: UserId) {
-    // todo: emit an event that prompt was viewed
+  viewed(byUserId: UserId): void {
+    this.apply(new PromptViewedEvent(this.id, byUserId));
   }
 
   setVisibility(isPublic: boolean) {
