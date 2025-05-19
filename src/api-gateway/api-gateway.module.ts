@@ -9,6 +9,7 @@ import { NotificationsModule } from '../notifications';
 import { AccountsModule } from '../accounts';
 import { AuthController } from './controllers';
 import { AuthService } from './services';
+import { AuthGuard } from './guards';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { AuthService } from './services';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
 })
 export class ApiGatewayModule {}
