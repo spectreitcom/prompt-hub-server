@@ -1,6 +1,7 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { PromptCopiedEvent } from '../../../prompt-hub/domain';
 import { SearchPromptEntryViewRepository } from '../ports';
+import { SearchPromptEntryView } from '../../views';
 
 @EventsHandler(PromptCopiedEvent)
 export class PromptCopiedEventHandler
@@ -11,6 +12,35 @@ export class PromptCopiedEventHandler
   ) {}
 
   async handle(event: PromptCopiedEvent) {
-    //....
+    const { promptId, byUserId } = event;
+
+    const searchPromptEntryView =
+      await this.searchPromptEntryViewRepository.findById(promptId.getValue());
+
+    if (!searchPromptEntryView) return;
+
+    // Don't increment copiedCount if the prompt is copied by its owner
+    const isOwner = searchPromptEntryView.author.id === byUserId.getValue();
+    const newCopiedCount = isOwner
+      ? searchPromptEntryView.copiedCount
+      : searchPromptEntryView.copiedCount + 1;
+
+    const updatedSearchPromptEntryView = new SearchPromptEntryView(
+      searchPromptEntryView.id,
+      searchPromptEntryView.title,
+      searchPromptEntryView.content,
+      searchPromptEntryView.author,
+      searchPromptEntryView.isPublic,
+      searchPromptEntryView.status,
+      newCopiedCount,
+      searchPromptEntryView.viewCount,
+      searchPromptEntryView.likedCount,
+      searchPromptEntryView.createdAt,
+      searchPromptEntryView.updatedAt,
+    );
+
+    await this.searchPromptEntryViewRepository.save(
+      updatedSearchPromptEntryView,
+    );
   }
 }
