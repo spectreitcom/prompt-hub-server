@@ -8,8 +8,8 @@ describe('PromptVisibility', () => {
 
       // Assert
       expect(visibility).toBeDefined();
-      expect(visibility.value).toBe('public');
-      expect(visibility.isPublic).toBe(true);
+      expect(visibility.getValue()).toBe('public');
+      expect(visibility.isPublic()).toBe(true);
     });
   });
 
@@ -20,8 +20,8 @@ describe('PromptVisibility', () => {
 
       // Assert
       expect(visibility).toBeDefined();
-      expect(visibility.value).toBe('private');
-      expect(visibility.isPublic).toBe(false);
+      expect(visibility.getValue()).toBe('private');
+      expect(visibility.isPublic()).toBe(false);
     });
   });
 
@@ -31,8 +31,8 @@ describe('PromptVisibility', () => {
       const visibility = PromptVisibility.fromBoolean(true);
 
       // Assert
-      expect(visibility.value).toBe('public');
-      expect(visibility.isPublic).toBe(true);
+      expect(visibility.getValue()).toBe('public');
+      expect(visibility.isPublic()).toBe(true);
     });
 
     it('should create private visibility when false is passed', () => {
@@ -40,8 +40,8 @@ describe('PromptVisibility', () => {
       const visibility = PromptVisibility.fromBoolean(false);
 
       // Assert
-      expect(visibility.value).toBe('private');
-      expect(visibility.isPublic).toBe(false);
+      expect(visibility.getValue()).toBe('private');
+      expect(visibility.isPublic()).toBe(false);
     });
   });
 
@@ -51,7 +51,7 @@ describe('PromptVisibility', () => {
       const visibility = PromptVisibility.public();
 
       // Act
-      const result = visibility.isPublic;
+      const result = visibility.isPublic();
 
       // Assert
       expect(result).toBe(true);
@@ -62,20 +62,20 @@ describe('PromptVisibility', () => {
       const visibility = PromptVisibility.private();
 
       // Act
-      const result = visibility.isPublic;
+      const result = visibility.isPublic();
 
       // Assert
       expect(result).toBe(false);
     });
   });
 
-  describe('value', () => {
+  describe('getValue', () => {
     it('should return "public" for public visibility', () => {
       // Arrange
       const visibility = PromptVisibility.public();
 
       // Act
-      const result = visibility.value;
+      const result = visibility.getValue();
 
       // Assert
       expect(result).toBe('public');
@@ -86,7 +86,7 @@ describe('PromptVisibility', () => {
       const visibility = PromptVisibility.private();
 
       // Act
-      const result = visibility.value;
+      const result = visibility.getValue();
 
       // Assert
       expect(result).toBe('private');

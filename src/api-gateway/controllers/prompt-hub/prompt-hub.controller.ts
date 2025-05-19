@@ -5,6 +5,7 @@ import {
   Param,
   UseGuards,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -74,5 +75,38 @@ export class PromptHubController {
     @GetUserId() userId: string,
   ): Promise<void> {
     return this.promptHubService.publishPrompt(params.promptId, userId);
+  }
+
+  @Delete('prompts/:promptId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Remove a prompt' })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to remove',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Prompt removed successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to remove this prompt',
+  })
+  async removePrompt(
+    @Param() params: PromptIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.promptHubService.deletePrompt(params.promptId, userId);
   }
 }

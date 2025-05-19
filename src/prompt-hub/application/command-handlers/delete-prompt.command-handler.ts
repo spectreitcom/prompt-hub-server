@@ -27,9 +27,7 @@ export class DeletePromptCommandHandler
     // Check if the user is the owner of the prompt
     const userIdObj = UserId.create(userId);
     if (!prompt.getAuthorId().equals(userIdObj)) {
-      throw new Error(
-        'Only the owner of the prompt can delete it.',
-      );
+      throw new Error('Only the owner of the prompt can delete it.');
     }
 
     // Mark the prompt as deleted in the domain model
