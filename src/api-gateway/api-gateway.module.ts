@@ -7,7 +7,11 @@ import { VotingModule } from '../voting';
 import { SearchModule } from '../search';
 import { NotificationsModule } from '../notifications';
 import { AccountsModule } from '../accounts';
-import { AuthController } from './controllers';
+import {
+  AuthController,
+  PromptHubController,
+  CatalogController,
+} from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
 
@@ -28,7 +32,7 @@ import { AuthGuard } from './guards';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, PromptHubController, CatalogController],
   providers: [AuthService, AuthGuard],
 })
 export class ApiGatewayModule {}
