@@ -7,10 +7,12 @@ import { VotingModule } from '../voting';
 import { SearchModule } from '../search';
 import { NotificationsModule } from '../notifications';
 import { AccountsModule } from '../accounts';
+import { FavoritesModule } from '../favorites';
 import {
   AuthController,
   PromptHubController,
   CatalogController,
+  FavoritesController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
@@ -23,6 +25,7 @@ import { AuthGuard } from './guards';
     SearchModule,
     NotificationsModule,
     AccountsModule,
+    FavoritesModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -32,7 +35,12 @@ import { AuthGuard } from './guards';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController, PromptHubController, CatalogController],
+  controllers: [
+    AuthController,
+    PromptHubController,
+    CatalogController,
+    FavoritesController,
+  ],
   providers: [AuthService, AuthGuard],
 })
 export class ApiGatewayModule {}
