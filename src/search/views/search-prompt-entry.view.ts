@@ -2,7 +2,7 @@ import { UserSearchView } from './user-search.view';
 
 export class SearchPromptEntryView {
   constructor(
-    private readonly id: string,
+    public readonly id: string,
     public readonly title: string,
     public readonly content: string,
     public readonly author: UserSearchView,

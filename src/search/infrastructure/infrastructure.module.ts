@@ -3,10 +3,12 @@ import { PrismaModule } from '../../prisma';
 import {
   SearchPromptEntryRepository,
   UserSearchViewRepository,
+  SearchPromptEntryViewRepository,
 } from '../application';
 import {
   PrismaSearchPromptEntryRepository,
   PrismaUserSearchViewRepository,
+  PrismaSearchPromptEntryViewRepository,
 } from './persistence';
 
 @Module({
@@ -20,7 +22,15 @@ import {
       provide: UserSearchViewRepository,
       useClass: PrismaUserSearchViewRepository,
     },
+    {
+      provide: SearchPromptEntryViewRepository,
+      useClass: PrismaSearchPromptEntryViewRepository,
+    },
   ],
-  exports: [SearchPromptEntryRepository, UserSearchViewRepository],
+  exports: [
+    SearchPromptEntryRepository,
+    UserSearchViewRepository,
+    SearchPromptEntryViewRepository
+  ],
 })
 export class InfrastructureModule {}
