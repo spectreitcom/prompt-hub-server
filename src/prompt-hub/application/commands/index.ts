@@ -9,3 +9,4 @@ export * from './rename-prompt-catalog.command';
 export * from './delete-prompt-catalog.command';
 export * from './add-prompt-to-catalog.command';
 export * from './remove-prompt-from-catalog.command';
+export * from './prompt-viewed.command';
