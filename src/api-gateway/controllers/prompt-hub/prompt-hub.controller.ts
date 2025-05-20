@@ -255,6 +255,26 @@ export class PromptHubController {
     return this.promptHubService.copyPrompt(params.promptId, userId);
   }
 
+  @Get('catalogs')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get a list of prompt catalogs for a specific user',
+  })
+  @ApiOkResponse({
+    description: 'Prompt catalogs retrieved successfully',
+    type: [PromptCatalogView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async getUserPromptCatalogs(
+    @GetUserId() userId: string,
+  ): Promise<PromptCatalogView[]> {
+    return this.promptHubService.getUserPromptCatalogs(userId);
+  }
+
   @Get('catalogs/:catalogId')
   @UseGuards(AuthGuard)
   @ApiBearerAuth(SWAGGER_USER_AUTH)
