@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Delete,
   Patch,
+  Get,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -14,13 +15,16 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiParam,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
+import { PromptCatalogView } from '../../../prompt-hub/views';
 import {
   CreatePromptDto,
   PromptIdParamDto,
   UpdatePromptDto,
   SetPromptVisibilityDto,
+  CatalogIdParamDto,
 } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
@@ -249,5 +253,36 @@ export class PromptHubController {
     @GetUserId() userId: string,
   ): Promise<void> {
     return this.promptHubService.copyPrompt(params.promptId, userId);
+  }
+
+  @Get('catalogs/:catalogId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get detailed information about a specific prompt catalog',
+  })
+  @ApiParam({
+    name: 'catalogId',
+    description: 'The unique identifier of the catalog',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'Prompt catalog details retrieved successfully',
+    type: PromptCatalogView,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt catalog not found',
+  })
+  async getPromptCatalogById(
+    @Param() params: CatalogIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<PromptCatalogView> {
+    return this.promptHubService.getPromptCatalogById(params.catalogId, userId);
   }
 }
