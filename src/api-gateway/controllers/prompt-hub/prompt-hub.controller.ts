@@ -16,7 +16,12 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
-import { CreatePromptDto, PromptIdParamDto, UpdatePromptDto } from '../../dtos';
+import {
+  CreatePromptDto,
+  PromptIdParamDto,
+  UpdatePromptDto,
+  SetPromptVisibilityDto,
+} from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
@@ -146,6 +151,44 @@ export class PromptHubController {
       params.promptId,
       updatePromptDto.title,
       updatePromptDto.content,
+      userId,
+    );
+  }
+
+  @Patch('prompts/:promptId/visibility')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Set prompt visibility' })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to update visibility',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Prompt visibility updated successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to update this prompt',
+  })
+  async setPromptVisibility(
+    @Param() params: PromptIdParamDto,
+    @Body() setPromptVisibilityDto: SetPromptVisibilityDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.promptHubService.setPromptVisibility(
+      params.promptId,
+      setPromptVisibilityDto.isPublic,
       userId,
     );
   }
