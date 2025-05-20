@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -20,6 +21,7 @@ import {
   AddPromptToCatalogDto,
   CatalogIdParamDto,
   RemovePromptFromCatalogParamDto,
+  RenameCatalogDto,
 } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
@@ -49,6 +51,44 @@ export class CatalogController {
     return this.promptHubService.createPromptCatalog(
       userId,
       createCatalogDto.name,
+    );
+  }
+
+  @Patch(':catalogId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Rename a catalog' })
+  @ApiParam({
+    name: 'catalogId',
+    description: 'The unique identifier of the catalog to rename',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Catalog renamed successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Catalog not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to rename this catalog',
+  })
+  async renameCatalog(
+    @Param() params: CatalogIdParamDto,
+    @Body() renameCatalogDto: RenameCatalogDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.promptHubService.renamePromptCatalog(
+      params.catalogId,
+      renameCatalogDto.name,
+      userId,
     );
   }
 
