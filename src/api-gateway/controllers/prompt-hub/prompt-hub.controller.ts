@@ -17,7 +17,6 @@ import {
   ApiBearerAuth,
   ApiParam,
   ApiOkResponse,
-  ApiQuery,
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
 import {
