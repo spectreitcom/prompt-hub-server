@@ -13,6 +13,7 @@ import {
   PromptHubController,
   CatalogController,
   FavoritesController,
+  VotingController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
@@ -40,6 +41,7 @@ import { AuthGuard } from './guards';
     PromptHubController,
     CatalogController,
     FavoritesController,
+    VotingController,
   ],
   providers: [AuthService, AuthGuard],
 })
