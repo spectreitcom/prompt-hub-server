@@ -15,6 +15,7 @@ import {
   FavoritesController,
   VotingController,
   SearchController,
+  NotificationsController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
@@ -44,6 +45,7 @@ import { AuthGuard } from './guards';
     FavoritesController,
     VotingController,
     SearchController,
+    NotificationsController,
   ],
   providers: [AuthService, AuthGuard],
 })
