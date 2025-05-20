@@ -96,7 +96,7 @@ export class PromptHubService {
   }
 
   /**
-   * Creates a copy of an existing prompt for a user.
+   * Records that a prompt was copied by a user.
    *
    * @param {string} promptId - The unique identifier of the prompt to copy.
    * @param {string} userId - The unique identifier of the user copying the prompt.
