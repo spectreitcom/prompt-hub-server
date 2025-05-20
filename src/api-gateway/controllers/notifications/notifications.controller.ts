@@ -71,4 +71,22 @@ export class NotificationsController {
   ): Promise<void> {
     return this.notificationsService.markNotificationAsRead(params.id, userId);
   }
+
+  @Post('mark-all-read')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Mark all notifications as read',
+    description: 'Marks all notifications as read for the authenticated user',
+  })
+  @ApiOkResponse({
+    description: 'All notifications marked as read successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async markAllNotificationsAsRead(@GetUserId() userId: string): Promise<void> {
+    return this.notificationsService.markAllNotificationsAsRead(userId);
+  }
 }
