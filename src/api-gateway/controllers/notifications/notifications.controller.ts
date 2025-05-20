@@ -1,4 +1,11 @@
-import { Controller, Get, UseGuards, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -10,6 +17,7 @@ import { NotificationsService } from '../../../notifications';
 import { AuthGuard } from '../../guards';
 import { SWAGGER_USER_AUTH } from '../../../shared';
 import { GetUserId } from '../../decorators';
+import { NotificationIdParamDto } from '../../dtos';
 
 @ApiTags('notifications')
 @Controller('notifications')
@@ -36,5 +44,31 @@ export class NotificationsController {
     @GetUserId() userId: string,
   ): Promise<number> {
     return this.notificationsService.getUnreadNotificationCount(userId);
+  }
+
+  @Post(':id/read')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Mark notification as read',
+    description:
+      'Marks a specific notification as read for the authenticated user',
+  })
+  @ApiOkResponse({
+    description: 'Notification marked as read successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Notification not found or does not belong to the user',
+  })
+  async markNotificationAsRead(
+    @Param() params: NotificationIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.notificationsService.markNotificationAsRead(params.id, userId);
   }
 }
