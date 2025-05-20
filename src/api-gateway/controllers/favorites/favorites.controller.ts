@@ -1,4 +1,11 @@
-import { Controller, Post, Param, UseGuards, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Param,
+  UseGuards,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -44,5 +51,37 @@ export class FavoritesController {
     @GetUserId() userId: string,
   ): Promise<void> {
     return this.favoritesService.addPromptToFavorites(params.promptId, userId);
+  }
+
+  @Delete('prompts/:promptId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Remove a prompt from favorites' })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to remove from favorites',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Prompt removed from favorites successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found or not in favorites',
+  })
+  async removePromptFromFavorites(
+    @Param() params: PromptIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.favoritesService.removePromptFromFavorites(
+      params.promptId,
+      userId,
+    );
   }
 }
