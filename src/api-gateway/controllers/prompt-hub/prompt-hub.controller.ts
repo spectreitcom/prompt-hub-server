@@ -18,7 +18,10 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
-import { PromptCatalogView } from '../../../prompt-hub/views';
+import {
+  PromptCatalogView,
+  PromptDetailsView,
+} from '../../../prompt-hub/views';
 import {
   CreatePromptDto,
   PromptIdParamDto,
@@ -304,5 +307,35 @@ export class PromptHubController {
     @GetUserId() userId: string,
   ): Promise<PromptCatalogView> {
     return this.promptHubService.getPromptCatalogById(params.catalogId, userId);
+  }
+
+  @Get(':promptId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get detailed information about a specific prompt',
+  })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'Prompt details retrieved successfully',
+    type: PromptDetailsView,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  async getPromptDetails(
+    @Param() params: PromptIdParamDto,
+  ): Promise<PromptDetailsView> {
+    return this.promptHubService.getPromptDetails(params.promptId);
   }
 }
