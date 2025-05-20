@@ -8,6 +8,7 @@ import {
   Delete,
   Patch,
   Get,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -16,11 +17,13 @@ import {
   ApiBearerAuth,
   ApiParam,
   ApiOkResponse,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
 import {
   PromptCatalogView,
   PromptDetailsView,
+  PromptListItemView,
 } from '../../../prompt-hub/views';
 import {
   CreatePromptDto,
@@ -28,6 +31,7 @@ import {
   UpdatePromptDto,
   SetPromptVisibilityDto,
   CatalogIdParamDto,
+  GetUserPromptsQueryDto,
 } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
@@ -337,5 +341,32 @@ export class PromptHubController {
     @Param() params: PromptIdParamDto,
   ): Promise<PromptDetailsView> {
     return this.promptHubService.getPromptDetails(params.promptId);
+  }
+
+  @Get('user/prompts')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary:
+      'Get a list of prompts for a specific user with pagination and optional search',
+  })
+  @ApiOkResponse({
+    description: 'List of prompts retrieved successfully',
+    type: [PromptListItemView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async getUserPrompts(
+    @GetUserId() userId: string,
+    @Query() query: GetUserPromptsQueryDto,
+  ): Promise<PromptListItemView[]> {
+    return this.promptHubService.getUserPrompts(
+      userId,
+      query.take,
+      query.skip,
+      query.search,
+    );
   }
 }

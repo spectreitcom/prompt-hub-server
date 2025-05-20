@@ -7,3 +7,4 @@ export * from './update-prompt.dto';
 export * from './remove-prompt-from-catalog-param.dto';
 export * from './rename-catalog.dto';
 export * from './set-prompt-visibility.dto';
+export * from './get-user-prompts-query.dto';
