@@ -136,4 +136,37 @@ export class CatalogController {
       userId,
     );
   }
+
+  @Delete(':catalogId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Remove an entire catalog' })
+  @ApiParam({
+    name: 'catalogId',
+    description: 'The unique identifier of the catalog to remove',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Catalog removed successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Catalog not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to remove this catalog',
+  })
+  async removeCatalog(
+    @Param() params: CatalogIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.promptHubService.deletePromptCatalog(params.catalogId, userId);
+  }
 }
