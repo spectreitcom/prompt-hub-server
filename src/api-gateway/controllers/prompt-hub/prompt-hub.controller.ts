@@ -7,6 +7,8 @@ import {
   HttpStatus,
   Delete,
   Patch,
+  Get,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -14,13 +16,23 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiParam,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
+import {
+  PromptCatalogView,
+  PromptDetailsView,
+  PromptListItemView,
+  PromptCatalogItemView,
+} from '../../../prompt-hub/views';
 import {
   CreatePromptDto,
   PromptIdParamDto,
   UpdatePromptDto,
   SetPromptVisibilityDto,
+  CatalogIdParamDto,
+  GetUserPromptsQueryDto,
+  GetPromptsByCatalogQueryDto,
 } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
@@ -249,5 +261,152 @@ export class PromptHubController {
     @GetUserId() userId: string,
   ): Promise<void> {
     return this.promptHubService.copyPrompt(params.promptId, userId);
+  }
+
+  @Get('catalogs')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get a list of prompt catalogs for a specific user',
+  })
+  @ApiOkResponse({
+    description: 'Prompt catalogs retrieved successfully',
+    type: [PromptCatalogView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async getUserPromptCatalogs(
+    @GetUserId() userId: string,
+  ): Promise<PromptCatalogView[]> {
+    return this.promptHubService.getUserPromptCatalogs(userId);
+  }
+
+  @Get('catalogs/:catalogId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get detailed information about a specific prompt catalog',
+  })
+  @ApiParam({
+    name: 'catalogId',
+    description: 'The unique identifier of the catalog',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'Prompt catalog details retrieved successfully',
+    type: PromptCatalogView,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt catalog not found',
+  })
+  async getPromptCatalogById(
+    @Param() params: CatalogIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<PromptCatalogView> {
+    return this.promptHubService.getPromptCatalogById(params.catalogId, userId);
+  }
+
+  @Get('catalogs/:catalogId/prompts')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary:
+      'Get a list of prompts for a specific catalog with pagination and optional search',
+  })
+  @ApiParam({
+    name: 'catalogId',
+    description: 'The unique identifier of the catalog',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'List of prompts retrieved successfully',
+    type: [PromptCatalogItemView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Catalog not found',
+  })
+  async getPromptsByCatalog(
+    @Param() params: CatalogIdParamDto,
+    @GetUserId() userId: string,
+    @Query() query: GetPromptsByCatalogQueryDto,
+  ): Promise<PromptCatalogItemView[]> {
+    return this.promptHubService.getPromptsByCatalog(
+      params.catalogId,
+      query.skip,
+      query.take,
+      userId,
+      query.search,
+    );
+  }
+
+  @Get(':promptId')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get detailed information about a specific prompt',
+  })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'Prompt details retrieved successfully',
+    type: PromptDetailsView,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  async getPromptDetails(
+    @Param() params: PromptIdParamDto,
+  ): Promise<PromptDetailsView> {
+    return this.promptHubService.getPromptDetails(params.promptId);
+  }
+
+  @Get('user/prompts')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary:
+      'Get a list of prompts for a specific user with pagination and optional search',
+  })
+  @ApiOkResponse({
+    description: 'List of prompts retrieved successfully',
+    type: [PromptListItemView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async getUserPrompts(
+    @GetUserId() userId: string,
+    @Query() query: GetUserPromptsQueryDto,
+  ): Promise<PromptListItemView[]> {
+    return this.promptHubService.getUserPrompts(
+      userId,
+      query.take,
+      query.skip,
+      query.search,
+    );
   }
 }

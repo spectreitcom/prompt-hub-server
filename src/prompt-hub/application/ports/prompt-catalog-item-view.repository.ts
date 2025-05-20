@@ -9,6 +9,7 @@ export abstract class PromptCatalogItemViewRepository {
     catalogId: string,
     skip: number,
     take: number,
+    userId: string,
     search?: string,
   ): Promise<PromptCatalogItemView[]>;
 }

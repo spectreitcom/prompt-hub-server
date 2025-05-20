@@ -18,6 +18,7 @@ export class GetPromptsByCatalogQueryHandler
       query.catalogId,
       query.skip,
       query.take,
+      query.userId,
       query.search,
     );
   }

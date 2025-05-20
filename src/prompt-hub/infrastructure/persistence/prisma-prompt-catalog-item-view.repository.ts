@@ -81,6 +81,7 @@ export class PrismaPromptCatalogItemViewRepository extends PromptCatalogItemView
     catalogId: string,
     skip: number,
     take: number,
+    userId: string,
     search?: string,
   ): Promise<PromptCatalogItemView[]> {
     const whereClause: any = {
@@ -92,6 +93,22 @@ export class PrismaPromptCatalogItemViewRepository extends PromptCatalogItemView
         contains: search,
         mode: 'insensitive',
       };
+    }
+
+    // If userId is provided, filter by catalog owner
+    if (userId) {
+      // First, check if the catalog belongs to the user
+      const catalog = await this.prisma.promptCatalogView.findFirst({
+        where: {
+          id: catalogId,
+          userId: userId,
+        },
+      });
+
+      // If the catalog doesn't belong to the user, return an empty array
+      if (!catalog) {
+        return [];
+      }
     }
 
     const promptCatalogItemViews =
