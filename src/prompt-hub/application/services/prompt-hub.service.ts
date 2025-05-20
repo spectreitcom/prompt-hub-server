@@ -257,21 +257,29 @@ export class PromptHubService {
   }
 
   /**
-   * Gets a list of prompts for a specific catalog with pagination and optional search.
+   * Retrieves a list of prompt catalog items based on the specified catalog, pagination, and user details.
    *
-   * @param {string} catalogId - The unique identifier of the catalog.
-   * @param {number} skip - The number of prompts to skip.
-   * @param {number} take - The number of prompts to take.
-   * @param {string} [search] - Optional search term to filter prompts.
-   * @return {Promise<PromptCatalogItemView[]>} A list of prompt items for the catalog.
+   * @param {string} catalogId - The unique identifier for the catalog.
+   * @param {number} skip - The number of items to skip for pagination.
+   * @param {number} take - The number of items to retrieve for pagination.
+   * @param {string} userId - The unique identifier of the user requesting the prompts.
+   * @param {string} [search] - An optional search query string to filter the prompts.
+   * @return {Promise<PromptCatalogItemView[]>} A promise resolving to an array of prompt catalog item views.
    */
   async getPromptsByCatalog(
     catalogId: string,
     skip: number,
     take: number,
+    userId: string,
     search?: string,
   ): Promise<PromptCatalogItemView[]> {
-    const query = new GetPromptsByCatalogQuery(catalogId, skip, take, search);
+    const query = new GetPromptsByCatalogQuery(
+      catalogId,
+      skip,
+      take,
+      userId,
+      search,
+    );
     return this.queryBus.execute(query);
   }
 
