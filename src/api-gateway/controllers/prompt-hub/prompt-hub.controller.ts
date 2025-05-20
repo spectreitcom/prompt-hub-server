@@ -320,6 +320,7 @@ export class PromptHubController {
   @ApiOperation({
     summary:
       'Get a list of prompts for a specific catalog with pagination and optional search',
+    description: 'Use page and limit parameters for pagination',
   })
   @ApiParam({
     name: 'catalogId',
@@ -389,6 +390,7 @@ export class PromptHubController {
   @ApiOperation({
     summary:
       'Get a list of prompts for a specific user with pagination and optional search',
+    description: 'Use page and limit parameters for pagination',
   })
   @ApiOkResponse({
     description: 'List of prompts retrieved successfully',
