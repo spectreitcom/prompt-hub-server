@@ -192,4 +192,33 @@ export class PromptHubController {
       userId,
     );
   }
+
+  @Post('prompts/:promptId/view')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Record that a prompt was viewed by a user' })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt that was viewed',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Prompt view recorded successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  async viewPrompt(
+    @Param() params: PromptIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.promptHubService.viewPrompt(params.promptId, userId);
+  }
 }
