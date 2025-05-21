@@ -84,6 +84,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
   ): Promise<SearchPromptEntryView[]> {
     const where: Prisma.SearchPromptEntryWhereInput = {
       isPublic: true,
+      status: 'published',
       ...(search
         ? {
             OR: [
@@ -160,12 +161,17 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
     const searchPromptEntries = await this.prisma.searchPromptEntry.findMany({
       where: {
         authorId,
+        isPublic: true,
         id: {
           notIn: excludedPromptIds ?? [],
         },
+        status: 'published',
       },
       skip,
       take,
+      orderBy: {
+        likedCount: 'desc',
+      },
     });
 
     return searchPromptEntries.map(
