@@ -355,8 +355,6 @@ export class PromptHubController {
   }
 
   @Get(':promptId')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth(SWAGGER_USER_AUTH)
   @ApiOperation({
     summary: 'Get detailed information about a specific prompt',
   })
