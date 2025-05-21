@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { GetPromptListQuery } from '../queries';
+import { GetPromptListQuery, GetOtherAuthorPromptsQuery } from '../queries';
 import { SearchPromptEntryView } from '../../views';
 
 @Injectable()
@@ -21,5 +21,25 @@ export class SearchService {
     search?: string,
   ): Promise<SearchPromptEntryView[]> {
     return this.queryBus.execute(new GetPromptListQuery(take, skip, search));
+  }
+
+  /**
+   * Retrieves a list of prompts by a specific author.
+   *
+   * @param {string} authorId - The ID of the author whose prompts to retrieve.
+   * @param {number} skip - The number of items to skip from the beginning of the list.
+   * @param {number} take - The number of items to take from the list.
+   * @param {string[]} [excludedPromptIds] - Optional array of prompt IDs to exclude from the results.
+   * @return {Promise<SearchPromptEntryView[]>} A promise that resolves to an array of prompt entries.
+   */
+  async getOtherAuthorPrompts(
+    authorId: string,
+    skip: number,
+    take: number,
+    excludedPromptIds?: string[],
+  ): Promise<SearchPromptEntryView[]> {
+    return this.queryBus.execute(
+      new GetOtherAuthorPromptsQuery(authorId, take, skip, excludedPromptIds),
+    );
   }
 }

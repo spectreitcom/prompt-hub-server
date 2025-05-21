@@ -84,6 +84,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
   ): Promise<SearchPromptEntryView[]> {
     const where: Prisma.SearchPromptEntryWhereInput = {
       isPublic: true,
+      status: 'published',
       ...(search
         ? {
             OR: [
@@ -149,5 +150,49 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
         id,
       },
     });
+  }
+
+  async findByAuthor(
+    authorId: string,
+    skip: number,
+    take: number,
+    excludedPromptIds?: string[],
+  ): Promise<SearchPromptEntryView[]> {
+    const searchPromptEntries = await this.prisma.searchPromptEntry.findMany({
+      where: {
+        authorId,
+        isPublic: true,
+        id: {
+          notIn: excludedPromptIds ?? [],
+        },
+        status: 'published',
+      },
+      skip,
+      take,
+      orderBy: {
+        likedCount: 'desc',
+      },
+    });
+
+    return searchPromptEntries.map(
+      (entry) =>
+        new SearchPromptEntryView(
+          entry.id,
+          entry.title,
+          entry.content,
+          new UserSearchView(
+            entry.authorId,
+            entry.authorName,
+            entry.authorAvatarUrl || undefined,
+          ),
+          entry.isPublic,
+          entry.status,
+          entry.copiedCount,
+          entry.viewCount,
+          entry.likedCount,
+          entry.createdAt,
+          entry.updatedAt,
+        ),
+    );
   }
 }
