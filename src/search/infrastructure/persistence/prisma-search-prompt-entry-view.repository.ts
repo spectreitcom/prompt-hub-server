@@ -150,4 +150,43 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
       },
     });
   }
+
+  async findByAuthor(
+    authorId: string,
+    skip: number,
+    take: number,
+    excludedPromptIds?: string[],
+  ): Promise<SearchPromptEntryView[]> {
+    const searchPromptEntries = await this.prisma.searchPromptEntry.findMany({
+      where: {
+        authorId,
+        id: {
+          notIn: excludedPromptIds ?? [],
+        },
+      },
+      skip,
+      take,
+    });
+
+    return searchPromptEntries.map(
+      (entry) =>
+        new SearchPromptEntryView(
+          entry.id,
+          entry.title,
+          entry.content,
+          new UserSearchView(
+            entry.authorId,
+            entry.authorName,
+            entry.authorAvatarUrl || undefined,
+          ),
+          entry.isPublic,
+          entry.status,
+          entry.copiedCount,
+          entry.viewCount,
+          entry.likedCount,
+          entry.createdAt,
+          entry.updatedAt,
+        ),
+    );
+  }
 }

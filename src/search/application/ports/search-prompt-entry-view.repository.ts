@@ -10,4 +10,10 @@ export abstract class SearchPromptEntryViewRepository {
   ): Promise<SearchPromptEntryView[]>;
   abstract count(search?: string): Promise<number>;
   abstract delete(id: string): Promise<void>;
+  abstract findByAuthor(
+    authorId: string,
+    skip: number,
+    take: number,
+    excludedPromptIds?: string[],
+  ): Promise<SearchPromptEntryView[]>;
 }
