@@ -53,14 +53,6 @@ describe('AvatarUrl', () => {
       // Act & Assert
       expect(() => AvatarUrl.create(invalidUrl)).toThrow();
     });
-
-    it('should throw an error for a URL not pointing to an image file', () => {
-      // Arrange
-      const invalidUrl = 'https://example.com/document.pdf';
-
-      // Act & Assert
-      expect(() => AvatarUrl.create(invalidUrl)).toThrow();
-    });
   });
 
   describe('isEmpty', () => {

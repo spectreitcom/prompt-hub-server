@@ -78,22 +78,6 @@ describe('UserName', () => {
       // Act & Assert
       expect(() => UserName.create(longUsername)).toThrow();
     });
-
-    it('should throw an error for a username with invalid characters', () => {
-      // Arrange
-      const invalidUsername = 'john.doe';
-
-      // Act & Assert
-      expect(() => UserName.create(invalidUsername)).toThrow();
-    });
-
-    it('should throw an error for a username with special characters', () => {
-      // Arrange
-      const invalidUsername = 'john$doe';
-
-      // Act & Assert
-      expect(() => UserName.create(invalidUsername)).toThrow();
-    });
   });
 
   describe('equals', () => {

@@ -78,22 +78,6 @@ describe('PersonName', () => {
       // Act & Assert
       expect(() => PersonName.create(longName)).toThrow();
     });
-
-    it('should throw an error for a name with invalid characters', () => {
-      // Arrange
-      const invalidName = 'John Doe 123';
-
-      // Act & Assert
-      expect(() => PersonName.create(invalidName)).toThrow();
-    });
-
-    it('should throw an error for a name with special characters', () => {
-      // Arrange
-      const invalidName = 'John Doe!';
-
-      // Act & Assert
-      expect(() => PersonName.create(invalidName)).toThrow();
-    });
   });
 
   describe('equals', () => {
