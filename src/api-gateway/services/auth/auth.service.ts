@@ -139,4 +139,12 @@ export class AuthService {
       },
     };
   }
+
+  async getPublicUser(userId: string) {
+    const user = await this.accountsService.getPublicUserView(userId);
+    if (!user) {
+      throw new UnauthorizedException(this.ERROR_MESSAGES.INVALID_CREDENTIALS);
+    }
+    return user;
+  }
 }
