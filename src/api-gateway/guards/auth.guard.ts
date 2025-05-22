@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromCookie(request);
+    const token = this.extractToken(request);
 
     if (!token) {
       throw new UnauthorizedException('Authentication token is missing');
@@ -40,7 +40,17 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  private extractTokenFromCookie(request: Request): string | undefined {
-    return request.cookies?.jwt;
+  private extractToken(request: Request): string | undefined {
+    // First try to get token from Authorization header
+    const authHeader = request.headers.authorization;
+    if (authHeader) {
+      // Extract token from "Bearer <token>" format
+      const bearerToken = authHeader.match(/^Bearer\s+(\S+)$/);
+      if (bearerToken) {
+        return bearerToken[1];
+      }
+    }
+
+    return undefined;
   }
 }
