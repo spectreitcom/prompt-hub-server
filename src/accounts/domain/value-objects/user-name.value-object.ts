@@ -2,7 +2,6 @@ import {
   IsNotEmpty,
   MinLength,
   MaxLength,
-  Matches,
   validateSync,
   ValidationError,
 } from 'class-validator';
@@ -11,10 +10,6 @@ export class UserName {
   @IsNotEmpty({ message: 'Username cannot be empty.' })
   @MinLength(3, { message: 'Username must be at least 3 characters long.' })
   @MaxLength(50, { message: 'Username cannot exceed 50 characters.' })
-  @Matches(/^[a-zA-Z0-9_-]+$/, {
-    message:
-      'Username can only contain letters, numbers, underscores, and hyphens.',
-  })
   private readonly value: string;
 
   private constructor(userName: string) {
@@ -33,6 +28,14 @@ export class UserName {
         errors
           .map((error) => Object.values(error.constraints).join(', '))
           .join(', '),
+      );
+    }
+
+    // Validate that username contains only alphanumeric characters, underscores, and hyphens
+    const validUsernameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (!validUsernameRegex.test(this.value)) {
+      throw new Error(
+        'Username can only contain letters, numbers, underscores, and hyphens.',
       );
     }
   }

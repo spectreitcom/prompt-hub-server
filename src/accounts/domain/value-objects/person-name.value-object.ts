@@ -2,7 +2,6 @@ import {
   IsNotEmpty,
   MinLength,
   MaxLength,
-  Matches,
   validateSync,
   ValidationError,
 } from 'class-validator';
@@ -11,10 +10,6 @@ export class PersonName {
   @IsNotEmpty({ message: 'Person name cannot be empty.' })
   @MinLength(2, { message: 'Person name must be at least 2 characters long.' })
   @MaxLength(100, { message: 'Person name cannot exceed 100 characters.' })
-  @Matches(/^[a-zA-Z\s'-]+$/, {
-    message:
-      'Person name can only contain letters, spaces, hyphens, and apostrophes.',
-  })
   private readonly value: string;
 
   private constructor(name: string) {
@@ -33,6 +28,14 @@ export class PersonName {
         errors
           .map((error) => Object.values(error.constraints).join(', '))
           .join(', '),
+      );
+    }
+
+    // Validate that name contains only letters, spaces, hyphens, and apostrophes
+    const validNameRegex = /^[a-zA-Z\s'-]+$/;
+    if (!validNameRegex.test(this.value)) {
+      throw new Error(
+        'Person name can only contain letters, spaces, hyphens, and apostrophes.',
       );
     }
   }
