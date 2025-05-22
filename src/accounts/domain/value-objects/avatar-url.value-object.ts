@@ -41,26 +41,6 @@ export class AvatarUrl {
           .join(', '),
       );
     }
-
-    // Validate that URL points to an image file
-    if (this.value !== '') {
-      const imageExtensions = [
-        '.jpg',
-        '.jpeg',
-        '.png',
-        '.gif',
-        '.bmp',
-        '.webp',
-        '.svg',
-      ];
-      const hasImageExtension = imageExtensions.some((ext) =>
-        this.value.toLowerCase().endsWith(ext),
-      );
-
-      if (!hasImageExtension) {
-        throw new Error('Avatar URL must point to an image file.');
-      }
-    }
   }
 
   getValue(): string {

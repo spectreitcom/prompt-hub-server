@@ -5,6 +5,14 @@ import { HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AccountsService, User } from '../../../accounts';
 
+interface GooglePayload {
+  sub: string;
+  email: string;
+  name: string;
+  picture?: string;
+  [key: string]: any;
+}
+
 export interface AuthenticationResponse {
   status: number;
   data: {
@@ -46,7 +54,12 @@ export class AuthService {
   async authenticateWithGoogle(token: string): Promise<AuthenticationResponse> {
     try {
       const payload = await this.verifyGoogleToken(token);
-      const authenticatedUser = await this.getAuthenticatedUser(payload.email);
+      const authenticatedUser = await this.getAuthenticatedUser(
+        payload.email,
+        payload.sub,
+        payload.name,
+        payload.picture,
+      );
       const jwtToken = this.generateJwtToken(authenticatedUser);
 
       return this.createSuccessResponse(authenticatedUser, jwtToken);
@@ -55,7 +68,7 @@ export class AuthService {
     }
   }
 
-  private async verifyGoogleToken(token: string) {
+  private async verifyGoogleToken(token: string): Promise<GooglePayload> {
     const ticket = await this.googleClient.verifyIdToken({ idToken: token });
     const payload = ticket.getPayload();
 
@@ -63,18 +76,34 @@ export class AuthService {
       throw new UnauthorizedException(this.ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
-    return payload;
+    return payload as GooglePayload;
   }
 
-  private async getAuthenticatedUser(email: string) {
-    const user = await this.accountsService.findByEmail(email);
+  private async getAuthenticatedUser(
+    email: string,
+    googleId: string,
+    name: string,
+    picture?: string,
+  ): Promise<User> {
+    let user = await this.accountsService.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException(this.ERROR_MESSAGES.INVALID_CREDENTIALS);
+      await this.accountsService.signUpWithGmail(
+        googleId,
+        email,
+        name,
+        picture,
+      );
+      user = await this.accountsService.findByEmail(email);
+      if (!user) {
+        throw new UnauthorizedException(
+          this.ERROR_MESSAGES.INVALID_CREDENTIALS,
+        );
+      }
     }
     return user;
   }
 
-  private generateJwtToken(user: User) {
+  private generateJwtToken(user: User): string {
     return this.jwtService.sign({
       sub: user.getId(),
       email: user.getEmail(),
@@ -109,5 +138,13 @@ export class AuthService {
         error: error.message,
       },
     };
+  }
+
+  async getPublicUser(userId: string) {
+    const user = await this.accountsService.getPublicUserView(userId);
+    if (!user) {
+      throw new UnauthorizedException(this.ERROR_MESSAGES.INVALID_CREDENTIALS);
+    }
+    return user;
   }
 }

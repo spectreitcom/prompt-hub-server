@@ -55,6 +55,6 @@ export class AuthController {
     description: 'User not authenticated',
   })
   async getCurrentUser(@GetUserId() userId: string) {
-    return this.accountsService.getPublicUserView(userId);
+    return this.authService.getPublicUser(userId);
   }
 }

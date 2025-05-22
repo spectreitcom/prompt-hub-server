@@ -30,14 +30,6 @@ export class UserName {
           .join(', '),
       );
     }
-
-    // Validate that username contains only alphanumeric characters, underscores, and hyphens
-    const validUsernameRegex = /^[a-zA-Z0-9_-]+$/;
-    if (!validUsernameRegex.test(this.value)) {
-      throw new Error(
-        'Username can only contain letters, numbers, underscores, and hyphens.',
-      );
-    }
   }
 
   getValue(): string {
