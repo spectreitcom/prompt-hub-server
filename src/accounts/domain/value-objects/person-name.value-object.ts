@@ -30,14 +30,6 @@ export class PersonName {
           .join(', '),
       );
     }
-
-    // Validate that name contains only letters, spaces, hyphens, and apostrophes
-    const validNameRegex = /^[a-zA-Z\s'-]+$/;
-    if (!validNameRegex.test(this.value)) {
-      throw new Error(
-        'Person name can only contain letters, spaces, hyphens, and apostrophes.',
-      );
-    }
   }
 
   getValue(): string {
