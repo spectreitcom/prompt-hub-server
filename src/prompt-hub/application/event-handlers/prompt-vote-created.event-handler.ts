@@ -43,6 +43,8 @@ export class PromptVoteCreatedEventHandler
       promptListItemView.copiedCount,
       promptListItemView.viewCount,
       promptListItemView.createdAt,
+      promptListItemView.isPublic,
+      promptListItemView.status,
       promptListItemView.author,
     );
 

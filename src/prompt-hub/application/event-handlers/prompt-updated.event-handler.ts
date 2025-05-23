@@ -73,6 +73,8 @@ export class PromptUpdatedEventHandler
       promptListItemView.copiedCount,
       promptListItemView.viewCount,
       timestamps.getCreatedAt(),
+      promptListItemView.isPublic,
+      promptListItemView.status,
       author,
     );
 

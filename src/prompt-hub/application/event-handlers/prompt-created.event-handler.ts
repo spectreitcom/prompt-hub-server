@@ -51,6 +51,8 @@ export class PromptCreatedEventHandler
       title,
       content,
       timestamps,
+      status,
+      visibility,
       author,
     );
 
@@ -70,6 +72,8 @@ export class PromptCreatedEventHandler
     title: PromptTitle,
     content: PromptContent,
     timestamps: PromptTimestamps,
+    status: PromptStatus,
+    visibility: PromptVisibility,
     author: PromptUserPublicView,
   ) {
     const promptListItemView = new PromptListItemView(
@@ -80,6 +84,8 @@ export class PromptCreatedEventHandler
       0, // copiedCount
       0, // viewCount
       timestamps.getCreatedAt(),
+      visibility.isPublic(),
+      status.getValue(),
       author,
     );
 
