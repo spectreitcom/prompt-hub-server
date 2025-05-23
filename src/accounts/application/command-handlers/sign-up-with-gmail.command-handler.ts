@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { SignUpWithGmailCommand } from '../commands';
@@ -10,7 +10,10 @@ import { UserId, User, Provider } from '../../domain';
 export class SignUpWithGmailCommandHandler
   implements ICommandHandler<SignUpWithGmailCommand, void>
 {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly eventPublisher: EventPublisher,
+  ) {}
 
   async execute(command: SignUpWithGmailCommand): Promise<void> {
     const { googleId, email, name, avatarUrl } = command;
@@ -36,7 +39,13 @@ export class SignUpWithGmailCommandHandler
       provider,
     );
 
+    // Mark the user as an event publisher
+    const userWithEvents = this.eventPublisher.mergeObjectContext(user);
+
     // Save the user
-    await this.userRepository.save(user);
+    await this.userRepository.save(userWithEvents);
+
+    // Commit events after saving
+    userWithEvents.commit();
   }
 }
