@@ -416,7 +416,8 @@ export class PromptHubController {
   @ApiBearerAuth(SWAGGER_USER_AUTH)
   @ApiOperation({
     summary: 'Get prompt details for editing',
-    description: 'Retrieves the prompt details that can be edited by the user',
+    description:
+      'Retrieves the prompt details that can be edited by the user. This endpoint returns the complete prompt data including id, title, full content, current status (DRAFT or PUBLISHED), and visibility setting (public or private). Only the prompt owner can access this data.',
   })
   @ApiParam({
     name: 'promptId',
@@ -425,7 +426,8 @@ export class PromptHubController {
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @ApiOkResponse({
-    description: 'Prompt details for editing retrieved successfully',
+    description:
+      'Prompt details for editing retrieved successfully. Returns the prompt with its id, title, content, status, and visibility settings.',
     type: EditablePromptView,
   })
   @ApiResponse({
