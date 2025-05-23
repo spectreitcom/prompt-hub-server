@@ -51,6 +51,16 @@ export class PromptHubController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Prompt created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'The ID of the created prompt',
+          example: '123e4567-e89b-12d3-a456-426614174000',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -59,8 +69,9 @@ export class PromptHubController {
   async createPrompt(
     @Body() createPromptDto: CreatePromptDto,
     @GetUserId() userId: string,
-  ): Promise<void> {
-    return this.promptHubService.createPrompt(userId);
+  ): Promise<{ id: string }> {
+    const promptId = await this.promptHubService.createPrompt(userId);
+    return { id: promptId };
   }
 
   @Post('prompts/:promptId/publish')

@@ -42,9 +42,9 @@ export class PromptHubService {
    * Creates a new prompt for a given author.
    *
    * @param {string} authorId - The unique identifier of the author creating the prompt.
-   * @return {Promise<void>} Resolves when the prompt has been successfully created.
+   * @return {Promise<string>} Resolves with the ID of the created prompt.
    */
-  async createPrompt(authorId: string): Promise<void> {
+  async createPrompt(authorId: string): Promise<string> {
     const command = new CreatePromptCommand(authorId);
     return this.commandBus.execute(command);
   }
