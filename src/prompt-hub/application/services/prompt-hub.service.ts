@@ -21,12 +21,14 @@ import {
   GetUserPromptCatalogsQuery,
   GetPromptsByCatalogQuery,
   GetPromptCatalogByIdQuery,
+  GetPromptForEditQuery,
 } from '../queries';
 import {
   PromptListItemView,
   PromptDetailsView,
   PromptCatalogView,
   PromptCatalogItemView,
+  EditablePromptView,
 } from '../../views';
 
 @Injectable()
@@ -242,6 +244,17 @@ export class PromptHubService {
    */
   async getPromptDetails(promptId: string): Promise<PromptDetailsView> {
     const query = new GetPromptDetailsQuery(promptId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets a prompt for editing.
+   *
+   * @param {string} promptId - The unique identifier of the prompt.
+   * @return {Promise<EditablePromptView>} Editable information about the prompt.
+   */
+  async getPromptForEdit(promptId: string): Promise<EditablePromptView> {
+    const query = new GetPromptForEditQuery(promptId);
     return this.queryBus.execute(query);
   }
 
