@@ -50,7 +50,7 @@ export class Prompt extends AggregateRoot {
     return new Prompt(
       PromptId.create(randomUUID()),
       PromptTitle.create('Untitled Prompt'),
-      PromptContent.create(''),
+      PromptContent.create('Your prompt goes here...'),
       PromptStatus.draft(),
       PromptVisibility.private(),
       authorId,
