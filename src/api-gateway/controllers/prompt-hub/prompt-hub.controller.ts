@@ -444,7 +444,6 @@ export class PromptHubController {
     @Param() params: PromptIdParamDto,
     @GetUserId() userId: string,
   ): Promise<EditablePromptView> {
-    // Pass userId for potential future authorization checks
-    return this.promptHubService.getPromptForEdit(params.promptId);
+    return this.promptHubService.getPromptForEdit(params.promptId, userId);
   }
 }
