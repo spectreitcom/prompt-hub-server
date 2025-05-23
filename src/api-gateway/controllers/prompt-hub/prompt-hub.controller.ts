@@ -9,6 +9,7 @@ import {
   Patch,
   Get,
   Query,
+  ForbiddenException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -38,6 +39,7 @@ import {
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
+import { UnauthorizedPromptAccessException } from '../../../prompt-hub';
 
 @ApiTags('prompt-hub')
 @Controller('prompt-hub')
@@ -457,6 +459,16 @@ export class PromptHubController {
     @Param() params: PromptIdParamDto,
     @GetUserId() userId: string,
   ): Promise<EditablePromptView> {
-    return this.promptHubService.getPromptForEdit(params.promptId, userId);
+    try {
+      return await this.promptHubService.getPromptForEdit(
+        params.promptId,
+        userId,
+      );
+    } catch (error) {
+      if (error instanceof UnauthorizedPromptAccessException) {
+        throw new ForbiddenException(error.message);
+      }
+      throw error;
+    }
   }
 }

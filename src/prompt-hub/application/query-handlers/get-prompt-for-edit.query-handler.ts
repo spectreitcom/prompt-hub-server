@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPromptForEditQuery } from '../queries';
 import { PromptRepository } from '../ports';
 import { EditablePromptView } from '../../views';
-import { PromptId, UserId } from '../../domain';
-import { ForbiddenException } from '@nestjs/common';
+import { PromptId, UserId, UnauthorizedPromptAccessException } from '../../domain';
 
 @QueryHandler(GetPromptForEditQuery)
 export class GetPromptForEditQueryHandler
@@ -20,7 +19,7 @@ export class GetPromptForEditQueryHandler
 
     // Check if the current user is the owner of the prompt
     if (!prompt.getAuthorId().equals(userId)) {
-      throw new ForbiddenException(
+      throw new UnauthorizedPromptAccessException(
         'You are not authorized to edit this prompt',
       );
     }
