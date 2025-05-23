@@ -5,14 +5,14 @@ import { Prompt, UserId } from '../../domain';
 
 @CommandHandler(CreatePromptCommand)
 export class CreatePromptCommandHandler
-  implements ICommandHandler<CreatePromptCommand, void>
+  implements ICommandHandler<CreatePromptCommand, string>
 {
   constructor(
     private readonly promptRepository: PromptRepository,
     private readonly eventPublisher: EventPublisher,
   ) {}
 
-  async execute(command: CreatePromptCommand): Promise<void> {
+  async execute(command: CreatePromptCommand): Promise<string> {
     const { authorId } = command;
 
     // Create a new prompt draft
@@ -27,5 +27,8 @@ export class CreatePromptCommandHandler
 
     // Commit events after saving
     promptWithEvents.commit();
+
+    // Return the prompt ID
+    return promptWithEvents.getId().getValue();
   }
 }

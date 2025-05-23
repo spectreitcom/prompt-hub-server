@@ -24,6 +24,7 @@ import {
   PromptDetailsView,
   PromptListItemView,
   PromptCatalogItemView,
+  EditablePromptView,
 } from '../../../prompt-hub/views';
 import {
   CreatePromptDto,
@@ -50,6 +51,16 @@ export class PromptHubController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Prompt created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'The ID of the created prompt',
+          example: '123e4567-e89b-12d3-a456-426614174000',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -58,8 +69,9 @@ export class PromptHubController {
   async createPrompt(
     @Body() createPromptDto: CreatePromptDto,
     @GetUserId() userId: string,
-  ): Promise<void> {
-    return this.promptHubService.createPrompt(userId);
+  ): Promise<{ id: string }> {
+    const promptId = await this.promptHubService.createPrompt(userId);
+    return { id: promptId };
   }
 
   @Post('prompts/:promptId/publish')
@@ -408,5 +420,43 @@ export class PromptHubController {
       query.skip,
       query.search,
     );
+  }
+
+  @Get('prompts/:promptId/edit')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get prompt details for editing',
+    description:
+      'Retrieves the prompt details that can be edited by the user. This endpoint returns the complete prompt data including id, title, full content, current status (DRAFT or PUBLISHED), and visibility setting (public or private). Only the prompt owner can access this data.',
+  })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to edit',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description:
+      'Prompt details for editing retrieved successfully. Returns the prompt with its id, title, content, status, and visibility settings.',
+    type: EditablePromptView,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to edit this prompt',
+  })
+  async getPromptForEdit(
+    @Param() params: PromptIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<EditablePromptView> {
+    return this.promptHubService.getPromptForEdit(params.promptId, userId);
   }
 }

@@ -21,12 +21,14 @@ import {
   GetUserPromptCatalogsQuery,
   GetPromptsByCatalogQuery,
   GetPromptCatalogByIdQuery,
+  GetPromptForEditQuery,
 } from '../queries';
 import {
   PromptListItemView,
   PromptDetailsView,
   PromptCatalogView,
   PromptCatalogItemView,
+  EditablePromptView,
 } from '../../views';
 
 @Injectable()
@@ -40,9 +42,9 @@ export class PromptHubService {
    * Creates a new prompt for a given author.
    *
    * @param {string} authorId - The unique identifier of the author creating the prompt.
-   * @return {Promise<void>} Resolves when the prompt has been successfully created.
+   * @return {Promise<string>} Resolves with the ID of the created prompt.
    */
-  async createPrompt(authorId: string): Promise<void> {
+  async createPrompt(authorId: string): Promise<string> {
     const command = new CreatePromptCommand(authorId);
     return this.commandBus.execute(command);
   }
@@ -242,6 +244,21 @@ export class PromptHubService {
    */
   async getPromptDetails(promptId: string): Promise<PromptDetailsView> {
     const query = new GetPromptDetailsQuery(promptId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Retrieves the editable prompt view for the given prompt ID and user ID.
+   *
+   * @param {string} promptId - The unique identifier of the prompt to be edited.
+   * @param {string} userId - The unique identifier of the user requesting the edit.
+   * @return {Promise<EditablePromptView>} A promise that resolves to an EditablePromptView object containing the details of the prompt for editing.
+   */
+  async getPromptForEdit(
+    promptId: string,
+    userId: string,
+  ): Promise<EditablePromptView> {
+    const query = new GetPromptForEditQuery(promptId, userId);
     return this.queryBus.execute(query);
   }
 

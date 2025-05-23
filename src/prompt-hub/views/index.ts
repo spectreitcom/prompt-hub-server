@@ -3,3 +3,4 @@ export * from './prompt-user-public.view';
 export * from './prompt-details.view';
 export * from './prompt-catalog.view';
 export * from './prompt-catalog-item.view';
+export * from './editable-prompt.view';
