@@ -248,13 +248,17 @@ export class PromptHubService {
   }
 
   /**
-   * Gets a prompt for editing.
+   * Retrieves the editable prompt view for the given prompt ID and user ID.
    *
-   * @param {string} promptId - The unique identifier of the prompt.
-   * @return {Promise<EditablePromptView>} Editable information about the prompt.
+   * @param {string} promptId - The unique identifier of the prompt to be edited.
+   * @param {string} userId - The unique identifier of the user requesting the edit.
+   * @return {Promise<EditablePromptView>} A promise that resolves to an EditablePromptView object containing the details of the prompt for editing.
    */
-  async getPromptForEdit(promptId: string): Promise<EditablePromptView> {
-    const query = new GetPromptForEditQuery(promptId);
+  async getPromptForEdit(
+    promptId: string,
+    userId: string,
+  ): Promise<EditablePromptView> {
+    const query = new GetPromptForEditQuery(promptId, userId);
     return this.queryBus.execute(query);
   }
 
