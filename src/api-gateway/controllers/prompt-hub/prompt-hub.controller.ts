@@ -24,6 +24,7 @@ import {
   PromptDetailsView,
   PromptListItemView,
   PromptCatalogItemView,
+  EditablePromptView,
 } from '../../../prompt-hub/views';
 import {
   CreatePromptDto,
@@ -408,5 +409,42 @@ export class PromptHubController {
       query.skip,
       query.search,
     );
+  }
+
+  @Get('prompts/:promptId/edit')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get prompt details for editing',
+    description: 'Retrieves the prompt details that can be edited by the user',
+  })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to edit',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'Prompt details for editing retrieved successfully',
+    type: EditablePromptView,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to edit this prompt',
+  })
+  async getPromptForEdit(
+    @Param() params: PromptIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<EditablePromptView> {
+    // Pass userId for potential future authorization checks
+    return this.promptHubService.getPromptForEdit(params.promptId);
   }
 }
