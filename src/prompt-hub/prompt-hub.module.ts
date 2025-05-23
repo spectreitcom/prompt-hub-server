@@ -7,8 +7,10 @@ import {
   CatalogItemRemovedEventHandler,
   CatalogRenamedEventHandler,
   PromptCopiedEventHandler,
+  PromptCreatedEventHandler,
   PromptDeletedEventHandler,
   PromptPublishedEventHandler,
+  PromptUpdatedEventHandler,
   PromptViewedEventHandler,
   PromptVisibilityChangedEventHandler,
   CreatePromptCommandHandler,
@@ -39,6 +41,8 @@ import { InfrastructureModule } from './infrastructure';
 
 const EventHandlers = [
   PromptCopiedEventHandler,
+  PromptCreatedEventHandler,
+  PromptUpdatedEventHandler,
   PromptPublishedEventHandler,
   PromptVisibilityChangedEventHandler,
   PromptDeletedEventHandler,
