@@ -147,7 +147,7 @@ export class PrismaPromptListItemViewRepository
     const promptListItems = await this.prisma.promptListItemView.findMany({
       where,
       orderBy: {
-        likedCount: 'desc', // Sort by most likes first
+        createdAt: 'desc',
       },
       take,
       skip,
