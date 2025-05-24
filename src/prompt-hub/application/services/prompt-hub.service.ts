@@ -319,10 +319,10 @@ export class PromptHubService {
    * Records that a prompt was viewed by a user.
    *
    * @param {string} promptId - The unique identifier of the prompt that was viewed.
-   * @param {string} userId - The unique identifier of the user who viewed the prompt.
+   * @param {string} [userId] - The unique identifier of the user who viewed the prompt. Optional if the viewer is not authenticated.
    * @return {Promise<void>} Resolves when the view has been successfully recorded.
    */
-  async viewPrompt(promptId: string, userId: string): Promise<void> {
+  async viewPrompt(promptId: string, userId?: string): Promise<void> {
     const command = new PromptViewedCommand(promptId, userId);
     return this.commandBus.execute(command);
   }

@@ -127,7 +127,7 @@ export class Prompt extends AggregateRoot {
     this.apply(new PromptVisibilityChangedEvent(this.id, this.visibility));
   }
 
-  viewed(byUserId: UserId): void {
+  viewed(byUserId?: UserId): void {
     this.apply(new PromptViewedEvent(this.id, byUserId));
   }
 

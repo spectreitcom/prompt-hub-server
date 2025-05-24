@@ -22,7 +22,7 @@ export class PromptViewedEventHandler
     await this.updatePromptDetailsView(promptId, byUserId);
   }
 
-  private async updatePromptListItemView(promptId: PromptId, byUserId: UserId) {
+  private async updatePromptListItemView(promptId: PromptId, byUserId?: UserId) {
     // prompt list item view
     const promptListItemView = await this.promptListItemViewRepository.findById(
       promptId.getValue(),
@@ -30,8 +30,9 @@ export class PromptViewedEventHandler
 
     if (!promptListItemView) return;
 
-    // Don't increment viewCount if the prompt is viewed by its owner
-    const isOwner = promptListItemView.author.id === byUserId.getValue();
+    // If byUserId is not provided, assume the viewer is not the owner
+    // Otherwise, check if the prompt is viewed by its owner
+    const isOwner = byUserId ? promptListItemView.author.id === byUserId.getValue() : false;
     const newViewCount = isOwner
       ? promptListItemView.viewCount
       : promptListItemView.viewCount + 1;
@@ -52,7 +53,7 @@ export class PromptViewedEventHandler
     await this.promptListItemViewRepository.save(promptListItemViewToUpdate);
   }
 
-  private async updatePromptDetailsView(promptId: PromptId, byUserId: UserId) {
+  private async updatePromptDetailsView(promptId: PromptId, byUserId?: UserId) {
     // prompt details view
     const promptDetailsView = await this.promptDetailsViewRepository.findById(
       promptId.getValue(),
@@ -60,8 +61,9 @@ export class PromptViewedEventHandler
 
     if (!promptDetailsView) return;
 
-    // Don't increment viewCount if the prompt is viewed by its owner
-    const isOwner = promptDetailsView.author.id === byUserId.getValue();
+    // If byUserId is not provided, assume the viewer is not the owner
+    // Otherwise, check if the prompt is viewed by its owner
+    const isOwner = byUserId ? promptDetailsView.author.id === byUserId.getValue() : false;
     const newViewCount = isOwner
       ? promptDetailsView.viewCount
       : promptDetailsView.viewCount + 1;

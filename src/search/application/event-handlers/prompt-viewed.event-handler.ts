@@ -23,8 +23,11 @@ export class PromptViewedEventHandler
       return;
     }
 
-    // Check if the viewer is the owner of the prompt
-    const isOwner = existingEntry.author.id === byUserId.getValue();
+    // If byUserId is not provided, assume the viewer is not the owner
+    // Otherwise, check if the viewer is the owner of the prompt
+    const isOwner = byUserId
+      ? existingEntry.author.id === byUserId.getValue()
+      : false;
 
     // Only increment the view count if the viewer is not the owner
     const newViewCount = isOwner
