@@ -84,7 +84,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
   ): Promise<SearchPromptEntryView[]> {
     const where: Prisma.SearchPromptEntryWhereInput = {
       isPublic: true,
-      status: 'published',
+      status: 'PUBLISHED',
       ...(search
         ? {
             OR: [
@@ -165,7 +165,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
         id: {
           notIn: excludedPromptIds ?? [],
         },
-        status: 'published',
+        status: 'PUBLISHED',
       },
       skip,
       take,
