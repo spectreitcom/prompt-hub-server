@@ -10,6 +10,7 @@ import {
 } from './value-objects';
 import {
   PromptCopiedEvent,
+  PromptCreatedEvent,
   PromptDeletedEvent,
   PromptPublishedEvent,
   PromptUpdatedEvent,
@@ -47,7 +48,7 @@ export class Prompt extends AggregateRoot {
   }
 
   static createDraft(authorId: UserId): Prompt {
-    return new Prompt(
+    const prompt = new Prompt(
       PromptId.create(randomUUID()),
       PromptTitle.create('Untitled Prompt'),
       PromptContent.create('Your prompt goes here...'),
@@ -56,6 +57,20 @@ export class Prompt extends AggregateRoot {
       authorId,
       PromptTimestamps.createNew(),
     );
+
+    prompt.apply(
+      new PromptCreatedEvent(
+        prompt.id,
+        prompt.authorId,
+        prompt.title,
+        prompt.content,
+        prompt.status,
+        prompt.visibility,
+        prompt.timestamps,
+      ),
+    );
+
+    return prompt;
   }
 
   updateContent(title: PromptTitle, content: PromptContent): void {

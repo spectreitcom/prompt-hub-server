@@ -1,10 +1,12 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import {
   PromptContent,
+  PromptCreatedEvent,
   PromptId,
+  PromptStatus,
   PromptTimestamps,
   PromptTitle,
-  PromptUpdatedEvent,
+  PromptVisibility,
 } from '../../domain';
 import {
   PromptDetailsViewRepository,
@@ -17,9 +19,9 @@ import {
   PromptUserPublicView,
 } from '../../views';
 
-@EventsHandler(PromptUpdatedEvent)
-export class PromptUpdatedEventHandler
-  implements IEventHandler<PromptUpdatedEvent>
+@EventsHandler(PromptCreatedEvent)
+export class PromptCreatedEventHandler
+  implements IEventHandler<PromptCreatedEvent>
 {
   constructor(
     private readonly promptListItemViewRepository: PromptListItemViewRepository,
@@ -27,8 +29,16 @@ export class PromptUpdatedEventHandler
     private readonly promptDetailsViewRepository: PromptDetailsViewRepository,
   ) {}
 
-  async handle(event: PromptUpdatedEvent) {
-    const { promptId, content, authorId, title, timestamps } = event;
+  async handle(event: PromptCreatedEvent) {
+    const {
+      promptId,
+      content,
+      authorId,
+      title,
+      timestamps,
+      status,
+      visibility,
+    } = event;
 
     const author = await this.promptUserPublicRepository.findById(
       authorId.getValue(),
@@ -36,77 +46,74 @@ export class PromptUpdatedEventHandler
 
     if (!author) return;
 
-    await this.updatePromptListItemView(
+    await this.createPromptListItemView(
       promptId,
       title,
       content,
       timestamps,
+      status,
+      visibility,
       author,
     );
-    await this.updatePromptDetailsView(
+
+    await this.createPromptDetailsView(
       promptId,
       title,
       content,
       timestamps,
+      status,
+      visibility,
       author,
     );
   }
 
-  private async updatePromptListItemView(
+  private async createPromptListItemView(
     promptId: PromptId,
     title: PromptTitle,
     content: PromptContent,
     timestamps: PromptTimestamps,
+    status: PromptStatus,
+    visibility: PromptVisibility,
     author: PromptUserPublicView,
   ) {
-    const promptListItemView = await this.promptListItemViewRepository.findById(
-      promptId.getValue(),
-    );
-
-    if (!promptListItemView) return;
-
-    const promptListItemViewToUpdate = new PromptListItemView(
+    const promptListItemView = new PromptListItemView(
       promptId.getValue(),
       title.getValue(),
       content.getPreview(),
-      promptListItemView.likedCount,
-      promptListItemView.copiedCount,
-      promptListItemView.viewCount,
+      0, // likedCount
+      0, // copiedCount
+      0, // viewCount
       timestamps.getCreatedAt(),
-      promptListItemView.isPublic,
-      promptListItemView.status,
+      visibility.isPublic(),
+      status.getValue(),
       author,
     );
 
-    await this.promptListItemViewRepository.save(promptListItemViewToUpdate);
+    await this.promptListItemViewRepository.save(promptListItemView);
   }
 
-  private async updatePromptDetailsView(
+  private async createPromptDetailsView(
     promptId: PromptId,
     title: PromptTitle,
     content: PromptContent,
     timestamps: PromptTimestamps,
+    status: PromptStatus,
+    visibility: PromptVisibility,
     author: PromptUserPublicView,
   ) {
-    const promptDetailsView = await this.promptDetailsViewRepository.findById(
-      promptId.getValue(),
-    );
-
-    if (!promptDetailsView) return;
-
-    const promptDetailsViewToUpdate = new PromptDetailsView(
+    const promptDetailsView = new PromptDetailsView(
       promptId.getValue(),
       title.getValue(),
       content.getValue(),
-      promptDetailsView.isPublic,
-      promptDetailsView.status,
+      visibility.isPublic(),
+      status.getValue(),
       timestamps.getCreatedAt(),
-      promptDetailsView.likedCount,
-      promptDetailsView.copiedCount,
-      promptDetailsView.viewCount,
+      0, // likedCount
+      0, // copiedCount
+      0, // viewCount
       author,
     );
 
-    await this.promptDetailsViewRepository.save(promptDetailsViewToUpdate);
+    await this.promptDetailsViewRepository.save(promptDetailsView);
   }
 }

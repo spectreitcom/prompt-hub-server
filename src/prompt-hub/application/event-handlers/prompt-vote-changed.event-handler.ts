@@ -59,6 +59,8 @@ export class PromptVoteChangedEventHandler
       promptListItemView.copiedCount,
       promptListItemView.viewCount,
       promptListItemView.createdAt,
+      promptListItemView.isPublic,
+      promptListItemView.status,
       promptListItemView.author,
     );
 

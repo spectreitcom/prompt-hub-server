@@ -44,6 +44,8 @@ export class PromptCopiedEventHandler
       newCopiedCount,
       promptListItemView.viewCount,
       promptListItemView.createdAt,
+      promptListItemView.isPublic,
+      promptListItemView.status,
       promptListItemView.author,
     );
 

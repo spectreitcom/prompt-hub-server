@@ -45,6 +45,18 @@ export class PromptListItemView {
   public readonly createdAt: Date;
 
   @ApiProperty({
+    description: 'Whether the prompt is public or private',
+    example: true,
+  })
+  public readonly isPublic: boolean;
+
+  @ApiProperty({
+    description: 'The status of the prompt',
+    example: 'PUBLISHED',
+  })
+  public readonly status: string;
+
+  @ApiProperty({
     description: 'The author of the prompt',
     type: PromptUserPublicView,
   })
@@ -58,6 +70,8 @@ export class PromptListItemView {
     copiedCount: number,
     viewCount: number,
     createdAt: Date,
+    isPublic: boolean,
+    status: string,
     author: PromptUserPublicView,
   ) {
     this.id = id;
@@ -67,6 +81,8 @@ export class PromptListItemView {
     this.copiedCount = copiedCount;
     this.viewCount = viewCount;
     this.createdAt = createdAt;
+    this.isPublic = isPublic;
+    this.status = status;
     this.author = author;
   }
 }

@@ -76,6 +76,8 @@ export class PromptPublishedEventHandler
         promptListItemView.copiedCount,
         promptListItemView.viewCount,
         timestamps.getCreatedAt(),
+        true, // isPublic
+        'PUBLISHED', // status
         author,
       );
 
@@ -92,6 +94,8 @@ export class PromptPublishedEventHandler
       0,
       0,
       timestamps.getCreatedAt(),
+      true, // isPublic
+      'PUBLISHED', // status
       author,
     );
 
