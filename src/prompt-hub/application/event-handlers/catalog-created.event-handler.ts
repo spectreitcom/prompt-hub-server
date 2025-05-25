@@ -14,7 +14,7 @@ export class CatalogCreatedEventHandler
   async handle(event: CatalogCreatedEvent): Promise<void> {
     const catalogView = new PromptCatalogView(
       event.catalogId.getValue(),
-      'New Catalog', // Default name since we don't have access to the actual name
+      event.name.getValue(),
       event.ownerId.getValue(),
       new Date(),
     );
