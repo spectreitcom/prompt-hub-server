@@ -1,15 +1,26 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 
+/**
+ * Guard that makes authentication optional.
+ * If a valid token is provided, it populates the request.user object.
+ * If no token is provided or the token is invalid, it allows the request to proceed without authentication.
+ *
+ * This guard is designed to work with the GetOptionalUserId decorator.
+ *
+ * @example
+ * ```typescript
+ * @Get('view-prompt/:promptId')
+ * @UseGuards(OptionalAuthGuard)
+ * viewPrompt(@Param() params: PromptIdParamDto, @GetOptionalUserId() userId?: string) {
+ *   return this.promptHubService.viewPrompt(params.promptId, userId);
+ * }
+ * ```
+ */
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class OptionalAuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
@@ -19,8 +30,9 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractToken(request);
 
+    // If no token is provided, allow the request to proceed without authentication
     if (!token) {
-      throw new UnauthorizedException('Authentication token is missing');
+      return true;
     }
 
     try {
@@ -33,11 +45,13 @@ export class AuthGuard implements CanActivate {
         id: payload.sub,
         email: payload.email,
       };
-
-      return true;
     } catch {
-      throw new UnauthorizedException('Invalid authentication token');
+      // If token verification fails, allow the request to proceed without authentication
+      // The GetOptionalUserId decorator will return undefined in this case
     }
+
+    // Always return true to allow the request to proceed
+    return true;
   }
 
   private extractToken(request: Request): string | undefined {

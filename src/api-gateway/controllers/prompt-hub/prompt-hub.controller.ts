@@ -36,8 +36,8 @@ import {
   GetUserPromptsQueryDto,
   GetPromptsByCatalogQueryDto,
 } from '../../dtos';
-import { AuthGuard } from '../../guards';
-import { GetUserId } from '../../decorators';
+import { AuthGuard, OptionalAuthGuard } from '../../guards';
+import { GetUserId, GetOptionalUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
 import { UnauthorizedPromptAccessException } from '../../../prompt-hub';
 
@@ -220,8 +220,7 @@ export class PromptHubController {
   }
 
   @Post('prompts/:promptId/view')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @UseGuards(OptionalAuthGuard)
   @ApiOperation({ summary: 'Record that a prompt was viewed by a user' })
   @ApiParam({
     name: 'promptId',
@@ -234,23 +233,18 @@ export class PromptHubController {
     description: 'Prompt view recorded successfully',
   })
   @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'User not authenticated',
-  })
-  @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Prompt not found',
   })
   async viewPrompt(
     @Param() params: PromptIdParamDto,
-    @GetUserId() userId: string,
+    @GetOptionalUserId() userId?: string,
   ): Promise<void> {
     return this.promptHubService.viewPrompt(params.promptId, userId);
   }
 
   @Post('prompts/:promptId/copy')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @UseGuards(OptionalAuthGuard)
   @ApiOperation({ summary: 'Record that a prompt was copied by a user' })
   @ApiParam({
     name: 'promptId',
@@ -263,16 +257,12 @@ export class PromptHubController {
     description: 'Prompt copy recorded successfully',
   })
   @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'User not authenticated',
-  })
-  @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Prompt not found',
   })
   async copyPrompt(
     @Param() params: PromptIdParamDto,
-    @GetUserId() userId: string,
+    @GetOptionalUserId() userId?: string,
   ): Promise<void> {
     return this.promptHubService.copyPrompt(params.promptId, userId);
   }

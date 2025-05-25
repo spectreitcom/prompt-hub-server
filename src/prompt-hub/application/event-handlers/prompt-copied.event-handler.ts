@@ -22,7 +22,7 @@ export class PromptCopiedEventHandler
     await this.updatePromptDetailsView(promptId, byUserId);
   }
 
-  private async updatePromptListItemView(promptId: PromptId, byUserId: UserId) {
+  private async updatePromptListItemView(promptId: PromptId, byUserId?: UserId) {
     // prompt list item view
     const promptListItemView = await this.promptListItemViewRepository.findById(
       promptId.getValue(),
@@ -30,8 +30,9 @@ export class PromptCopiedEventHandler
 
     if (!promptListItemView) return;
 
+    // Always increment copiedCount if byUserId is not provided
     // Don't increment copiedCount if the prompt is copied by its owner
-    const isOwner = promptListItemView.author.id === byUserId.getValue();
+    const isOwner = byUserId ? promptListItemView.author.id === byUserId.getValue() : false;
     const newCopiedCount = isOwner
       ? promptListItemView.copiedCount
       : promptListItemView.copiedCount + 1;
@@ -52,7 +53,7 @@ export class PromptCopiedEventHandler
     await this.promptListItemViewRepository.save(promptListItemViewToUpdate);
   }
 
-  private async updatePromptDetailsView(promptId: PromptId, byUserId: UserId) {
+  private async updatePromptDetailsView(promptId: PromptId, byUserId?: UserId) {
     // prompt details view
     const promptDetailsView = await this.promptDetailsViewRepository.findById(
       promptId.getValue(),
@@ -60,8 +61,9 @@ export class PromptCopiedEventHandler
 
     if (!promptDetailsView) return;
 
+    // Always increment copiedCount if byUserId is not provided
     // Don't increment copiedCount if the prompt is copied by its owner
-    const isOwner = promptDetailsView.author.id === byUserId.getValue();
+    const isOwner = byUserId ? promptDetailsView.author.id === byUserId.getValue() : false;
     const newCopiedCount = isOwner
       ? promptDetailsView.copiedCount
       : promptDetailsView.copiedCount + 1;

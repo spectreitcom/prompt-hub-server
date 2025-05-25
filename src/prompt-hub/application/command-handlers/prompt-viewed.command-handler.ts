@@ -24,7 +24,10 @@ export class PromptViewedCommandHandler
       throw new Error(`Prompt with id ${promptId} not found.`);
     }
 
-    prompt.viewed(UserId.create(userId));
+    // Create UserId only if userId is provided
+    const userIdObj = userId ? UserId.create(userId) : undefined;
+
+    prompt.viewed(userIdObj);
 
     // Mark the prompt as an event publisher
     const promptWithEvents = this.eventPublisher.mergeObjectContext(prompt);

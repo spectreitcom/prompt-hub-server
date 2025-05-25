@@ -4,6 +4,6 @@ import { PromptId, UserId } from '../value-objects';
 export class PromptCopiedEvent implements IEvent {
   constructor(
     public readonly promptId: PromptId,
-    public readonly byUserId: UserId,
+    public readonly byUserId?: UserId,
   ) {}
 }
