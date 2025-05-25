@@ -19,8 +19,9 @@ export class PromptCopiedEventHandler
 
     if (!searchPromptEntryView) return;
 
+    // Always increment copiedCount if byUserId is not provided
     // Don't increment copiedCount if the prompt is copied by its owner
-    const isOwner = searchPromptEntryView.author.id === byUserId.getValue();
+    const isOwner = byUserId ? searchPromptEntryView.author.id === byUserId.getValue() : false;
     const newCopiedCount = isOwner
       ? searchPromptEntryView.copiedCount
       : searchPromptEntryView.copiedCount + 1;

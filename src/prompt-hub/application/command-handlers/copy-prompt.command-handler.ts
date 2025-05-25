@@ -24,7 +24,9 @@ export class CopyPromptCommandHandler
       throw new Error(`Prompt with id ${promptId} not found.`);
     }
 
-    prompt.copy(UserId.create(userId));
+    // Only create UserId if userId is provided
+    const userIdObj = userId ? UserId.create(userId) : undefined;
+    prompt.copy(userIdObj);
 
     // Mark the original prompt as an event publisher
     const promptWithEvents = this.eventPublisher.mergeObjectContext(prompt);

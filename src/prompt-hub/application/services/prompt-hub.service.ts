@@ -101,10 +101,10 @@ export class PromptHubService {
    * Records that a prompt was copied by a user.
    *
    * @param {string} promptId - The unique identifier of the prompt to copy.
-   * @param {string} userId - The unique identifier of the user copying the prompt.
+   * @param {string} [userId] - The unique identifier of the user copying the prompt. Optional if the copier is not authenticated.
    * @return {Promise<void>} Resolves when the prompt has been successfully copied.
    */
-  async copyPrompt(promptId: string, userId: string): Promise<void> {
+  async copyPrompt(promptId: string, userId?: string): Promise<void> {
     const command = new CopyPromptCommand(promptId, userId);
     return this.commandBus.execute(command);
   }
