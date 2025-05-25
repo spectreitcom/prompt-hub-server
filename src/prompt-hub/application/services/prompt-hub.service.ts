@@ -22,6 +22,7 @@ import {
   GetPromptsByCatalogQuery,
   GetPromptCatalogByIdQuery,
   GetPromptForEditQuery,
+  GetPublishedPromptListQuery,
 } from '../queries';
 import {
   PromptListItemView,
@@ -214,6 +215,23 @@ export class PromptHubService {
     search?: string,
   ): Promise<PromptListItemView[]> {
     const query = new GetPromptListQuery(take, skip, search);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets a list of published prompts with pagination and optional search.
+   *
+   * @param {number} take - The number of prompts to take.
+   * @param {number} skip - The number of prompts to skip.
+   * @param {string} [search] - Optional search term to filter prompts.
+   * @return {Promise<PromptListItemView[]>} A list of published prompt items.
+   */
+  async getPublishedPromptList(
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptListItemView[]> {
+    const query = new GetPublishedPromptListQuery(take, skip, search);
     return this.queryBus.execute(query);
   }
 

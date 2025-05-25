@@ -319,6 +319,26 @@ export class PromptHubController {
     );
   }
 
+  @Get('prompts/published')
+  @ApiOperation({
+    summary:
+      'Get a list of published prompts with pagination and optional search',
+    description: 'Use page and limit parameters for pagination. Returns only published prompts sorted by most likes first.',
+  })
+  @ApiOkResponse({
+    description: 'List of published prompts retrieved successfully',
+    type: [PromptListItemView],
+  })
+  async getPublishedPrompts(
+    @Query() query: GetUserPromptsQueryDto,
+  ): Promise<PromptListItemView[]> {
+    return this.promptHubService.getPublishedPromptList(
+      query.take,
+      query.skip,
+      query.search,
+    );
+  }
+
   @Get('prompts/:promptId/edit')
   @UseGuards(AuthGuard)
   @ApiBearerAuth(SWAGGER_USER_AUTH)
