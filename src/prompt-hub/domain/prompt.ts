@@ -108,7 +108,6 @@ export class Prompt extends AggregateRoot {
   }
 
   copy(byUserId?: UserId): void {
-    console.log(byUserId); // todo;
     if (byUserId && byUserId.equals(this.authorId)) return;
     if (!this.status.isPublished()) {
       throw new Error('Only published prompts can be copied.');
