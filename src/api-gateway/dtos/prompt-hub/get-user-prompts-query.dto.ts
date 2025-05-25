@@ -33,6 +33,14 @@ export class GetUserPromptsQueryDto {
   @IsOptional()
   search?: string;
 
+  @ApiProperty({
+    description: 'Catalog ID to filter out prompts that are already in the catalog',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  catalogId?: string;
+
   // For backward compatibility
   get take(): number {
     return this.limit;

@@ -320,10 +320,12 @@ export class PromptHubController {
   }
 
   @Get('prompts/published')
+  @UseGuards(OptionalAuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
   @ApiOperation({
     summary:
       'Get a list of published prompts with pagination and optional search',
-    description: 'Use page and limit parameters for pagination. Returns only published prompts sorted by most likes first.',
+    description: 'Use page and limit parameters for pagination. Returns only published prompts sorted by most likes first. If catalogId is provided, it will return only prompts that are not already in the specified catalog.',
   })
   @ApiOkResponse({
     description: 'List of published prompts retrieved successfully',
@@ -331,11 +333,14 @@ export class PromptHubController {
   })
   async getPublishedPrompts(
     @Query() query: GetUserPromptsQueryDto,
+    @GetOptionalUserId() userId?: string,
   ): Promise<PromptListItemView[]> {
     return this.promptHubService.getPublishedPromptList(
       query.take,
       query.skip,
       query.search,
+      query.catalogId,
+      userId,
     );
   }
 

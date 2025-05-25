@@ -224,14 +224,18 @@ export class PromptHubService {
    * @param {number} take - The number of prompts to take.
    * @param {number} skip - The number of prompts to skip.
    * @param {string} [search] - Optional search term to filter prompts.
+   * @param {string} [catalogId] - Optional catalog ID to filter out prompts that are already in the catalog.
+   * @param {string} [userId] - Optional user ID to filter prompts by author.
    * @return {Promise<PromptListItemView[]>} A list of published prompt items.
    */
   async getPublishedPromptList(
     take: number,
     skip: number,
     search?: string,
+    catalogId?: string,
+    userId?: string,
   ): Promise<PromptListItemView[]> {
-    const query = new GetPublishedPromptListQuery(take, skip, search);
+    const query = new GetPublishedPromptListQuery(take, skip, search, catalogId, userId);
     return this.queryBus.execute(query);
   }
 

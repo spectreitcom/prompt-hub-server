@@ -14,10 +14,12 @@ export class GetPublishedPromptListQueryHandler
   async execute(
     query: GetPublishedPromptListQuery,
   ): Promise<PromptListItemView[]> {
-    return this.promptListItemViewRepository.getPublishedList(
+    return this.promptListItemViewRepository.getUsersPublishedPromptsList(
+      query.userId,
       query.take,
       query.skip,
       query.search,
+      query.catalogId,
     );
   }
 }

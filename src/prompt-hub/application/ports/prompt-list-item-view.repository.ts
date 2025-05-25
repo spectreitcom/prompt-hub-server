@@ -9,13 +9,6 @@ export abstract class PromptListItemViewRepository {
     search?: string,
   ): Promise<PromptListItemView[]>;
 
-  // should return only published prompts sorted by most likes first
-  abstract getPublishedList(
-    take: number,
-    skip: number,
-    search?: string,
-  ): Promise<PromptListItemView[]>;
-
   abstract findById(id: string): Promise<PromptListItemView>;
 
   abstract delete(id: string): Promise<void>;
@@ -32,5 +25,6 @@ export abstract class PromptListItemViewRepository {
     take: number,
     skip: number,
     search?: string,
+    catalogId?: string,
   ): Promise<PromptListItemView[]>;
 }

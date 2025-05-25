@@ -2,7 +2,11 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPromptForEditQuery } from '../queries';
 import { PromptRepository } from '../ports';
 import { EditablePromptView } from '../../views';
-import { PromptId, UserId, UnauthorizedPromptAccessException } from '../../domain';
+import {
+  PromptId,
+  UserId,
+  UnauthorizedPromptAccessException,
+} from '../../domain';
 
 @QueryHandler(GetPromptForEditQuery)
 export class GetPromptForEditQueryHandler

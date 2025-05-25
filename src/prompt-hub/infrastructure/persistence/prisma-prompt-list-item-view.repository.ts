@@ -174,62 +174,16 @@ export class PrismaPromptListItemViewRepository
     );
   }
 
-  async getPublishedList(
-    take: number,
-    skip: number,
-    search?: string,
-  ): Promise<PromptListItemView[]> {
-    const where: Prisma.PromptListItemViewWhereInput = {
-      status: 'PUBLISHED',
-      ...(search
-        ? {
-            OR: [
-              { title: { contains: search, mode: 'insensitive' } },
-              { contentPreview: { contains: search, mode: 'insensitive' } },
-            ],
-          }
-        : {}),
-    };
-
-    const promptListItems = await this.prisma.promptListItemView.findMany({
-      where,
-      orderBy: {
-        likedCount: 'desc', // Sort by most likes first
-      },
-      take,
-      skip,
-    });
-
-    return promptListItems.map(
-      (item) =>
-        new PromptListItemView(
-          item.id,
-          item.title,
-          item.contentPreview,
-          item.likedCount,
-          item.copiedCount,
-          item.viewCount,
-          item.createdAt,
-          item.isPublic,
-          item.status,
-          new PromptUserPublicView(
-            item.authorId,
-            item.authorName,
-            item.authorAvatarUrl || undefined,
-          ),
-        ),
-    );
-  }
-
   async getUsersPublishedPromptsList(
     userId: string,
     take: number,
     skip: number,
     search?: string,
+    catalogId?: string,
   ): Promise<PromptListItemView[]> {
     const where: Prisma.PromptListItemViewWhereInput = {
-      authorId: userId,
       status: 'PUBLISHED',
+      ...(userId ? { authorId: userId } : {}),
       ...(search
         ? {
             OR: [
@@ -239,6 +193,26 @@ export class PrismaPromptListItemViewRepository
           }
         : {}),
     };
+
+    // If catalogId is provided, filter out prompts that are already in the catalog
+    let promptsToExclude: string[] = [];
+    if (catalogId) {
+      const promptsInCatalog = await this.prisma.promptCatalogPrompt.findMany({
+        where: {
+          catalogId,
+        },
+        select: {
+          promptId: true,
+        },
+      });
+      promptsToExclude = promptsInCatalog.map((item) => item.promptId);
+
+      if (promptsToExclude.length > 0) {
+        where.id = {
+          notIn: promptsToExclude,
+        };
+      }
+    }
 
     const promptListItems = await this.prisma.promptListItemView.findMany({
       where,
