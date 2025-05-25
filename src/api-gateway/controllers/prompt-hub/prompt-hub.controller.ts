@@ -21,10 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { PromptHubService } from '../../../prompt-hub';
 import {
-  PromptCatalogView,
   PromptDetailsView,
   PromptListItemView,
-  PromptCatalogItemView,
   EditablePromptView,
 } from '../../../prompt-hub/views';
 import {
@@ -32,9 +30,7 @@ import {
   PromptIdParamDto,
   UpdatePromptDto,
   SetPromptVisibilityDto,
-  CatalogIdParamDto,
   GetUserPromptsQueryDto,
-  GetPromptsByCatalogQueryDto,
 } from '../../dtos';
 import { AuthGuard, OptionalAuthGuard } from '../../guards';
 import { GetUserId, GetOptionalUserId } from '../../decorators';
