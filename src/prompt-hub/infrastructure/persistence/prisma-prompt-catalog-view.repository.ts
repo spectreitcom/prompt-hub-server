@@ -55,14 +55,29 @@ export class PrismaPromptCatalogViewRepository extends PromptCatalogViewReposito
     });
   }
 
-  async findForUser(userId: string): Promise<PromptCatalogView[]> {
+  async findForUser(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptCatalogView[]> {
     const promptCatalogViews = await this.prisma.promptCatalogView.findMany({
       where: {
         userId,
+        ...(search
+          ? {
+              name: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            }
+          : {}),
       },
       orderBy: {
         createdAt: 'desc',
       },
+      take,
+      skip,
     });
 
     return promptCatalogViews.map(

@@ -26,6 +26,7 @@ import {
   RemovePromptFromCatalogParamDto,
   RenameCatalogDto,
   GetPromptsByCatalogQueryDto,
+  GetUserPromptCatalogsQueryDto,
 } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
@@ -39,6 +40,34 @@ import {
 @Controller('prompt-hub/catalogs')
 export class CatalogController {
   constructor(private readonly promptHubService: PromptHubService) {}
+
+  @Get('user-catalogs')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary:
+      'Get a list of prompt catalogs for a specific user with pagination and optional search',
+    description: 'Use page and limit parameters for pagination',
+  })
+  @ApiOkResponse({
+    description: 'Prompt catalogs retrieved successfully',
+    type: [PromptCatalogView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async getUserPromptCatalogs(
+    @GetUserId() userId: string,
+    @Query() query: GetUserPromptCatalogsQueryDto,
+  ): Promise<PromptCatalogView[]> {
+    return this.promptHubService.getUserPromptCatalogs(
+      userId,
+      query.take,
+      query.skip,
+      query.search,
+    );
+  }
 
   @Post()
   @UseGuards(AuthGuard)
@@ -218,27 +247,7 @@ export class CatalogController {
     return this.promptHubService.deletePromptCatalog(params.catalogId, userId);
   }
 
-  @Get('catalogs')
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth(SWAGGER_USER_AUTH)
-  @ApiOperation({
-    summary: 'Get a list of prompt catalogs for a specific user',
-  })
-  @ApiOkResponse({
-    description: 'Prompt catalogs retrieved successfully',
-    type: [PromptCatalogView],
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'User not authenticated',
-  })
-  async getUserPromptCatalogs(
-    @GetUserId() userId: string,
-  ): Promise<PromptCatalogView[]> {
-    return this.promptHubService.getUserPromptCatalogs(userId);
-  }
-
-  @Get('catalogs/:catalogId')
+  @Get(':catalogId')
   @UseGuards(AuthGuard)
   @ApiBearerAuth(SWAGGER_USER_AUTH)
   @ApiOperation({
@@ -269,7 +278,7 @@ export class CatalogController {
     return this.promptHubService.getPromptCatalogById(params.catalogId, userId);
   }
 
-  @Get('catalogs/:catalogId/prompts')
+  @Get(':catalogId/prompts')
   @UseGuards(AuthGuard)
   @ApiBearerAuth(SWAGGER_USER_AUTH)
   @ApiOperation({

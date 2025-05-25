@@ -4,7 +4,12 @@ export abstract class PromptCatalogViewRepository {
   abstract save(promptCatalogView: PromptCatalogView): Promise<void>;
   abstract findById(id: string): Promise<PromptCatalogView>;
   abstract delete(id: string): Promise<void>;
-  abstract findForUser(userId: string): Promise<PromptCatalogView[]>;
+  abstract findForUser(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptCatalogView[]>;
   abstract findByIdAndUserId(
     id: string,
     userId: string,

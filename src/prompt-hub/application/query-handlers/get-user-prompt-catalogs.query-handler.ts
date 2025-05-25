@@ -14,6 +14,11 @@ export class GetUserPromptCatalogsQueryHandler
   async execute(
     query: GetUserPromptCatalogsQuery,
   ): Promise<PromptCatalogView[]> {
-    return this.promptCatalogViewRepository.findForUser(query.userId);
+    return this.promptCatalogViewRepository.findForUser(
+      query.userId,
+      query.take,
+      query.skip,
+      query.search,
+    );
   }
 }
