@@ -31,6 +31,8 @@ export class RemovePromptFromFavoritesCommandHandler
     const favoritePromptWithEvents =
       this.eventPublisher.mergeObjectContext(favoritePrompt);
 
+    favoritePromptWithEvents.remove();
+
     // Remove the favorite prompt
     await this.favoritePromptRepository.remove(
       favoritePromptWithEvents.getId(),
