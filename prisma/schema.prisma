@@ -47,6 +47,9 @@ model PromptCatalogItem {
   @@unique([catalogId, promptId])
 }
 
+/**
+ * @depracated
+ */
 model PromptCatalogPrompt {
   id        String   @id @default(cuid())
   catalogId String

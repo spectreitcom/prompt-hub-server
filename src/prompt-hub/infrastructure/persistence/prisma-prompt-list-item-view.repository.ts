@@ -195,9 +195,8 @@ export class PrismaPromptListItemViewRepository
     };
 
     // If catalogId is provided, filter out prompts that are already in the catalog
-    let promptsToExclude: string[] = [];
     if (catalogId) {
-      const promptsInCatalog = await this.prisma.promptCatalogPrompt.findMany({
+      const promptsInCatalog = await this.prisma.promptCatalogItem.findMany({
         where: {
           catalogId,
         },
@@ -205,13 +204,12 @@ export class PrismaPromptListItemViewRepository
           promptId: true,
         },
       });
-      promptsToExclude = promptsInCatalog.map((item) => item.promptId);
+      const promptsToExclude = promptsInCatalog.map((item) => item.promptId);
 
-      if (promptsToExclude.length > 0) {
-        where.id = {
-          notIn: promptsToExclude,
-        };
-      }
+      // Always apply the filter when catalogId is provided, even if there are no prompts to exclude
+      where.id = {
+        notIn: promptsToExclude,
+      };
     }
 
     const promptListItems = await this.prisma.promptListItemView.findMany({
