@@ -10,7 +10,12 @@ import {
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...eventHandlers, ...commandHandlers, ...queryHandlers, FavoritesService],
+  providers: [
+    ...eventHandlers,
+    ...commandHandlers,
+    ...queryHandlers,
+    FavoritesService,
+  ],
   exports: [FavoritesService],
 })
 export class FavoritesModule {}
