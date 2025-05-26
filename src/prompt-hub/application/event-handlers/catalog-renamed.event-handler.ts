@@ -25,6 +25,7 @@ export class CatalogRenamedEventHandler
       event.newName.getValue(),
       existingCatalog.userId,
       existingCatalog.createdAt,
+      existingCatalog.countItems,
     );
 
     await this.promptCatalogViewRepository.save(updatedCatalog);

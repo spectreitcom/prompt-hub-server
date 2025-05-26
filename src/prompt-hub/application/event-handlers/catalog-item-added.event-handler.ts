@@ -4,8 +4,9 @@ import {
   PromptCatalogRepository,
   PromptRepository,
   PromptCatalogItemViewRepository,
+  PromptCatalogViewRepository,
 } from '../ports';
-import { PromptCatalogItemView } from '../../views';
+import { PromptCatalogItemView, PromptCatalogView } from '../../views';
 
 @EventsHandler(CatalogItemAddedEvent)
 export class CatalogItemAddedEventHandler
@@ -15,6 +16,7 @@ export class CatalogItemAddedEventHandler
     private readonly promptCatalogItemViewRepository: PromptCatalogItemViewRepository,
     private readonly promptRepository: PromptRepository,
     private readonly promptCatalogRepository: PromptCatalogRepository,
+    private readonly promptCatalogViewRepository: PromptCatalogViewRepository,
   ) {}
 
   async handle(event: CatalogItemAddedEvent): Promise<void> {
@@ -39,5 +41,19 @@ export class CatalogItemAddedEventHandler
     );
 
     await this.promptCatalogItemViewRepository.save(catalogItemView);
+
+    const catalogView = await this.promptCatalogViewRepository.findById(
+      catalogId.getValue(),
+    );
+    if (catalogView) {
+      const updatedCatalogView = new PromptCatalogView(
+        catalogView.id,
+        catalogView.name,
+        catalogView.userId,
+        catalogView.createdAt,
+        (catalogView.countItems || 0) + 1,
+      );
+      await this.promptCatalogViewRepository.save(updatedCatalogView);
+    }
   }
 }
