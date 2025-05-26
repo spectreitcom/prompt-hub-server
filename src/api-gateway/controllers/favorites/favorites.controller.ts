@@ -93,8 +93,10 @@ export class FavoritesController {
   @UseGuards(AuthGuard)
   @ApiBearerAuth(SWAGGER_USER_AUTH)
   @ApiOperation({
-    summary: 'Get a list of favorite prompts with pagination and optional filtering',
-    description: 'Use page and limit parameters for pagination. Returns prompts that the user has added to favorites.',
+    summary:
+      'Get a list of favorite prompts with pagination and optional filtering',
+    description:
+      'Use page and limit parameters for pagination. Returns prompts that the user has added to favorites.',
   })
   @ApiOkResponse({
     description: 'List of favorite prompts retrieved successfully',
