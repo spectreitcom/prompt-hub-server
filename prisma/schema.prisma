@@ -117,10 +117,11 @@ model PromptDetailsView {
 }
 
 model PromptCatalogView {
-  id        String   @id @default(cuid())
-  userId    String
-  name      String
-  createdAt DateTime @default(now())
+  id         String   @id @default(cuid())
+  userId     String
+  name       String
+  createdAt  DateTime @default(now())
+  countItems Int?     @default(0)
 
   @@index([userId])
   @@index([name])
