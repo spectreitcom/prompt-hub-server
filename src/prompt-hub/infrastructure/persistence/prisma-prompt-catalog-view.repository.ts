@@ -85,7 +85,13 @@ export class PrismaPromptCatalogViewRepository extends PromptCatalogViewReposito
 
     return promptCatalogViews.map(
       (view) =>
-        new PromptCatalogView(view.id, view.name, view.userId, view.createdAt, view.countItems),
+        new PromptCatalogView(
+          view.id,
+          view.name,
+          view.userId,
+          view.createdAt,
+          view.countItems,
+        ),
     );
   }
 
