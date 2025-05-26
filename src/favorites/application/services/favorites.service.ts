@@ -86,10 +86,7 @@ export class FavoritesService {
     promptId: string,
     userId: string,
   ): Promise<boolean> {
-    const query = new IsPromptInFavoritesQuery(
-      userId,
-      promptId,
-    );
+    const query = new IsPromptInFavoritesQuery(userId, promptId);
     return this.queryBus.execute(query);
   }
 }

@@ -141,9 +141,6 @@ export class FavoritesController {
     @Param() params: PromptIdParamDto,
     @GetUserId() userId: string,
   ): Promise<boolean> {
-    return this.favoritesService.isPromptInFavorites(
-      params.promptId,
-      userId,
-    );
+    return this.favoritesService.isPromptInFavorites(params.promptId, userId);
   }
 }
