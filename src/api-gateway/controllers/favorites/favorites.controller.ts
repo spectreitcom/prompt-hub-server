@@ -118,4 +118,32 @@ export class FavoritesController {
       query.authorId,
     );
   }
+
+  @Get('prompts/:promptId/is-favorite')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Check if a prompt is in favorites' })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to check',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiOkResponse({
+    description: 'Returns true if the prompt is in favorites, false otherwise',
+    type: Boolean,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async isPromptInFavorites(
+    @Param() params: PromptIdParamDto,
+    @GetUserId() userId: string,
+  ): Promise<boolean> {
+    return this.favoritesService.isPromptInFavorites(
+      params.promptId,
+      userId,
+    );
+  }
 }

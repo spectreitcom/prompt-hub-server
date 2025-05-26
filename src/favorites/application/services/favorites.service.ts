@@ -4,7 +4,7 @@ import {
   AddPromptToFavoritesCommand,
   RemovePromptFromFavoritesCommand,
 } from '../commands';
-import { GetFavoritePromptsQuery } from '../queries';
+import { GetFavoritePromptsQuery, IsPromptInFavoritesQuery } from '../queries';
 import { PromptId, UserId } from '../../domain';
 import { FavoritePromptEntryView } from '../../views';
 
@@ -71,6 +71,24 @@ export class FavoritesService {
       take,
       search,
       authorId,
+    );
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Checks if a prompt is in the user's favorites.
+   *
+   * @param {string} promptId - The unique identifier of the prompt to check.
+   * @param {string} userId - The unique identifier of the user.
+   * @return {Promise<boolean>} A promise that resolves to true if the prompt is in favorites, false otherwise.
+   */
+  async isPromptInFavorites(
+    promptId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const query = new IsPromptInFavoritesQuery(
+      userId,
+      promptId,
     );
     return this.queryBus.execute(query);
   }
