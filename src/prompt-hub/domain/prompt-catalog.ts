@@ -39,7 +39,9 @@ export class PromptCatalog extends AggregateRoot {
       CatalogTimestamps.createNew(),
     );
 
-    catalog.apply(new CatalogCreatedEvent(catalog.id, catalog.ownerId));
+    catalog.apply(
+      new CatalogCreatedEvent(catalog.id, catalog.ownerId, catalog.name),
+    );
 
     return catalog;
   }

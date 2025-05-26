@@ -28,6 +28,7 @@ import {
   PromptHubService,
   UserCreatedEventHandler,
   GetPromptListQueryHandler,
+  GetPublishedPromptListQueryHandler,
   GetUserPromptsQueryHandler,
   GetPromptDetailsQueryHandler,
   GetUserPromptCatalogsQueryHandler,
@@ -74,6 +75,7 @@ const CommandHandlers = [
 
 const QueryHandlers = [
   GetPromptListQueryHandler,
+  GetPublishedPromptListQueryHandler,
   GetUserPromptsQueryHandler,
   GetPromptDetailsQueryHandler,
   GetUserPromptCatalogsQueryHandler,

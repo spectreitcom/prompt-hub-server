@@ -22,6 +22,7 @@ import {
   GetPromptsByCatalogQuery,
   GetPromptCatalogByIdQuery,
   GetPromptForEditQuery,
+  GetPublishedPromptListQuery,
 } from '../queries';
 import {
   PromptListItemView,
@@ -218,6 +219,27 @@ export class PromptHubService {
   }
 
   /**
+   * Gets a list of published prompts with pagination and optional search.
+   *
+   * @param {number} take - The number of prompts to take.
+   * @param {number} skip - The number of prompts to skip.
+   * @param {string} [search] - Optional search term to filter prompts.
+   * @param {string} [catalogId] - Optional catalog ID to filter out prompts that are already in the catalog.
+   * @param {string} [userId] - Optional user ID to filter prompts by author.
+   * @return {Promise<PromptListItemView[]>} A list of published prompt items.
+   */
+  async getPublishedPromptList(
+    take: number,
+    skip: number,
+    search?: string,
+    catalogId?: string,
+    userId?: string,
+  ): Promise<PromptListItemView[]> {
+    const query = new GetPublishedPromptListQuery(take, skip, search, catalogId, userId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
    * Gets a list of prompts for a specific user with pagination and optional search.
    *
    * @param {string} userId - The unique identifier of the user.
@@ -263,13 +285,21 @@ export class PromptHubService {
   }
 
   /**
-   * Gets a list of prompt catalogs for a specific user.
+   * Gets a list of prompt catalogs for a specific user with pagination and optional search.
    *
    * @param {string} userId - The unique identifier of the user.
+   * @param {number} take - The number of catalogs to take.
+   * @param {number} skip - The number of catalogs to skip.
+   * @param {string} [search] - Optional search term to filter catalogs.
    * @return {Promise<PromptCatalogView[]>} A list of prompt catalogs for the user.
    */
-  async getUserPromptCatalogs(userId: string): Promise<PromptCatalogView[]> {
-    const query = new GetUserPromptCatalogsQuery(userId);
+  async getUserPromptCatalogs(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+  ): Promise<PromptCatalogView[]> {
+    const query = new GetUserPromptCatalogsQuery(userId, take, skip, search);
     return this.queryBus.execute(query);
   }
 

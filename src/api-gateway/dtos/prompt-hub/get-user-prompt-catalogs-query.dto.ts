@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsInt, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class GetUserPromptsQueryDto {
+export class GetUserPromptCatalogsQueryDto {
   @ApiProperty({
-    description: 'Number of prompts per page (for pagination)',
+    description: 'Number of catalogs per page (for pagination)',
     default: 10,
     required: false,
   })
@@ -26,20 +26,12 @@ export class GetUserPromptsQueryDto {
   page?: number = 1;
 
   @ApiProperty({
-    description: 'Search term to filter prompts',
+    description: 'Search term to filter catalogs',
     required: false,
   })
   @IsString()
   @IsOptional()
   search?: string;
-
-  @ApiProperty({
-    description: 'Catalog ID to filter out prompts that are already in the catalog',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  catalogId?: string;
 
   // For backward compatibility
   get take(): number {

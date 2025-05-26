@@ -47,6 +47,9 @@ model PromptCatalogItem {
   @@unique([catalogId, promptId])
 }
 
+/**
+ * @depracated
+ */
 model PromptCatalogPrompt {
   id        String   @id @default(cuid())
   catalogId String
@@ -120,6 +123,7 @@ model PromptCatalogView {
   createdAt DateTime @default(now())
 
   @@index([userId])
+  @@index([name])
 }
 
 model PromptCatalogItemView {
@@ -238,6 +242,12 @@ model SearchPromptEntry {
   updatedAt       DateTime @updatedAt
 
   // tags SearchPromptTag[]
+
+  @@index([title])
+  @@index([content])
+  @@index([copiedCount])
+  @@index([likedCount])
+  @@index([viewCount])
 }
 
 // model SearchPromptTag {

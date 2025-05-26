@@ -19,4 +19,12 @@ export abstract class PromptListItemViewRepository {
     skip: number,
     search?: string,
   ): Promise<PromptListItemView[]>;
+
+  abstract getUsersPublishedPromptsList(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+    catalogId?: string,
+  ): Promise<PromptListItemView[]>;
 }

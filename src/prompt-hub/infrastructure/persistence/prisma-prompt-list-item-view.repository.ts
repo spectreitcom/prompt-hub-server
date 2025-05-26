@@ -173,4 +173,72 @@ export class PrismaPromptListItemViewRepository
         ),
     );
   }
+
+  async getUsersPublishedPromptsList(
+    userId: string,
+    take: number,
+    skip: number,
+    search?: string,
+    catalogId?: string,
+  ): Promise<PromptListItemView[]> {
+    const where: Prisma.PromptListItemViewWhereInput = {
+      status: 'PUBLISHED',
+      ...(userId ? { authorId: userId } : {}),
+      ...(search
+        ? {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { contentPreview: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {}),
+    };
+
+    // If catalogId is provided, filter out prompts that are already in the catalog
+    if (catalogId) {
+      const promptsInCatalog = await this.prisma.promptCatalogItem.findMany({
+        where: {
+          catalogId,
+        },
+        select: {
+          promptId: true,
+        },
+      });
+      const promptsToExclude = promptsInCatalog.map((item) => item.promptId);
+
+      // Always apply the filter when catalogId is provided, even if there are no prompts to exclude
+      where.id = {
+        notIn: promptsToExclude,
+      };
+    }
+
+    const promptListItems = await this.prisma.promptListItemView.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take,
+      skip,
+    });
+
+    return promptListItems.map(
+      (item) =>
+        new PromptListItemView(
+          item.id,
+          item.title,
+          item.contentPreview,
+          item.likedCount,
+          item.copiedCount,
+          item.viewCount,
+          item.createdAt,
+          item.isPublic,
+          item.status,
+          new PromptUserPublicView(
+            item.authorId,
+            item.authorName,
+            item.authorAvatarUrl || undefined,
+          ),
+        ),
+    );
+  }
 }
