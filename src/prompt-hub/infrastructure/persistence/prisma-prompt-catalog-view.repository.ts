@@ -18,12 +18,14 @@ export class PrismaPromptCatalogViewRepository extends PromptCatalogViewReposito
         name: promptCatalogView.name,
         userId: promptCatalogView.userId,
         createdAt: promptCatalogView.createdAt,
+        countItems: promptCatalogView.countItems,
       },
       create: {
         id: promptCatalogView.id,
         name: promptCatalogView.name,
         userId: promptCatalogView.userId,
         createdAt: promptCatalogView.createdAt,
+        countItems: promptCatalogView.countItems,
       },
     });
   }
@@ -44,6 +46,7 @@ export class PrismaPromptCatalogViewRepository extends PromptCatalogViewReposito
       promptCatalogView.name,
       promptCatalogView.userId,
       promptCatalogView.createdAt,
+      promptCatalogView.countItems,
     );
   }
 
@@ -82,7 +85,13 @@ export class PrismaPromptCatalogViewRepository extends PromptCatalogViewReposito
 
     return promptCatalogViews.map(
       (view) =>
-        new PromptCatalogView(view.id, view.name, view.userId, view.createdAt),
+        new PromptCatalogView(
+          view.id,
+          view.name,
+          view.userId,
+          view.createdAt,
+          view.countItems,
+        ),
     );
   }
 
@@ -106,6 +115,7 @@ export class PrismaPromptCatalogViewRepository extends PromptCatalogViewReposito
       promptCatalogView.name,
       promptCatalogView.userId,
       promptCatalogView.createdAt,
+      promptCatalogView.countItems,
     );
   }
 }

@@ -25,10 +25,18 @@ export class PromptCatalogView {
   })
   public readonly createdAt: Date;
 
-  constructor(id: string, name: string, userId: string, createdAt: Date) {
+  @ApiProperty({
+    description: 'The number of items in the catalog',
+    example: 5,
+    required: false,
+  })
+  public readonly countItems?: number;
+
+  constructor(id: string, name: string, userId: string, createdAt: Date, countItems?: number) {
     this.id = id;
     this.name = name;
     this.userId = userId;
     this.createdAt = createdAt;
+    this.countItems = countItems;
   }
 }

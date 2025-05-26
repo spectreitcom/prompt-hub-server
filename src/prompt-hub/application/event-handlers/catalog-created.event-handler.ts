@@ -17,6 +17,7 @@ export class CatalogCreatedEventHandler
       event.name.getValue(),
       event.ownerId.getValue(),
       new Date(),
+      0,
     );
 
     await this.promptCatalogViewRepository.save(catalogView);
