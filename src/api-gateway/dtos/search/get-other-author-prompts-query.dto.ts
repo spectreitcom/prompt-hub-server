@@ -59,4 +59,12 @@ export class GetOtherAuthorPromptsQueryDto {
   get excludedPromptIds() {
     return this['excludedPromptIds[]'];
   }
+
+  @ApiProperty({
+    description: 'Search term to filter prompts by title or content',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  search?: string;
 }

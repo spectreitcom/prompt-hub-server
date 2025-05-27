@@ -30,6 +30,7 @@ export class SearchService {
    * @param {number} skip - The number of items to skip from the beginning of the list.
    * @param {number} take - The number of items to take from the list.
    * @param {string[]} [excludedPromptIds] - Optional array of prompt IDs to exclude from the results.
+   * @param {string} [search] - Optional search term to filter the prompts.
    * @return {Promise<SearchPromptEntryView[]>} A promise that resolves to an array of prompt entries.
    */
   async getOtherAuthorPrompts(
@@ -37,9 +38,16 @@ export class SearchService {
     skip: number,
     take: number,
     excludedPromptIds?: string[],
+    search?: string,
   ): Promise<SearchPromptEntryView[]> {
     return this.queryBus.execute(
-      new GetOtherAuthorPromptsQuery(authorId, take, skip, excludedPromptIds),
+      new GetOtherAuthorPromptsQuery(
+        authorId,
+        take,
+        skip,
+        excludedPromptIds,
+        search,
+      ),
     );
   }
 }
