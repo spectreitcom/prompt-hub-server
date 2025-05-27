@@ -15,5 +15,6 @@ export abstract class SearchPromptEntryViewRepository {
     skip: number,
     take: number,
     excludedPromptIds?: string[],
+    search?: string,
   ): Promise<SearchPromptEntryView[]>;
 }

@@ -19,6 +19,7 @@ export class GetOtherAuthorPromptsQueryHandler
       query.skip,
       query.take,
       query.excludedPromptIds,
+      query.search,
     );
   }
 }

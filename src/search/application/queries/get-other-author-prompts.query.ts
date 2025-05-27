@@ -4,5 +4,6 @@ export class GetOtherAuthorPromptsQuery {
     public readonly take: number,
     public readonly skip: number,
     public readonly excludedPromptIds?: string[],
+    public readonly search?: string,
   ) {}
 }

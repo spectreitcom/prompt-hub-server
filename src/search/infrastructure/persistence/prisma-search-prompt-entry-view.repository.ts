@@ -157,6 +157,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
     skip: number,
     take: number,
     excludedPromptIds?: string[],
+    search?: string,
   ): Promise<SearchPromptEntryView[]> {
     const searchPromptEntries = await this.prisma.searchPromptEntry.findMany({
       where: {
@@ -166,6 +167,14 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
           notIn: excludedPromptIds ?? [],
         },
         status: 'PUBLISHED',
+        ...(search
+          ? {
+              OR: [
+                { title: { contains: search, mode: 'insensitive' } },
+                { content: { contains: search, mode: 'insensitive' } },
+              ],
+            }
+          : {}),
       },
       skip,
       take,

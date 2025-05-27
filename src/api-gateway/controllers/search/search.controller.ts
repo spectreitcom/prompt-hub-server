@@ -44,7 +44,7 @@ export class SearchController {
   @ApiOperation({
     summary: 'Get a list of prompts by a specific author',
     description:
-      'Use authorId, page, limit, and optional excludedPromptIds parameters',
+      'Use authorId, page, limit, optional excludedPromptIds, and optional search parameters',
   })
   @ApiOkResponse({
     description: 'List of author prompts retrieved successfully',
@@ -62,6 +62,7 @@ export class SearchController {
       query.skip,
       query.take,
       query.excludedPromptIds,
+      query.search,
     );
   }
 }
