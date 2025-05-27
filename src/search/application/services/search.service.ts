@@ -41,7 +41,13 @@ export class SearchService {
     search?: string,
   ): Promise<SearchPromptEntryView[]> {
     return this.queryBus.execute(
-      new GetOtherAuthorPromptsQuery(authorId, take, skip, excludedPromptIds, search),
+      new GetOtherAuthorPromptsQuery(
+        authorId,
+        take,
+        skip,
+        excludedPromptIds,
+        search,
+      ),
     );
   }
 }
