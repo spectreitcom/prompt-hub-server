@@ -1,25 +1,54 @@
 import { AggregateRoot } from '@nestjs/cqrs';
+import * as crypto from 'crypto';
+import {
+  TagActivatedEvent,
+  TagCreatedEvent,
+  TagDeactivatedEvent,
+} from './events';
 import { TagId, TagValue } from './value-objects';
 
 export class Tag extends AggregateRoot {
   constructor(
     private readonly id: TagId,
     private readonly value: TagValue,
-    private readonly isActive: boolean,
+    private isActive: boolean,
   ) {
     super();
   }
 
-  static create(id: TagId, value: TagValue, isActive: boolean): Tag {
-    return new Tag(id, value, isActive);
+  static create(value: TagValue, isActive: boolean = true): Tag {
+    const id = TagId.create(crypto.randomUUID());
+    const tag = new Tag(id, value, isActive);
+
+    tag.apply(new TagCreatedEvent(id, value, isActive));
+
+    return tag;
   }
 
-  getId(): string {
-    return this.id.getValue();
+  activate(): void {
+    if (this.isActive) {
+      return;
+    }
+
+    this.isActive = true;
+    this.apply(new TagActivatedEvent(this.id, this.value));
   }
 
-  getValue(): string {
-    return this.value.getValue();
+  deactivate(): void {
+    if (!this.isActive) {
+      return;
+    }
+
+    this.isActive = false;
+    this.apply(new TagDeactivatedEvent(this.id, this.value));
+  }
+
+  getId(): TagId {
+    return this.id;
+  }
+
+  getValue(): TagValue {
+    return this.value;
   }
 
   getIsActive(): boolean {
