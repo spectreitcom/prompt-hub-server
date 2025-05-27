@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { PrismaTagRepository } from './persistence';
-import { TagRepository } from '../application';
+import {
+  PrismaTagRepository,
+  PrismaTagEntryViewRepository,
+} from './persistence';
+import { TagRepository, TagEntryViewRepository } from '../application';
 
 @Module({
   imports: [PrismaModule],
@@ -10,7 +13,11 @@ import { TagRepository } from '../application';
       provide: TagRepository,
       useClass: PrismaTagRepository,
     },
+    {
+      provide: TagEntryViewRepository,
+      useClass: PrismaTagEntryViewRepository,
+    },
   ],
-  exports: [TagRepository],
+  exports: [TagRepository, TagEntryViewRepository],
 })
 export class InfrastructureModule {}
