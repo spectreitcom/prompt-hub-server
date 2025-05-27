@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsInt, Min, IsArray } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsString, IsInt, Min } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
+import { TransformFnParams } from 'class-transformer';
 
 export class GetOtherAuthorPromptsQueryDto {
   @ApiProperty({
@@ -37,10 +38,14 @@ export class GetOtherAuthorPromptsQueryDto {
     required: false,
     type: [String],
   })
-  @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  excludedPromptIds?: string[];
+  @IsString({ each: true })
+  @Transform((params: TransformFnParams) => {
+    const { value, key, obj } = params;
+    obj[key] = value;
+    return Array.isArray(value) ? value : [value];
+  })
+  'excludedPromptIds[]'?: string[];
 
   // For backward compatibility
   get take(): number {
@@ -49,5 +54,9 @@ export class GetOtherAuthorPromptsQueryDto {
 
   get skip(): number {
     return (this.page - 1) * this.limit;
+  }
+
+  get excludedPromptIds() {
+    return this['excludedPromptIds[]'];
   }
 }
