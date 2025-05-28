@@ -5,10 +5,10 @@ describe('TagValue', () => {
     it('should create a valid TagValue with a valid tag', () => {
       // Arrange
       const validTag = 'valid-tag';
-      
+
       // Act
       const tagValue = TagValue.create(validTag);
-      
+
       // Assert
       expect(tagValue).toBeDefined();
       expect(tagValue.getValue()).toBe(validTag);
@@ -18,10 +18,10 @@ describe('TagValue', () => {
       // Arrange
       const validTag = 'valid-tag';
       const tagWithSpaces = `  ${validTag}  `;
-      
+
       // Act
       const tagValue = TagValue.create(tagWithSpaces);
-      
+
       // Assert
       expect(tagValue.getValue()).toBe(validTag);
     });
@@ -30,10 +30,10 @@ describe('TagValue', () => {
       // Arrange
       const upperCaseTag = 'VALID-TAG';
       const expectedTag = 'valid-tag';
-      
+
       // Act
       const tagValue = TagValue.create(upperCaseTag);
-      
+
       // Assert
       expect(tagValue.getValue()).toBe(expectedTag);
     });
@@ -42,43 +42,51 @@ describe('TagValue', () => {
       // Arrange
       const tagWithSpecialChars = 'valid@tag!123_+';
       const expectedTag = 'validtag123';
-      
+
       // Act
       const tagValue = TagValue.create(tagWithSpecialChars);
-      
+
       // Assert
       expect(tagValue.getValue()).toBe(expectedTag);
     });
 
     it('should throw an error if the tag is too short', () => {
       // Act & Assert
-      expect(() => TagValue.create('')).toThrow('Tag value must be between 1 and 50 characters.');
-      expect(() => TagValue.create('  ')).toThrow('Tag value must be between 1 and 50 characters.');
+      expect(() => TagValue.create('')).toThrow(
+        'Tag value must be between 1 and 50 characters.',
+      );
+      expect(() => TagValue.create('  ')).toThrow(
+        'Tag value must be between 1 and 50 characters.',
+      );
     });
 
     it('should throw an error if the tag is too long', () => {
       // Arrange
       const longTag = 'a'.repeat(51);
-      
+
       // Act & Assert
-      expect(() => TagValue.create(longTag)).toThrow('Tag value must be between 1 and 50 characters.');
+      expect(() => TagValue.create(longTag)).toThrow(
+        'Tag value must be between 1 and 50 characters.',
+      );
     });
 
     it('should throw an error if the tag contains no alphanumeric characters after sanitization', () => {
       // Arrange
       const invalidTag = '@#$%^&*()';
-      
+
       // Act & Assert
-      expect(() => TagValue.create(invalidTag)).toThrow('Tag value must contain at least one alphanumeric character.');
+      expect(() => TagValue.create(invalidTag)).toThrow(
+        'Tag value must contain at least one alphanumeric character.',
+      );
     });
 
     it('should accept a tag with exactly 1 character', () => {
       // Arrange
       const tag = 'a';
-      
+
       // Act
       const tagValue = TagValue.create(tag);
-      
+
       // Assert
       expect(tagValue.getValue()).toBe(tag);
     });
@@ -86,10 +94,10 @@ describe('TagValue', () => {
     it('should accept a tag with exactly 50 characters', () => {
       // Arrange
       const tag = 'a'.repeat(50);
-      
+
       // Act
       const tagValue = TagValue.create(tag);
-      
+
       // Assert
       expect(tagValue.getValue()).toBe(tag);
     });
@@ -100,10 +108,10 @@ describe('TagValue', () => {
       // Arrange
       const validTag = 'valid-tag';
       const tagValue = TagValue.create(validTag);
-      
+
       // Act
       const result = tagValue.getValue();
-      
+
       // Assert
       expect(result).toBe(validTag);
     });
@@ -115,10 +123,10 @@ describe('TagValue', () => {
       const validTag = 'valid-tag';
       const tagValue1 = TagValue.create(validTag);
       const tagValue2 = TagValue.create(validTag);
-      
+
       // Act
       const result = tagValue1.equals(tagValue2);
-      
+
       // Assert
       expect(result).toBe(true);
     });
@@ -127,10 +135,10 @@ describe('TagValue', () => {
       // Arrange
       const tagValue1 = TagValue.create('tag1');
       const tagValue2 = TagValue.create('tag2');
-      
+
       // Act
       const result = tagValue1.equals(tagValue2);
-      
+
       // Assert
       expect(result).toBe(false);
     });
@@ -139,10 +147,10 @@ describe('TagValue', () => {
       // Arrange
       const tagValue1 = TagValue.create('tag-one');
       const tagValue2 = TagValue.create('TAG-ONE');
-      
+
       // Act
       const result = tagValue1.equals(tagValue2);
-      
+
       // Assert
       expect(result).toBe(true);
     });
