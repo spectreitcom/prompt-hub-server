@@ -26,8 +26,8 @@ model Prompt {
   isDeleted Boolean      @default(false)
   deletedAt DateTime?
 
-  catalogs  PromptCatalogPrompt[]
-  PromptTag PromptTag[]
+  catalogs   PromptCatalogPrompt[]
+  promptTags PromptTag[]
 }
 
 model PromptCatalog {
