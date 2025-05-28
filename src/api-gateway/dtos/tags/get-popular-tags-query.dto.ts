@@ -1,34 +1,45 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsInt, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetPopularTagsQueryDto {
   @ApiProperty({
-    description: 'Number of items to skip for pagination',
-    example: 0,
-    default: 0,
+    description: 'Page number for pagination',
+    default: 1,
+    required: false,
   })
-  @IsInt({ message: 'Skip must be an integer' })
-  @Min(0, { message: 'Skip must be at least 0' })
+  @IsInt({ message: 'Page must be an integer' })
+  @Min(1, { message: 'Page must be at least 1' })
   @Type(() => Number)
-  readonly skip: number = 0;
+  @IsOptional()
+  page?: number = 1;
 
   @ApiProperty({
-    description: 'Number of items to take for pagination',
-    example: 10,
+    description: 'Number of items per page for pagination',
     default: 10,
+    required: false,
   })
-  @IsInt({ message: 'Take must be an integer' })
-  @Min(1, { message: 'Take must be at least 1' })
-  @Max(100, { message: 'Take must be at most 100' })
+  @IsInt({ message: 'Limit must be an integer' })
+  @Min(1, { message: 'Limit must be at least 1' })
+  @Max(100, { message: 'Limit must be at most 100' })
   @Type(() => Number)
-  readonly take: number = 10;
-
-  @ApiPropertyOptional({
-    description: 'Optional search term to filter tags',
-    example: 'java',
-  })
   @IsOptional()
+  limit?: number = 10;
+
+  @ApiProperty({
+    description: 'Search term to filter tags',
+    required: false,
+  })
   @IsString({ message: 'Search must be a string' })
-  readonly search?: string;
+  @IsOptional()
+  search?: string;
+
+  // For backward compatibility
+  get take(): number {
+    return this.limit;
+  }
+
+  get skip(): number {
+    return (this.page - 1) * this.limit;
+  }
 }

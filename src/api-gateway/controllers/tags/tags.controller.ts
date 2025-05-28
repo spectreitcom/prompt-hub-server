@@ -10,7 +10,6 @@ import { TagsService } from '../../../tags';
 import { TagEntryView } from '../../../tags/views';
 import { CreateTagDto, GetPopularTagsQueryDto } from '../../dtos';
 import { AuthGuard, OptionalAuthGuard } from '../../guards';
-import { GetUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
 
 @ApiTags('tags')
