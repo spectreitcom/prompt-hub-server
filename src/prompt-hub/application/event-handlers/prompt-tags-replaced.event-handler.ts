@@ -4,6 +4,7 @@ import {
   PromptDetailsViewRepository,
   PromptListItemViewRepository,
 } from '../ports';
+import { PromptDetailsView, PromptListItemView } from '../../views';
 
 @EventsHandler(PromptTagsReplacedEvent)
 export class PromptTagsReplacedEventHandler
@@ -16,16 +17,51 @@ export class PromptTagsReplacedEventHandler
 
   async handle(event: PromptTagsReplacedEvent) {
     const { promptId, tags } = event;
+    const promptIdValue = promptId.getValue();
+    const tagValues = tags.map((tag) => tag.getValue());
 
-    // Currently, the view models don't include tags
-    // This handler is a placeholder for future implementation
-    // When tags are added to the view models, this handler should be updated to:
-    // 1. Find the prompt view models by ID
-    // 2. Update the tags in the view models
-    // 3. Save the updated view models
+    try {
+      // Update tags in PromptListItemView
+      const promptListItem =
+        await this.promptListItemViewRepository.findById(promptIdValue);
+      if (promptListItem) {
+        const updatedPromptListItem = new PromptListItemView(
+          promptListItem.id,
+          promptListItem.title,
+          promptListItem.contentPreview,
+          promptListItem.likedCount,
+          promptListItem.copiedCount,
+          promptListItem.viewCount,
+          promptListItem.createdAt,
+          promptListItem.isPublic,
+          promptListItem.status,
+          promptListItem.author,
+          tagValues,
+        );
+        await this.promptListItemViewRepository.save(updatedPromptListItem);
+      }
 
-    console.log(
-      `Tags replaced for prompt ${promptId.getValue()}: ${tags.map((tag) => tag.getValue()).join(', ')}`,
-    );
+      // Update tags in PromptDetailsView
+      const promptDetails =
+        await this.promptDetailsViewRepository.findById(promptIdValue);
+      if (promptDetails) {
+        const updatedPromptDetails = new PromptDetailsView(
+          promptDetails.id,
+          promptDetails.title,
+          promptDetails.content,
+          promptDetails.isPublic,
+          promptDetails.status,
+          promptDetails.createdAt,
+          promptDetails.likedCount,
+          promptDetails.copiedCount,
+          promptDetails.viewCount,
+          promptDetails.author,
+          tagValues,
+        );
+        await this.promptDetailsViewRepository.save(updatedPromptDetails);
+      }
+    } catch (error) {
+      console.error(`Error updating tags for prompt ${promptIdValue}:`, error);
+    }
   }
 }
