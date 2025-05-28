@@ -155,4 +155,72 @@ describe('TagValue', () => {
       expect(result).toBe(true);
     });
   });
+
+  describe('getUniqueTags', () => {
+    it('should return an empty array when given an empty array', () => {
+      // Arrange
+      const tags: TagValue[] = [];
+
+      // Act
+      const uniqueTags = TagValue.getUniqueTags(tags);
+
+      // Assert
+      expect(uniqueTags).toEqual([]);
+    });
+
+    it('should return the same array when there are no duplicates', () => {
+      // Arrange
+      const tags = [
+        TagValue.create('tag1'),
+        TagValue.create('tag2'),
+        TagValue.create('tag3'),
+      ];
+
+      // Act
+      const uniqueTags = TagValue.getUniqueTags(tags);
+
+      // Assert
+      expect(uniqueTags.length).toBe(3);
+      expect(uniqueTags[0].getValue()).toBe('tag1');
+      expect(uniqueTags[1].getValue()).toBe('tag2');
+      expect(uniqueTags[2].getValue()).toBe('tag3');
+    });
+
+    it('should filter out duplicate tags', () => {
+      // Arrange
+      const tags = [
+        TagValue.create('tag1'),
+        TagValue.create('tag2'),
+        TagValue.create('tag1'), // Duplicate
+        TagValue.create('tag3'),
+        TagValue.create('tag2'), // Duplicate
+      ];
+
+      // Act
+      const uniqueTags = TagValue.getUniqueTags(tags);
+
+      // Assert
+      expect(uniqueTags.length).toBe(3);
+      expect(uniqueTags[0].getValue()).toBe('tag1');
+      expect(uniqueTags[1].getValue()).toBe('tag2');
+      expect(uniqueTags[2].getValue()).toBe('tag3');
+    });
+
+    it('should filter out tags that are different but sanitize to the same value', () => {
+      // Arrange
+      const tags = [
+        TagValue.create('tag-one'),
+        TagValue.create('TAG-ONE'), // Same as tag-one after sanitization
+        TagValue.create('tag-two'),
+      ];
+
+      // Act
+      const uniqueTags = TagValue.getUniqueTags(tags);
+
+      // Assert
+      expect(uniqueTags.length).toBe(2);
+      expect(uniqueTags[0].getValue()).toBe('tag-one');
+      expect(uniqueTags[1].getValue()).toBe('tag-two');
+    });
+  });
 });

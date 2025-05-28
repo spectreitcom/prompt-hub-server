@@ -20,6 +20,16 @@ export class TagValue {
     return new TagValue(sanitized);
   }
 
+  static getUniqueTags(tags: TagValue[]): TagValue[] {
+    const uniqueTags: TagValue[] = [];
+    for (const tag of tags) {
+      if (!uniqueTags.some((existingTag) => existingTag.equals(tag))) {
+        uniqueTags.push(tag);
+      }
+    }
+    return uniqueTags;
+  }
+
   getValue(): string {
     return this.value;
   }

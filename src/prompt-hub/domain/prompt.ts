@@ -6,6 +6,7 @@ import {
   PromptTimestamps,
   PromptTitle,
   PromptVisibility,
+  TagValue,
   UserId,
 } from './value-objects';
 import {
@@ -13,6 +14,7 @@ import {
   PromptCreatedEvent,
   PromptDeletedEvent,
   PromptPublishedEvent,
+  PromptTagsReplacedEvent,
   PromptUpdatedEvent,
   PromptViewedEvent,
   PromptVisibilityChangedEvent,
@@ -27,6 +29,7 @@ export class Prompt extends AggregateRoot {
   private visibility: PromptVisibility;
   private readonly authorId: UserId;
   private timestamps: PromptTimestamps;
+  private tags: TagValue[];
 
   constructor(
     id: PromptId,
@@ -36,6 +39,7 @@ export class Prompt extends AggregateRoot {
     visibility: PromptVisibility,
     authorId: UserId,
     timestamps: PromptTimestamps,
+    tags: TagValue[] = [],
   ) {
     super();
     this.id = id;
@@ -45,6 +49,7 @@ export class Prompt extends AggregateRoot {
     this.visibility = visibility;
     this.authorId = authorId;
     this.timestamps = timestamps;
+    this.tags = tags;
   }
 
   static createDraft(authorId: UserId): Prompt {
@@ -71,6 +76,19 @@ export class Prompt extends AggregateRoot {
     );
 
     return prompt;
+  }
+
+  replaceTags(newTags: TagValue[]): void {
+    // you can add max 5 tags
+    if (newTags.length > 5) {
+      throw new Error('You can add max 5 tags.');
+    }
+
+    // Get unique tags using the TagValue static method
+    this.tags = TagValue.getUniqueTags(newTags);
+    this.timestamps = this.timestamps.withUpdatedAt(new Date());
+
+    this.apply(new PromptTagsReplacedEvent(this.id, this.authorId, this.tags));
   }
 
   updateContent(title: PromptTitle, content: PromptContent): void {
@@ -171,5 +189,9 @@ export class Prompt extends AggregateRoot {
 
   delete(): void {
     this.apply(new PromptDeletedEvent(this.id));
+  }
+
+  getTags(): TagValue[] {
+    return this.tags;
   }
 }
