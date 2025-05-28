@@ -62,6 +62,12 @@ export class PromptListItemView {
   })
   public readonly author: PromptUserPublicView;
 
+  @ApiProperty({
+    description: 'The tags of the prompt',
+    example: ['awesome', 'prompt', 'fun'],
+  })
+  public readonly tags: string[];
+
   constructor(
     id: string,
     title: string,
@@ -73,6 +79,7 @@ export class PromptListItemView {
     isPublic: boolean,
     status: string,
     author: PromptUserPublicView,
+    tags: string[],
   ) {
     this.id = id;
     this.title = title;
@@ -84,5 +91,6 @@ export class PromptListItemView {
     this.isPublic = isPublic;
     this.status = status;
     this.author = author;
+    this.tags = tags;
   }
 }

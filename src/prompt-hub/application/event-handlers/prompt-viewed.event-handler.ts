@@ -53,6 +53,7 @@ export class PromptViewedEventHandler
       promptListItemView.isPublic,
       promptListItemView.status,
       promptListItemView.author,
+      promptListItemView.tags || [],
     );
 
     await this.promptListItemViewRepository.save(promptListItemViewToUpdate);
@@ -86,6 +87,7 @@ export class PromptViewedEventHandler
       promptDetailsView.copiedCount,
       newViewCount,
       promptDetailsView.author,
+      promptDetailsView.tags || [],
     );
 
     await this.promptDetailsViewRepository.save(promptDetailsViewToUpdate);

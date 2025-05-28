@@ -87,6 +87,7 @@ export class PromptCreatedEventHandler
       visibility.isPublic(),
       status.getValue(),
       author,
+      [], // tags
     );
 
     await this.promptListItemViewRepository.save(promptListItemView);
@@ -112,6 +113,7 @@ export class PromptCreatedEventHandler
       0, // copiedCount
       0, // viewCount
       author,
+      [], // tags
     );
 
     await this.promptDetailsViewRepository.save(promptDetailsView);

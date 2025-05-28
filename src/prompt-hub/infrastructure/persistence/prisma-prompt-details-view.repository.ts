@@ -26,6 +26,7 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
         authorId: promptDetailsView.author.id,
         authorName: promptDetailsView.author.name,
         authorAvatarUrl: promptDetailsView.author.avatarUrl,
+        tagValues: promptDetailsView.tags,
       },
       create: {
         id: promptDetailsView.id,
@@ -40,6 +41,7 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
         authorId: promptDetailsView.author.id,
         authorName: promptDetailsView.author.name,
         authorAvatarUrl: promptDetailsView.author.avatarUrl,
+        tagValues: promptDetailsView.tags,
       },
     });
   }
@@ -70,6 +72,7 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
         promptDetailsView.authorName,
         promptDetailsView.authorAvatarUrl || undefined,
       ),
+      promptDetailsView.tagValues,
     );
   }
 

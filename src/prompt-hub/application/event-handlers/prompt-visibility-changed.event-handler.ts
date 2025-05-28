@@ -31,6 +31,7 @@ export class PromptVisibilityChangedEventHandler
       promptDetailsView.copiedCount,
       promptDetailsView.viewCount,
       promptDetailsView.author,
+      promptDetailsView.tags || [],
     );
 
     await this.promptDetailsViewRepository.save(promptDetailsViewToUpdate);

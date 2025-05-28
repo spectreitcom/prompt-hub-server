@@ -62,6 +62,12 @@ export class PromptDetailsView {
   })
   public readonly author: PromptUserPublicView;
 
+  @ApiProperty({
+    description: 'The tags of the prompt',
+    example: ['awesome', 'prompt', 'fun'],
+  })
+  public readonly tags: string[];
+
   constructor(
     id: string,
     title: string,
@@ -73,6 +79,7 @@ export class PromptDetailsView {
     copiedCount: number,
     viewCount: number,
     author: PromptUserPublicView,
+    tags: string[],
   ) {
     this.id = id;
     this.title = title;
@@ -84,5 +91,6 @@ export class PromptDetailsView {
     this.copiedCount = copiedCount;
     this.viewCount = viewCount;
     this.author = author;
+    this.tags = tags;
   }
 }
