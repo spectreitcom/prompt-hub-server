@@ -16,14 +16,14 @@ export class PromptTagsReplacedEventHandler
     try {
       // For each previous tag, decrement its usage count
       for (const tag of previousTags) {
-        const tagId = tag.getValue();
-        await this.tagEntryViewRepository.decrementUsage(tagId);
+        const tagValue = tag.getValue();
+        await this.tagEntryViewRepository.decrementUsage(tagValue);
       }
 
       // For each new tag, increment its usage count
       for (const tag of newTags) {
-        const tagId = tag.getValue();
-        await this.tagEntryViewRepository.incrementUsage(tagId);
+        const tagValue = tag.getValue();
+        await this.tagEntryViewRepository.incrementUsage(tagValue);
       }
     } catch (error) {
       console.error(
