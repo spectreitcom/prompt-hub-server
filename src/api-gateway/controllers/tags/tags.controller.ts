@@ -24,9 +24,40 @@ export class TagsController {
   @ApiResponse({
     status: 201,
     description: 'The tag has been successfully created.',
+    schema: {
+      type: 'object',
+      properties: {},
+      example: {},
+    },
   })
-  @ApiResponse({ status: 400, description: 'Bad request.' })
-  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 400 },
+        message: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['Tag value is required', 'Tag value must be a string'],
+        },
+        error: { type: 'string', example: 'Bad Request' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+        error: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   async createTag(@Body() createTagDto: CreateTagDto): Promise<void> {
     return this.tagsService.createTag(createTagDto.value);
   }
@@ -34,6 +65,19 @@ export class TagsController {
   @Get('popular')
   @UseGuards(OptionalAuthGuard)
   @ApiOperation({ summary: 'Get popular tags' })
+  @ApiResponse({
+    status: 401,
+    description:
+      'Unauthorized - Only returned if an invalid authentication token is provided.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+        error: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   @ApiOkResponse({
     description: 'Returns a list of popular tags.',
     type: [TagEntryView],
