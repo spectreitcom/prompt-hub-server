@@ -66,7 +66,21 @@ export class PrismaTagEntryViewRepository extends TagEntryViewRepository {
     });
   }
 
-  async search(
+  async findById(id: string): Promise<TagEntryView> {
+    const tag = await this.prisma.tagView.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!tag) {
+      return null;
+    }
+
+    return new TagEntryView(tag.id, tag.value, tag.isActive, tag.usageCount);
+  }
+
+  async getPopularTags(
     skip: number,
     take: number,
     search?: string,

@@ -309,8 +309,8 @@ model Tag {
 }
 
 model TagView {
-  id         String  @id // identyfikator taga
-  value      String // np. "ai-tools"
+  id         String  @id
+  value      String
   isActive   Boolean
   usageCount Int
 

@@ -5,9 +5,10 @@ export abstract class TagEntryViewRepository {
   abstract incrementUsage(id: string): Promise<void>;
   abstract decrementUsage(id: string): Promise<void>;
   abstract deactivate(id: string): Promise<void>;
-  abstract search(
+  abstract getPopularTags(
     skip: number,
     take: number,
     search?: string,
   ): Promise<TagEntryView[]>;
+  abstract findById(id: string): Promise<TagEntryView>;
 }
