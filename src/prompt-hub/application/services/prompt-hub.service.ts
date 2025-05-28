@@ -236,7 +236,13 @@ export class PromptHubService {
     catalogId?: string,
     userId?: string,
   ): Promise<PromptListItemView[]> {
-    const query = new GetPublishedPromptListQuery(take, skip, search, catalogId, userId);
+    const query = new GetPublishedPromptListQuery(
+      take,
+      skip,
+      search,
+      catalogId,
+      userId,
+    );
     return this.queryBus.execute(query);
   }
 
