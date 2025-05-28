@@ -6,9 +6,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { TagsService } from '../../../tags';
-import { Tag } from '../../../tags/domain';
-import { TagEntryView } from '../../../tags/views';
+import { TagsService, TagEntryView } from '../../../tags';
 import { CreateTagDto, GetPopularTagsQueryDto } from '../../dtos';
 import { AuthGuard, OptionalAuthGuard } from '../../guards';
 import { SWAGGER_USER_AUTH } from '../../../shared';
