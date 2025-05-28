@@ -16,9 +16,11 @@ import {
   VotingController,
   SearchController,
   NotificationsController,
+  TagsController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
+import { TagsModule } from '../tags';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { AuthGuard } from './guards';
     NotificationsModule,
     AccountsModule,
     FavoritesModule,
+    TagsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -46,6 +49,7 @@ import { AuthGuard } from './guards';
     VotingController,
     SearchController,
     NotificationsController,
+    TagsController,
   ],
   providers: [AuthService, AuthGuard],
 })

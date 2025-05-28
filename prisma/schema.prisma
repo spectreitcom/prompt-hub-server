@@ -297,3 +297,25 @@ model User {
 }
 
 //===================================================
+
+// Tags
+model Tag {
+  id        String   @id @default(cuid())
+  value     String   @unique // np. "ai-tools"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([isActive])
+}
+
+model TagView {
+  id         String  @id
+  value      String
+  isActive   Boolean
+  usageCount Int
+
+  @@index([isActive])
+  @@index([value])
+}
+
+//===================================================
