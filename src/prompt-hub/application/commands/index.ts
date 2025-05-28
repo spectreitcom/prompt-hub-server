@@ -10,3 +10,4 @@ export * from './delete-prompt-catalog.command';
 export * from './add-prompt-to-catalog.command';
 export * from './remove-prompt-from-catalog.command';
 export * from './prompt-viewed.command';
+export * from './replace-prompt-tags.command';

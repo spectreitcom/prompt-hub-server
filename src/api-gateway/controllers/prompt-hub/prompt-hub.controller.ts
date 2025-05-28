@@ -31,6 +31,7 @@ import {
   UpdatePromptDto,
   SetPromptVisibilityDto,
   GetUserPromptsQueryDto,
+  ReplacePromptTagsDto,
 } from '../../dtos';
 import { AuthGuard, OptionalAuthGuard } from '../../guards';
 import { GetUserId, GetOptionalUserId } from '../../decorators';
@@ -390,5 +391,43 @@ export class PromptHubController {
       }
       throw error;
     }
+  }
+
+  @Patch('prompts/:promptId/tags')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({ summary: 'Replace prompt tags' })
+  @ApiParam({
+    name: 'promptId',
+    description: 'The unique identifier of the prompt to update tags',
+    type: String,
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Prompt tags replaced successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Prompt not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to update this prompt',
+  })
+  async replacePromptTags(
+    @Param() params: PromptIdParamDto,
+    @Body() replacePromptTagsDto: ReplacePromptTagsDto,
+    @GetUserId() userId: string,
+  ): Promise<void> {
+    return this.promptHubService.replacePromptTags(
+      params.promptId,
+      userId,
+      replacePromptTagsDto.tags,
+    );
   }
 }
