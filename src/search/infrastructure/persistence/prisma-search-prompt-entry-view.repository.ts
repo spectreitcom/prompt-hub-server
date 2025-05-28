@@ -28,6 +28,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
         viewCount: searchPromptEntryView.viewCount,
         createdAt: searchPromptEntryView.createdAt,
         updatedAt: searchPromptEntryView.updatedAt,
+        tagValues: searchPromptEntryView.tags,
       },
       create: {
         id: searchPromptEntryView.id,
@@ -43,6 +44,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
         viewCount: searchPromptEntryView.viewCount,
         createdAt: searchPromptEntryView.createdAt,
         updatedAt: searchPromptEntryView.updatedAt,
+        tagValues: searchPromptEntryView.tags,
       },
     });
   }
@@ -74,6 +76,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
       searchPromptEntry.likedCount,
       searchPromptEntry.createdAt,
       searchPromptEntry.updatedAt,
+      searchPromptEntry.tagValues,
     );
   }
 
@@ -122,6 +125,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
           entry.likedCount,
           entry.createdAt,
           entry.updatedAt,
+          entry.tagValues,
         ),
     );
   }
@@ -201,6 +205,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
           entry.likedCount,
           entry.createdAt,
           entry.updatedAt,
+          entry.tagValues,
         ),
     );
   }

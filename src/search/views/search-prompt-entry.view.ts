@@ -68,6 +68,12 @@ export class SearchPromptEntryView {
   })
   public readonly updatedAt: Date;
 
+  @ApiProperty({
+    description: 'The tags of the prompt',
+    example: ['tag1', 'tag2', 'tag3'],
+  })
+  public readonly tags: string[];
+
   constructor(
     id: string,
     title: string,
@@ -80,6 +86,7 @@ export class SearchPromptEntryView {
     likedCount: number,
     createdAt: Date,
     updatedAt: Date,
+    tags: string[] = [],
   ) {
     this.id = id;
     this.title = title;
@@ -92,5 +99,6 @@ export class SearchPromptEntryView {
     this.likedCount = likedCount;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.tags = tags;
   }
 }
