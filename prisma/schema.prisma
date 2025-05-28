@@ -26,7 +26,8 @@ model Prompt {
   isDeleted Boolean      @default(false)
   deletedAt DateTime?
 
-  catalogs PromptCatalogPrompt[]
+  catalogs  PromptCatalogPrompt[]
+  PromptTag PromptTag[]
 }
 
 model PromptCatalog {
@@ -113,6 +114,8 @@ model PromptDetailsView {
   authorName      String
   authorAvatarUrl String?
 
+  tagValues String[]
+
   @@index([authorId])
 }
 
@@ -136,6 +139,18 @@ model PromptCatalogItemView {
 
   @@id([promptId, catalogId])
   @@index([catalogId])
+}
+
+model PromptTag {
+  promptId String
+  tagValue String
+  addedAt  DateTime @default(now())
+
+  // Relacja do Prompt
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@id([promptId, tagValue])
+  @@index([tagValue])
 }
 
 //===================================================
