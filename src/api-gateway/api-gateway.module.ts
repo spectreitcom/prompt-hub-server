@@ -16,6 +16,7 @@ import {
   VotingController,
   SearchController,
   NotificationsController,
+  TagsController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
@@ -48,6 +49,7 @@ import { TagsModule } from '../tags';
     VotingController,
     SearchController,
     NotificationsController,
+    TagsController,
   ],
   providers: [AuthService, AuthGuard],
 })
