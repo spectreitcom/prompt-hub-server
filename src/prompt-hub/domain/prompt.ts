@@ -91,7 +91,14 @@ export class Prompt extends AggregateRoot {
     this.tags = TagValue.getUniqueTags(newTags);
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
 
-    this.apply(new PromptTagsReplacedEvent(this.id, this.authorId, previousTags, this.tags));
+    this.apply(
+      new PromptTagsReplacedEvent(
+        this.id,
+        this.authorId,
+        previousTags,
+        this.tags,
+      ),
+    );
   }
 
   updateContent(title: PromptTitle, content: PromptContent): void {
