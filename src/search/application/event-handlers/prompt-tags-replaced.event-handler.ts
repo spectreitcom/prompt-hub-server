@@ -12,9 +12,9 @@ export class PromptTagsReplacedEventHandler
   ) {}
 
   async handle(event: PromptTagsReplacedEvent) {
-    const { promptId, tags } = event;
+    const { promptId, newTags } = event;
     const promptIdValue = promptId.getValue();
-    const tagValues = tags.map((tag) => tag.getValue());
+    const tagValues = newTags.map((tag) => tag.getValue());
 
     try {
       // Find the search prompt entry

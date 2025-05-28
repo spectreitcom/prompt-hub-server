@@ -84,11 +84,14 @@ export class Prompt extends AggregateRoot {
       throw new Error('You can add max 5 tags.');
     }
 
+    // Store the previous tags before replacing them
+    const previousTags = [...this.tags];
+
     // Get unique tags using the TagValue static method
     this.tags = TagValue.getUniqueTags(newTags);
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
 
-    this.apply(new PromptTagsReplacedEvent(this.id, this.authorId, this.tags));
+    this.apply(new PromptTagsReplacedEvent(this.id, this.authorId, previousTags, this.tags));
   }
 
   updateContent(title: PromptTitle, content: PromptContent): void {
