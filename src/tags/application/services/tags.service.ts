@@ -15,9 +15,9 @@ export class TagsService {
    * Creates a new tag using the provided value.
    *
    * @param {string} value - The name or value of the tag to be created.
-   * @return {Promise<void>} A promise that resolves when the tag is successfully created.
+   * @return {Promise<TagEntryView>} A promise that resolves to the created tag view.
    */
-  async createTag(value: string): Promise<void> {
+  async createTag(value: string): Promise<TagEntryView> {
     return this.commandBus.execute(new CreateTagCommand(value));
   }
 
