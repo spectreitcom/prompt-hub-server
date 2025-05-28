@@ -10,6 +10,7 @@ import {
   PromptVisibility,
   PromptTimestamps,
   UserId,
+  TagValue,
 } from '../../domain';
 
 @Injectable()
@@ -38,6 +39,9 @@ export class PrismaPromptRepository implements PromptRepository {
         id: id.getValue(),
         isDeleted: false,
       },
+      include: {
+        promptTags: true,
+      },
     });
 
     if (!promptData) {
@@ -58,29 +62,56 @@ export class PrismaPromptRepository implements PromptRepository {
   }
 
   async save(prompt: Prompt): Promise<void> {
-    await this.prisma.prompt.upsert({
-      where: { id: prompt.getId().getValue() },
-      update: {
-        title: prompt.getTitle().getValue(),
-        content: prompt.getContent().getValue(),
-        status: prompt.getStatus().getValue(),
-        isPublic: prompt.getVisibility().isPublic(),
-        updatedAt: prompt.getTimestamps().getUpdatedAt(),
-      },
-      create: {
-        id: prompt.getId().getValue(),
-        title: prompt.getTitle().getValue(),
-        content: prompt.getContent().getValue(),
-        status: prompt.getStatus().getValue(),
-        isPublic: prompt.getVisibility().isPublic(),
-        authorId: prompt.getAuthorId().getValue(),
-        createdAt: prompt.getTimestamps().getCreatedAt(),
-        updatedAt: prompt.getTimestamps().getUpdatedAt(),
-      },
+    const promptId = prompt.getId().getValue();
+    const tags = prompt.getTags();
+
+    // Use a transaction to ensure all operations succeed or fail together
+    await this.prisma.$transaction(async (tx) => {
+      // Save the prompt
+      await tx.prompt.upsert({
+        where: { id: promptId },
+        update: {
+          title: prompt.getTitle().getValue(),
+          content: prompt.getContent().getValue(),
+          status: prompt.getStatus().getValue(),
+          isPublic: prompt.getVisibility().isPublic(),
+          updatedAt: prompt.getTimestamps().getUpdatedAt(),
+        },
+        create: {
+          id: promptId,
+          title: prompt.getTitle().getValue(),
+          content: prompt.getContent().getValue(),
+          status: prompt.getStatus().getValue(),
+          isPublic: prompt.getVisibility().isPublic(),
+          authorId: prompt.getAuthorId().getValue(),
+          createdAt: prompt.getTimestamps().getCreatedAt(),
+          updatedAt: prompt.getTimestamps().getUpdatedAt(),
+        },
+      });
+
+      // Delete existing tags for this prompt
+      await tx.promptTag.deleteMany({
+        where: { promptId },
+      });
+
+      // Add new tags
+      if (tags.length > 0) {
+        await tx.promptTag.createMany({
+          data: tags.map((tag) => ({
+            promptId,
+            tagValue: tag.getValue(),
+          })),
+          skipDuplicates: true,
+        });
+      }
     });
   }
 
   private mapToDomain(promptData: any): Prompt {
+    const tags = promptData.PromptTag
+      ? promptData.PromptTag.map((tag: any) => TagValue.create(tag.tagValue))
+      : [];
+
     return new Prompt(
       PromptId.create(promptData.id),
       PromptTitle.create(promptData.title),
@@ -89,6 +120,7 @@ export class PrismaPromptRepository implements PromptRepository {
       PromptVisibility.fromBoolean(promptData.isPublic),
       UserId.create(promptData.authorId),
       PromptTimestamps.create(promptData.createdAt, promptData.updatedAt),
+      tags,
     );
   }
 

@@ -5,6 +5,7 @@ export * from './prompt-deleted.event';
 export * from './prompt-updated.event';
 export * from './prompt-viewed.event';
 export * from './prompt-created.event';
+export * from './prompt-tags-replaced.event';
 export * from './catalog-created.event';
 export * from './catalog-renamed.event';
 export * from './catalog-deleted.event';

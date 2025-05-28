@@ -79,6 +79,7 @@ export class PromptPublishedEventHandler
         true, // isPublic
         'PUBLISHED', // status
         author,
+        promptListItemView.tags || [],
       );
 
       await this.promptListItemViewRepository.save(promptListItemViewToUpdate);
@@ -97,6 +98,7 @@ export class PromptPublishedEventHandler
       true, // isPublic
       'PUBLISHED', // status
       author,
+      [], // tags
     );
 
     await this.promptListItemViewRepository.save(promptListItemViewToCreate);
@@ -128,6 +130,7 @@ export class PromptPublishedEventHandler
         promptDetailsView.copiedCount,
         promptDetailsView.viewCount,
         author,
+        promptDetailsView.tags || [],
       );
 
       await this.promptDetailsViewRepository.save(promptDetailsViewToUpdate);
@@ -146,6 +149,7 @@ export class PromptPublishedEventHandler
       0,
       0,
       author,
+      [], // tags
     );
 
     await this.promptDetailsViewRepository.save(promptDetailsViewToCreate);

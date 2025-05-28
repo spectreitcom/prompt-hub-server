@@ -3,6 +3,7 @@ import { CreateTagCommand } from '../commands';
 import { TagRepository } from '../ports';
 import { Tag, TagValue } from '../../domain';
 import { ConflictException } from '@nestjs/common';
+import { TagEntryView } from '../../views';
 
 @CommandHandler(CreateTagCommand)
 export class CreateTagCommandHandler
@@ -13,7 +14,7 @@ export class CreateTagCommandHandler
     private readonly eventPublisher: EventPublisher,
   ) {}
 
-  async execute(command: CreateTagCommand): Promise<void> {
+  async execute(command: CreateTagCommand): Promise<TagEntryView> {
     const { value } = command;
 
     // Create TagValue from raw string
@@ -35,5 +36,13 @@ export class CreateTagCommandHandler
 
     // Commit events
     tag.commit();
+
+    // Create and return a TagEntryView
+    return new TagEntryView(
+      tag.getId().getValue(),
+      tag.getValue().getValue(),
+      tag.getIsActive(),
+      0, // Initial usage count is 0
+    );
   }
 }

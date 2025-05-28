@@ -6,8 +6,7 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { TagsService } from '../../../tags';
-import { TagEntryView } from '../../../tags/views';
+import { TagsService, TagEntryView } from '../../../tags';
 import { CreateTagDto, GetPopularTagsQueryDto } from '../../dtos';
 import { AuthGuard, OptionalAuthGuard } from '../../guards';
 import { SWAGGER_USER_AUTH } from '../../../shared';
@@ -24,11 +23,7 @@ export class TagsController {
   @ApiResponse({
     status: 201,
     description: 'The tag has been successfully created.',
-    schema: {
-      type: 'object',
-      properties: {},
-      example: {},
-    },
+    type: TagEntryView,
   })
   @ApiResponse({
     status: 400,
@@ -58,7 +53,7 @@ export class TagsController {
       },
     },
   })
-  async createTag(@Body() createTagDto: CreateTagDto): Promise<void> {
+  async createTag(@Body() createTagDto: CreateTagDto): Promise<TagEntryView> {
     return this.tagsService.createTag(createTagDto.value);
   }
 

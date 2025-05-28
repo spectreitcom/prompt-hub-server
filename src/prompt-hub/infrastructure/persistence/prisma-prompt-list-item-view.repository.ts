@@ -27,6 +27,7 @@ export class PrismaPromptListItemViewRepository
         authorId: promptListItemView.author.id,
         authorName: promptListItemView.author.name,
         authorAvatarUrl: promptListItemView.author.avatarUrl,
+        tagValues: promptListItemView.tags,
       },
       create: {
         id: promptListItemView.id,
@@ -41,6 +42,7 @@ export class PrismaPromptListItemViewRepository
         authorId: promptListItemView.author.id,
         authorName: promptListItemView.author.name,
         authorAvatarUrl: promptListItemView.author.avatarUrl,
+        tagValues: promptListItemView.tags,
       },
     });
   }
@@ -85,6 +87,7 @@ export class PrismaPromptListItemViewRepository
             item.authorName,
             item.authorAvatarUrl || undefined,
           ),
+          item.tagValues ?? [],
         ),
     );
   }
@@ -115,6 +118,7 @@ export class PrismaPromptListItemViewRepository
         promptListItem.authorName,
         promptListItem.authorAvatarUrl || undefined,
       ),
+      promptListItem.tagValues ?? [],
     );
   }
 
@@ -170,6 +174,7 @@ export class PrismaPromptListItemViewRepository
             item.authorName,
             item.authorAvatarUrl || undefined,
           ),
+          item.tagValues ?? [],
         ),
     );
   }
@@ -238,6 +243,7 @@ export class PrismaPromptListItemViewRepository
             item.authorName,
             item.authorAvatarUrl || undefined,
           ),
+          item.tagValues ?? [],
         ),
     );
   }
