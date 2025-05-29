@@ -102,6 +102,7 @@ export class PrismaTagEntryViewRepository extends TagEntryViewRepository {
     search?: string,
   ): Promise<TagEntryView[]> {
     const where: Prisma.TagViewWhereInput = {
+      isActive: true,
       ...(search
         ? {
             value: {
