@@ -120,4 +120,24 @@ describe('NotificationPayload', () => {
       expect(payload1.equals(payload2)).toBe(false);
     });
   });
+
+  describe('toObject', () => {
+    it('should return an object with title and content when content is provided', () => {
+      const payload = NotificationPayload.create('Test Title', 'Test Content');
+      const obj = payload.toObject();
+      expect(obj).toEqual({
+        title: 'Test Title',
+        content: 'Test Content',
+      });
+    });
+
+    it('should return an object with title and undefined content when content is not provided', () => {
+      const payload = NotificationPayload.create('Test Title');
+      const obj = payload.toObject();
+      expect(obj).toEqual({
+        title: 'Test Title',
+        content: undefined,
+      });
+    });
+  });
 });
