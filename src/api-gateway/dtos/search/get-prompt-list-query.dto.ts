@@ -33,6 +33,16 @@ export class GetPromptListQueryDto {
   @IsOptional()
   search?: string;
 
+  @ApiProperty({
+    description: 'Tags to filter prompts (comma-separated string or array)',
+    required: false,
+    isArray: true,
+    type: [String],
+  })
+  @IsOptional()
+  @Type(() => String)
+  tags?: string[];
+
   // For backward compatibility
   get take(): number {
     return this.limit;

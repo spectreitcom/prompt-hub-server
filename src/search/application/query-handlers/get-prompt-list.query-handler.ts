@@ -16,6 +16,7 @@ export class GetPromptListQueryHandler
       query.skip,
       query.take,
       query.search,
+      query.tags,
     );
   }
 }

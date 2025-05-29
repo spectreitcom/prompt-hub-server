@@ -13,14 +13,16 @@ export class SearchService {
    * @param {number} skip - The number of items to skip from the beginning of the list.
    * @param {number} take - The number of items to take from the list.
    * @param {string} [search] - An optional search term to filter the prompts.
+   * @param {string[]} [tags] - An optional array of tags to filter the prompts.
    * @return {Promise<SearchPromptEntryView[]>} A promise that resolves to an array of prompt entries.
    */
   async getPromptList(
     skip: number,
     take: number,
     search?: string,
+    tags?: string[],
   ): Promise<SearchPromptEntryView[]> {
-    return this.queryBus.execute(new GetPromptListQuery(take, skip, search));
+    return this.queryBus.execute(new GetPromptListQuery(take, skip, search, tags));
   }
 
   /**

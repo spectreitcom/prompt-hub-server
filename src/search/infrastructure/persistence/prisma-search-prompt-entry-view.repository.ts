@@ -84,6 +84,7 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
     skip: number,
     take: number,
     search?: string,
+    tags?: string[],
   ): Promise<SearchPromptEntryView[]> {
     const where: Prisma.SearchPromptEntryWhereInput = {
       isPublic: true,
@@ -94,6 +95,13 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
               { title: { contains: search, mode: 'insensitive' } },
               { content: { contains: search, mode: 'insensitive' } },
             ],
+          }
+        : {}),
+      ...(tags && tags.length > 0
+        ? {
+            tagValues: {
+              hasSome: tags,
+            },
           }
         : {}),
     };
@@ -130,15 +138,23 @@ export class PrismaSearchPromptEntryViewRepository extends SearchPromptEntryView
     );
   }
 
-  async count(search?: string): Promise<number> {
+  async count(search?: string, tags?: string[]): Promise<number> {
     const where: Prisma.SearchPromptEntryWhereInput = {
       isPublic: true,
+      status: 'PUBLISHED',
       ...(search
         ? {
             OR: [
               { title: { contains: search, mode: 'insensitive' } },
               { content: { contains: search, mode: 'insensitive' } },
             ],
+          }
+        : {}),
+      ...(tags && tags.length > 0
+        ? {
+            tagValues: {
+              hasSome: tags,
+            },
           }
         : {}),
     };

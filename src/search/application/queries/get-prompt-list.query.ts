@@ -3,5 +3,6 @@ export class GetPromptListQuery {
     public readonly take: number,
     public readonly skip: number,
     public readonly search?: string,
+    public readonly tags?: string[],
   ) {}
 }
