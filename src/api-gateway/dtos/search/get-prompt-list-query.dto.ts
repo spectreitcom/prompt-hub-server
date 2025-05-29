@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsInt, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, TransformFnParams, Type } from 'class-transformer';
 
 export class GetPromptListQueryDto {
   @ApiProperty({
@@ -41,7 +41,12 @@ export class GetPromptListQueryDto {
   })
   @IsOptional()
   @Type(() => String)
-  tags?: string[];
+  @Transform((params: TransformFnParams) => {
+    const { value, key, obj } = params;
+    obj[key] = value;
+    return Array.isArray(value) ? value : [value];
+  })
+  private 'tags[]'?: string[];
 
   // For backward compatibility
   get take(): number {
@@ -50,5 +55,9 @@ export class GetPromptListQueryDto {
 
   get skip(): number {
     return (this.page - 1) * this.limit;
+  }
+
+  get tags() {
+    return this['tags[]'];
   }
 }
