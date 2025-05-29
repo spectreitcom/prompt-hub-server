@@ -2,6 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import {
   PromptContent,
   PromptId,
+  PromptInstruction,
   PromptStatus,
   PromptTimestamps,
   PromptTitle,
@@ -25,6 +26,7 @@ export class Prompt extends AggregateRoot {
   private readonly id: PromptId;
   private title: PromptTitle;
   private content: PromptContent;
+  private instruction: PromptInstruction;
   private status: PromptStatus;
   private visibility: PromptVisibility;
   private readonly authorId: UserId;
@@ -35,6 +37,7 @@ export class Prompt extends AggregateRoot {
     id: PromptId,
     title: PromptTitle,
     content: PromptContent,
+    instruction: PromptInstruction,
     status: PromptStatus,
     visibility: PromptVisibility,
     authorId: UserId,
@@ -45,6 +48,7 @@ export class Prompt extends AggregateRoot {
     this.id = id;
     this.title = title;
     this.content = content;
+    this.instruction = instruction;
     this.status = status;
     this.visibility = visibility;
     this.authorId = authorId;
@@ -57,6 +61,7 @@ export class Prompt extends AggregateRoot {
       PromptId.create(randomUUID()),
       PromptTitle.create('Untitled Prompt'),
       PromptContent.create('Your prompt goes here...'),
+      PromptInstruction.create(null),
       PromptStatus.draft(),
       PromptVisibility.public(),
       authorId,
@@ -72,6 +77,7 @@ export class Prompt extends AggregateRoot {
         prompt.status,
         prompt.visibility,
         prompt.timestamps,
+        prompt.instruction,
       ),
     );
 
@@ -101,9 +107,12 @@ export class Prompt extends AggregateRoot {
     );
   }
 
-  updateContent(title: PromptTitle, content: PromptContent): void {
+  updateContent(title: PromptTitle, content: PromptContent, instruction?: PromptInstruction): void {
     this.title = title;
     this.content = content;
+    if (instruction) {
+      this.instruction = instruction;
+    }
     this.timestamps = this.timestamps.withUpdatedAt(new Date());
     this.apply(
       new PromptUpdatedEvent(
@@ -112,6 +121,7 @@ export class Prompt extends AggregateRoot {
         this.title,
         this.content,
         this.timestamps,
+        this.instruction,
       ),
     );
   }
@@ -179,6 +189,10 @@ export class Prompt extends AggregateRoot {
 
   getContent(): PromptContent {
     return this.content;
+  }
+
+  getInstruction(): PromptInstruction {
+    return this.instruction;
   }
 
   getStatus(): PromptStatus {

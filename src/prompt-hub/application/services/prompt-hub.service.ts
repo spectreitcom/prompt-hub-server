@@ -58,6 +58,7 @@ export class PromptHubService {
    * @param {string} title - The new title for the prompt.
    * @param {string} content - The new content for the prompt.
    * @param {string} userId - The unique identifier of the user updating the prompt.
+   * @param {string} [instruction] - Optional instruction for the prompt.
    * @return {Promise<void>} Resolves when the prompt has been successfully updated.
    */
   async updatePrompt(
@@ -65,8 +66,9 @@ export class PromptHubService {
     title: string,
     content: string,
     userId: string,
+    instruction?: string,
   ): Promise<void> {
-    const command = new UpdatePromptCommand(promptId, title, content, userId);
+    const command = new UpdatePromptCommand(promptId, title, content, userId, instruction);
     return this.commandBus.execute(command);
   }
 

@@ -40,6 +40,14 @@ export class EditablePromptView {
   })
   public readonly tags: string[];
 
+  @ApiProperty({
+    description: 'Additional instructions for using the prompt',
+    example: 'Use this prompt when you need to generate creative content.',
+    required: false,
+    nullable: true,
+  })
+  public readonly instruction?: string | null;
+
   constructor(
     id: string,
     title: string,
@@ -47,6 +55,7 @@ export class EditablePromptView {
     status: PromptStatus,
     isPublic: boolean,
     tags: string[],
+    instruction?: string | null,
   ) {
     this.id = id;
     this.title = title;
@@ -54,5 +63,6 @@ export class EditablePromptView {
     this.status = status;
     this.isPublic = isPublic;
     this.tags = tags;
+    this.instruction = instruction;
   }
 }

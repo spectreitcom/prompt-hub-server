@@ -57,6 +57,14 @@ export class PromptDetailsView {
   public readonly viewCount: number;
 
   @ApiProperty({
+    description: 'Additional instructions for using the prompt',
+    example: 'Use this prompt when you need to generate creative content.',
+    required: false,
+    nullable: true,
+  })
+  public readonly instruction?: string | null;
+
+  @ApiProperty({
     description: 'The author of the prompt',
     type: PromptUserPublicView,
   })
@@ -80,6 +88,7 @@ export class PromptDetailsView {
     viewCount: number,
     author: PromptUserPublicView,
     tags: string[],
+    instruction?: string | null,
   ) {
     this.id = id;
     this.title = title;
@@ -92,5 +101,6 @@ export class PromptDetailsView {
     this.viewCount = viewCount;
     this.author = author;
     this.tags = tags;
+    this.instruction = instruction;
   }
 }

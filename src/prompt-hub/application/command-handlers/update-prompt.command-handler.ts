@@ -1,7 +1,13 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdatePromptCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptContent, PromptId, PromptTitle, UserId } from '../../domain';
+import {
+  PromptContent,
+  PromptId,
+  PromptInstruction,
+  PromptTitle,
+  UserId,
+} from '../../domain';
 
 @CommandHandler(UpdatePromptCommand)
 export class UpdatePromptCommandHandler
@@ -22,20 +28,26 @@ export class UpdatePromptCommandHandler
     // Check if the user is the owner of the prompt
     const userIdObj = UserId.create(userId);
     if (!prompt.getAuthorId().equals(userIdObj)) {
-      throw new Error(
-        'Only the owner of the prompt can update it.',
-      );
+      throw new Error('Only the owner of the prompt can update it.');
     }
 
-    // Create value objects for title and content
+    // Create value objects for title, content, and instruction
     const promptTitle = PromptTitle.create(title);
     const promptContent = PromptContent.create(content);
+    const promptInstruction =
+      command.instruction !== undefined
+        ? PromptInstruction.create(command.instruction)
+        : undefined;
 
     // Mark the prompt as an event publisher
     const promptWithEvents = this.eventPublisher.mergeObjectContext(prompt);
 
     // Update the prompt content
-    promptWithEvents.updateContent(promptTitle, promptContent);
+    promptWithEvents.updateContent(
+      promptTitle,
+      promptContent,
+      promptInstruction,
+    );
 
     // Save the updated prompt
     await this.promptRepository.save(promptWithEvents);
