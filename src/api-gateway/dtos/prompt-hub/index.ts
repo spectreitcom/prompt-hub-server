@@ -10,3 +10,4 @@ export * from './set-prompt-visibility.dto';
 export * from './get-user-prompts-query.dto';
 export * from './get-prompts-by-catalog-query.dto';
 export * from './get-user-prompt-catalogs-query.dto';
+export * from './replace-prompt-tags.dto';

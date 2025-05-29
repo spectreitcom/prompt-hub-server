@@ -26,6 +26,7 @@ import {
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
   PromptViewedCommandHandler,
+  ReplacePromptTagsCommandHandler,
   PromptHubService,
   UserCreatedEventHandler,
   GetPromptListQueryHandler,
@@ -73,6 +74,7 @@ const CommandHandlers = [
   AddPromptToCatalogCommandHandler,
   RemovePromptFromCatalogCommandHandler,
   PromptViewedCommandHandler,
+  ReplacePromptTagsCommandHandler,
 ];
 
 const QueryHandlers = [

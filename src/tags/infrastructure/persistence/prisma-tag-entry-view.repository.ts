@@ -29,34 +29,50 @@ export class PrismaTagEntryViewRepository extends TagEntryViewRepository {
     });
   }
 
-  async incrementUsage(id: string): Promise<void> {
-    await this.prisma.tagView.update({
+  async incrementUsage(tagValue: string): Promise<void> {
+    const tag = await this.prisma.tagView.findFirst({
       where: {
-        id,
-      },
-      data: {
-        usageCount: {
-          increment: 1,
-        },
+        value: tagValue,
       },
     });
+
+    if (tag) {
+      await this.prisma.tagView.update({
+        where: {
+          id: tag.id,
+        },
+        data: {
+          usageCount: {
+            increment: 1,
+          },
+        },
+      });
+    }
   }
 
-  async decrementUsage(id: string): Promise<void> {
-    await this.prisma.tagView.update({
+  async decrementUsage(tagValue: string): Promise<void> {
+    const tag = await this.prisma.tagView.findFirst({
       where: {
-        id,
-      },
-      data: {
-        usageCount: {
-          decrement: 1,
-        },
+        value: tagValue,
       },
     });
+
+    if (tag) {
+      await this.prisma.tagView.update({
+        where: {
+          id: tag.id,
+        },
+        data: {
+          usageCount: {
+            decrement: 1,
+          },
+        },
+      });
+    }
   }
 
   async deactivate(id: string): Promise<void> {
-    await this.prisma.tag.update({
+    await this.prisma.tagView.update({
       where: {
         id,
       },

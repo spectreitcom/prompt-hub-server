@@ -34,6 +34,7 @@ export class GetPromptForEditQueryHandler
       prompt.getContent().getValue(),
       prompt.getStatus().getValue(),
       prompt.getVisibility().isPublic(),
+      prompt.getTags().map((tag) => tag.getValue()),
     );
   }
 }

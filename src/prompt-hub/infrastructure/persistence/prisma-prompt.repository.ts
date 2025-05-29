@@ -108,8 +108,8 @@ export class PrismaPromptRepository implements PromptRepository {
   }
 
   private mapToDomain(promptData: any): Prompt {
-    const tags = promptData.PromptTag
-      ? promptData.PromptTag.map((tag: any) => TagValue.create(tag.tagValue))
+    const tags = promptData.promptTags
+      ? promptData.promptTags.map((tag: any) => TagValue.create(tag.tagValue))
       : [];
 
     return new Prompt(

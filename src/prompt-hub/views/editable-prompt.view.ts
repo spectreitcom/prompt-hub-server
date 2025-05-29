@@ -34,17 +34,25 @@ export class EditablePromptView {
   })
   public readonly isPublic: boolean;
 
+  @ApiProperty({
+    description: "The prompt's tags",
+    example: ['awesome', 'prompt', 'fun'],
+  })
+  public readonly tags: string[];
+
   constructor(
     id: string,
     title: string,
     content: string,
     status: PromptStatus,
     isPublic: boolean,
+    tags: string[],
   ) {
     this.id = id;
     this.title = title;
     this.content = content;
     this.status = status;
     this.isPublic = isPublic;
+    this.tags = tags;
   }
 }

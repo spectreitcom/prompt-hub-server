@@ -13,6 +13,7 @@ import {
   AddPromptToCatalogCommand,
   RemovePromptFromCatalogCommand,
   PromptViewedCommand,
+  ReplacePromptTagsCommand,
 } from '../commands';
 import {
   GetPromptListQuery,
@@ -235,7 +236,13 @@ export class PromptHubService {
     catalogId?: string,
     userId?: string,
   ): Promise<PromptListItemView[]> {
-    const query = new GetPublishedPromptListQuery(take, skip, search, catalogId, userId);
+    const query = new GetPublishedPromptListQuery(
+      take,
+      skip,
+      search,
+      catalogId,
+      userId,
+    );
     return this.queryBus.execute(query);
   }
 
@@ -354,6 +361,23 @@ export class PromptHubService {
    */
   async viewPrompt(promptId: string, userId?: string): Promise<void> {
     const command = new PromptViewedCommand(promptId, userId);
+    return this.commandBus.execute(command);
+  }
+
+  /**
+   * Replaces the tags of a prompt with new tags.
+   *
+   * @param {string} promptId - The unique identifier of the prompt to update.
+   * @param {string} userId - The unique identifier of the user updating the prompt tags.
+   * @param {string[]} tags - The new tags to replace the existing tags.
+   * @return {Promise<void>} Resolves when the prompt tags have been successfully replaced.
+   */
+  async replacePromptTags(
+    promptId: string,
+    userId: string,
+    tags: string[],
+  ): Promise<void> {
+    const command = new ReplacePromptTagsCommand(promptId, userId, tags);
     return this.commandBus.execute(command);
   }
 }
