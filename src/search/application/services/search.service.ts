@@ -22,7 +22,9 @@ export class SearchService {
     search?: string,
     tags?: string[],
   ): Promise<SearchPromptEntryView[]> {
-    return this.queryBus.execute(new GetPromptListQuery(take, skip, search, tags));
+    return this.queryBus.execute(
+      new GetPromptListQuery(take, skip, search, tags),
+    );
   }
 
   /**
