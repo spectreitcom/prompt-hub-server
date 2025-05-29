@@ -2,6 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import {
   PromptContent,
   PromptId,
+  PromptInstruction,
   PromptTimestamps,
   PromptTitle,
   PromptUpdatedEvent,
@@ -28,7 +29,8 @@ export class PromptUpdatedEventHandler
   ) {}
 
   async handle(event: PromptUpdatedEvent) {
-    const { promptId, content, authorId, title, timestamps } = event;
+    const { promptId, content, authorId, title, timestamps, instruction } =
+      event;
 
     const author = await this.promptUserPublicRepository.findById(
       authorId.getValue(),
@@ -49,6 +51,7 @@ export class PromptUpdatedEventHandler
       content,
       timestamps,
       author,
+      instruction,
     );
   }
 
@@ -88,6 +91,7 @@ export class PromptUpdatedEventHandler
     content: PromptContent,
     timestamps: PromptTimestamps,
     author: PromptUserPublicView,
+    instruction: PromptInstruction,
   ) {
     const promptDetailsView = await this.promptDetailsViewRepository.findById(
       promptId.getValue(),
@@ -107,6 +111,7 @@ export class PromptUpdatedEventHandler
       promptDetailsView.viewCount,
       author,
       promptDetailsView.tags || [],
+      instruction.getValue(),
     );
 
     await this.promptDetailsViewRepository.save(promptDetailsViewToUpdate);
