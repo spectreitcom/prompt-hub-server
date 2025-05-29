@@ -14,16 +14,18 @@ datasource db {
 // PromptHub Module
 
 model Prompt {
-  id        String       @id @default(cuid())
-  authorId  String // UWAGA: tylko ID użytkownika, bez relacji!
-  title     String       @db.VarChar(100)
-  content   String       @db.Text
-  isPublic  Boolean      @default(false)
-  status    PromptStatus @default(DRAFT)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id          String       @id @default(cuid())
+  authorId    String // UWAGA: tylko ID użytkownika, bez relacji!
+  title       String       @db.VarChar(100)
+  content     String       @db.Text
+  isPublic    Boolean      @default(false)
+  status      PromptStatus @default(DRAFT)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  instruction String?
+
   // Soft delete
-  isDeleted Boolean      @default(false)
+  isDeleted Boolean   @default(false)
   deletedAt DateTime?
 
   catalogs   PromptCatalogPrompt[]
@@ -111,6 +113,8 @@ model PromptDetailsView {
   likedCount  Int
   copiedCount Int
   viewCount   Int
+
+  instruction String?
 
   authorId        String
   authorName      String

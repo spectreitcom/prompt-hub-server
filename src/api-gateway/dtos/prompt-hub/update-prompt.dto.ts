@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 /**
  * Data Transfer Object for updating a prompt's content.
@@ -20,4 +20,13 @@ export class UpdatePromptDto {
   @IsNotEmpty()
   @IsString()
   content: string;
+
+  @ApiProperty({
+    description: 'Additional instructions for using the prompt',
+    example: 'Use this prompt when you need to generate creative content.',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  instruction?: string;
 }

@@ -23,8 +23,25 @@ async function bootstrap() {
   // Setup Swagger
   const config = new DocumentBuilder()
     .setTitle('Prompt Hub API')
-    .setDescription('The Prompt Hub API documentation')
-    .setVersion('1.0')
+    .setDescription(
+      'The Prompt Hub API provides endpoints for managing and sharing prompts. Users can create, publish, and manage prompts, organize them into catalogs, vote on prompts, report inappropriate content, and search for prompts.',
+    )
+    .setVersion('1.0.0')
+    .addTag('auth', 'Authentication endpoints')
+    .addTag('prompt-hub', 'Prompt management endpoints')
+    .addTag('catalogs', 'Catalog management endpoints')
+    .addTag('favorites', 'Favorite prompts management endpoints')
+    .addTag('voting', 'Prompt voting endpoints')
+    .addTag('search', 'Search endpoints')
+    .addTag('tags', 'Tags management endpoints')
+    .addTag('notifications', 'User notifications endpoints')
+    .setContact(
+      'Prompt Hub Team',
+      'https://prompthub.example.com',
+      'support@prompthub.example.com',
+    )
+    .setLicense('MIT', 'https://opensource.org/licenses/MIT')
+    .setTermsOfService('https://prompthub.example.com/terms')
     .addBearerAuth(
       {
         type: 'http',

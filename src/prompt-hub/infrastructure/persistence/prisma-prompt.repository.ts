@@ -11,6 +11,7 @@ import {
   PromptTimestamps,
   UserId,
   TagValue,
+  PromptInstruction,
 } from '../../domain';
 
 @Injectable()
@@ -73,6 +74,7 @@ export class PrismaPromptRepository implements PromptRepository {
         update: {
           title: prompt.getTitle().getValue(),
           content: prompt.getContent().getValue(),
+          instruction: prompt.getInstruction().getValue(),
           status: prompt.getStatus().getValue(),
           isPublic: prompt.getVisibility().isPublic(),
           updatedAt: prompt.getTimestamps().getUpdatedAt(),
@@ -81,6 +83,7 @@ export class PrismaPromptRepository implements PromptRepository {
           id: promptId,
           title: prompt.getTitle().getValue(),
           content: prompt.getContent().getValue(),
+          instruction: prompt.getInstruction().getValue(),
           status: prompt.getStatus().getValue(),
           isPublic: prompt.getVisibility().isPublic(),
           authorId: prompt.getAuthorId().getValue(),
@@ -116,6 +119,7 @@ export class PrismaPromptRepository implements PromptRepository {
       PromptId.create(promptData.id),
       PromptTitle.create(promptData.title),
       PromptContent.create(promptData.content),
+      PromptInstruction.create(promptData.instruction),
       PromptStatus[promptData.status === 'DRAFT' ? 'draft' : 'published'](),
       PromptVisibility.fromBoolean(promptData.isPublic),
       UserId.create(promptData.authorId),

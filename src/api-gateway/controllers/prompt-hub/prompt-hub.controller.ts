@@ -175,6 +175,7 @@ export class PromptHubController {
       updatePromptDto.title,
       updatePromptDto.content,
       userId,
+      updatePromptDto.instruction,
     );
   }
 

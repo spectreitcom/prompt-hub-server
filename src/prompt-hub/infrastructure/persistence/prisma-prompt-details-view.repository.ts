@@ -23,6 +23,7 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
         likedCount: promptDetailsView.likedCount,
         copiedCount: promptDetailsView.copiedCount,
         viewCount: promptDetailsView.viewCount,
+        instruction: promptDetailsView.instruction,
         authorId: promptDetailsView.author.id,
         authorName: promptDetailsView.author.name,
         authorAvatarUrl: promptDetailsView.author.avatarUrl,
@@ -38,6 +39,7 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
         likedCount: promptDetailsView.likedCount,
         copiedCount: promptDetailsView.copiedCount,
         viewCount: promptDetailsView.viewCount,
+        instruction: promptDetailsView.instruction,
         authorId: promptDetailsView.author.id,
         authorName: promptDetailsView.author.name,
         authorAvatarUrl: promptDetailsView.author.avatarUrl,
@@ -73,6 +75,7 @@ export class PrismaPromptDetailsViewRepository extends PromptDetailsViewReposito
         promptDetailsView.authorAvatarUrl || undefined,
       ),
       promptDetailsView.tagValues,
+      promptDetailsView.instruction,
     );
   }
 
