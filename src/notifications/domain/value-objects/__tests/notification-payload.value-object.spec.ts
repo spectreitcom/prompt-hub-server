@@ -19,7 +19,10 @@ describe('NotificationPayload', () => {
     });
 
     it('should trim the title and content', () => {
-      const payload = NotificationPayload.create('  Test Title  ', '  Test Content  ');
+      const payload = NotificationPayload.create(
+        '  Test Title  ',
+        '  Test Content  ',
+      );
       expect(payload.getTitle()).toBe('Test Title');
       expect(payload.getContent()).toBe('Test Content');
     });
@@ -100,8 +103,14 @@ describe('NotificationPayload', () => {
     });
 
     it('should return false for different contents', () => {
-      const payload1 = NotificationPayload.create('Test Title', 'Test Content 1');
-      const payload2 = NotificationPayload.create('Test Title', 'Test Content 2');
+      const payload1 = NotificationPayload.create(
+        'Test Title',
+        'Test Content 1',
+      );
+      const payload2 = NotificationPayload.create(
+        'Test Title',
+        'Test Content 2',
+      );
       expect(payload1.equals(payload2)).toBe(false);
     });
 
