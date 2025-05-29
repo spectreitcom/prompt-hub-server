@@ -37,6 +37,7 @@ export class SearchController {
       query.skip,
       query.take,
       query.search,
+      query.tags,
     );
   }
 

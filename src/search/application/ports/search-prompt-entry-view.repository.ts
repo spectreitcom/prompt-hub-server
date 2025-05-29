@@ -7,8 +7,9 @@ export abstract class SearchPromptEntryViewRepository {
     skip: number,
     take: number,
     search?: string,
+    tags?: string[],
   ): Promise<SearchPromptEntryView[]>;
-  abstract count(search?: string): Promise<number>;
+  abstract count(search?: string, tags?: string[]): Promise<number>;
   abstract delete(id: string): Promise<void>;
   abstract findByAuthor(
     authorId: string,
