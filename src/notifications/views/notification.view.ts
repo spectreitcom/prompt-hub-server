@@ -17,8 +17,8 @@ export class NotificationView {
   @ApiProperty({
     description: 'Additional data related to the notification',
     example: {
-      promptId: '123e4567-e89b-12d3-a456-426614174000',
-      userId: '123e4567-e89b-12d3-a456-426614174000',
+      title: 'some title',
+      content: 'some optional content',
     },
   })
   public readonly payload: Record<string, any>;

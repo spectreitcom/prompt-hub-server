@@ -5,6 +5,7 @@ import {
   UseGuards,
   HttpStatus,
   Param,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -14,10 +15,14 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { NotificationsService } from '../../../notifications';
+import { NotificationView } from '../../../notifications/views';
 import { AuthGuard } from '../../guards';
 import { SWAGGER_USER_AUTH } from '../../../shared';
 import { GetUserId } from '../../decorators';
-import { NotificationIdParamDto } from '../../dtos';
+import {
+  NotificationIdParamDto,
+  GetUserNotificationsQueryDto,
+} from '../../dtos';
 
 @ApiTags('notifications')
 @Controller('notifications')
@@ -88,5 +93,31 @@ export class NotificationsController {
   })
   async markAllNotificationsAsRead(@GetUserId() userId: string): Promise<void> {
     return this.notificationsService.markAllNotificationsAsRead(userId);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth(SWAGGER_USER_AUTH)
+  @ApiOperation({
+    summary: 'Get user notifications',
+    description: 'Returns a list of notifications for the authenticated user',
+  })
+  @ApiOkResponse({
+    description: 'Notifications retrieved successfully',
+    type: [NotificationView],
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User not authenticated',
+  })
+  async getUserNotifications(
+    @GetUserId() userId: string,
+    @Query() query: GetUserNotificationsQueryDto,
+  ): Promise<NotificationView[]> {
+    return this.notificationsService.getUserNotifications(
+      userId,
+      query.take,
+      query.skip,
+    );
   }
 }
