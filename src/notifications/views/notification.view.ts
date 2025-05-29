@@ -10,7 +10,7 @@ export class NotificationView {
   @ApiProperty({
     description:
       'The type of the notification (e.g., PROMPT_LIKED, PROMPT_COPIED)',
-    example: 'PROMPT_LIKED',
+    example: 'SIMPLE_INFO',
   })
   public readonly type: string;
 
