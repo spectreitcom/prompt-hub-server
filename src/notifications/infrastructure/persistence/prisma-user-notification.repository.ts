@@ -53,7 +53,7 @@ export class PrismaUserNotificationRepository
       update: {
         userId: notification.getUserId().getValue(),
         type: notification.getType().getValue(),
-        payload: notification.getPayload(),
+        payload: notification.getPayload().toObject(),
         isRead: notification.getIsRead(),
         createdAt: notification.getCreatedAt(),
       },
@@ -61,7 +61,7 @@ export class PrismaUserNotificationRepository
         id: notification.getId().getValue(),
         userId: notification.getUserId().getValue(),
         type: notification.getType().getValue(),
-        payload: notification.getPayload(),
+        payload: notification.getPayload().toObject(),
         isRead: notification.getIsRead(),
         createdAt: notification.getCreatedAt(),
       },
