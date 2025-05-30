@@ -266,6 +266,7 @@ export class PromptHubController {
   }
 
   @Get(':promptId')
+  @UseGuards(OptionalAuthGuard)
   @ApiOperation({
     summary: 'Get detailed information about a specific prompt',
   })
@@ -287,10 +288,25 @@ export class PromptHubController {
     status: HttpStatus.NOT_FOUND,
     description: 'Prompt not found',
   })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'User not authorized to view this prompt',
+  })
   async getPromptDetails(
     @Param() params: PromptIdParamDto,
+    @GetOptionalUserId() userId?: string,
   ): Promise<PromptDetailsView> {
-    return this.promptHubService.getPromptDetails(params.promptId);
+    try {
+      return await this.promptHubService.getPromptDetails(
+        params.promptId,
+        userId,
+      );
+    } catch (error) {
+      if (error instanceof UnauthorizedPromptAccessException) {
+        throw new ForbiddenException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Get('user/prompts')
