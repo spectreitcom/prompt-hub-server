@@ -58,4 +58,12 @@ export class PrismaNotificationPromptViewRepository
       avatarUrl: authorView.avatarUrl,
     });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.notificationPromptView.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
