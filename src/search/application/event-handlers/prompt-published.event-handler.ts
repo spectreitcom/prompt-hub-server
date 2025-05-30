@@ -16,7 +16,8 @@ export class PromptPublishedEventHandler
   ) {}
 
   async handle(event: PromptPublishedEvent) {
-    const { promptId, authorId, title, content, timestamps, status } = event;
+    const { promptId, authorId, title, content, timestamps, status, tags } =
+      event;
 
     // Get the author information
     const author = await this.userSearchViewRepository.findById(
@@ -45,6 +46,7 @@ export class PromptPublishedEventHandler
       existingEntry ? existingEntry.likedCount : 0,
       timestamps.getCreatedAt(),
       timestamps.getUpdatedAt(),
+      tags.map((tag) => tag.getValue()),
     );
 
     await this.searchPromptEntryViewRepository.save(searchPromptEntryView);

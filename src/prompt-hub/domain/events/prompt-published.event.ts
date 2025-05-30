@@ -5,6 +5,7 @@ import {
   PromptStatus,
   PromptTimestamps,
   PromptTitle,
+  TagValue,
   UserId,
 } from '../value-objects';
 
@@ -16,5 +17,6 @@ export class PromptPublishedEvent implements IEvent {
     public readonly content: PromptContent,
     public readonly timestamps: PromptTimestamps,
     public readonly status: PromptStatus,
+    public readonly tags: TagValue[],
   ) {}
 }

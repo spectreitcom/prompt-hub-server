@@ -40,6 +40,7 @@ export class PromptCopiedEventHandler
       searchPromptEntryView.likedCount,
       searchPromptEntryView.createdAt,
       searchPromptEntryView.updatedAt,
+      searchPromptEntryView.tags,
     );
 
     await this.searchPromptEntryViewRepository.save(

@@ -11,7 +11,6 @@ export class PromptVisibilityChangedEventHandler
     private readonly searchPromptEntryViewRepository: SearchPromptEntryViewRepository,
   ) {}
 
-  // todo;
   async handle(event: PromptVisibilityChangedEvent) {
     const { promptId, visibility } = event;
 
