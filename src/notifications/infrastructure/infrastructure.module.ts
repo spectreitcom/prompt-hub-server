@@ -3,10 +3,14 @@ import { PrismaModule } from '../../prisma';
 import {
   UserNotificationRepository,
   UserNotificationReadRepository,
+  NotificationPromptViewRepository,
+  NotificationPromptUserViewRepository,
 } from '../application';
 import {
   PrismaUserNotificationRepository,
   PrismaUserNotificationReadRepository,
+  PrismaNotificationPromptViewRepository,
+  PrismaNotificationPromptUserViewRepository,
 } from './persistence';
 
 @Module({
@@ -20,7 +24,20 @@ import {
       provide: UserNotificationReadRepository,
       useClass: PrismaUserNotificationReadRepository,
     },
+    {
+      provide: NotificationPromptViewRepository,
+      useClass: PrismaNotificationPromptViewRepository,
+    },
+    {
+      provide: NotificationPromptUserViewRepository,
+      useClass: PrismaNotificationPromptUserViewRepository,
+    },
   ],
-  exports: [UserNotificationRepository, UserNotificationReadRepository],
+  exports: [
+    UserNotificationRepository,
+    UserNotificationReadRepository,
+    NotificationPromptViewRepository,
+    NotificationPromptUserViewRepository,
+  ],
 })
 export class InfrastructureModule {}
