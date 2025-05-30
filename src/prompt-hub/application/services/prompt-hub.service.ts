@@ -271,10 +271,11 @@ export class PromptHubService {
    * Gets detailed information about a specific prompt.
    *
    * @param {string} promptId - The unique identifier of the prompt.
+   * @param {string} [userId] - The unique identifier of the user requesting the details. Optional if the user is not authenticated.
    * @return {Promise<PromptDetailsView>} Detailed information about the prompt.
    */
-  async getPromptDetails(promptId: string): Promise<PromptDetailsView> {
-    const query = new GetPromptDetailsQuery(promptId);
+  async getPromptDetails(promptId: string, userId?: string): Promise<PromptDetailsView> {
+    const query = new GetPromptDetailsQuery(promptId, userId);
     return this.queryBus.execute(query);
   }
 
