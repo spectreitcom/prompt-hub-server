@@ -68,7 +68,13 @@ export class PromptHubService {
     userId: string,
     instruction?: string,
   ): Promise<void> {
-    const command = new UpdatePromptCommand(promptId, title, content, userId, instruction);
+    const command = new UpdatePromptCommand(
+      promptId,
+      title,
+      content,
+      userId,
+      instruction,
+    );
     return this.commandBus.execute(command);
   }
 
@@ -274,7 +280,10 @@ export class PromptHubService {
    * @param {string} [userId] - The unique identifier of the user requesting the details. Optional if the user is not authenticated.
    * @return {Promise<PromptDetailsView>} Detailed information about the prompt.
    */
-  async getPromptDetails(promptId: string, userId?: string): Promise<PromptDetailsView> {
+  async getPromptDetails(
+    promptId: string,
+    userId?: string,
+  ): Promise<PromptDetailsView> {
     const query = new GetPromptDetailsQuery(promptId, userId);
     return this.queryBus.execute(query);
   }
