@@ -11,6 +11,7 @@ export class PromptVisibilityChangedEventHandler
     private readonly searchPromptEntryViewRepository: SearchPromptEntryViewRepository,
   ) {}
 
+  // todo;
   async handle(event: PromptVisibilityChangedEvent) {
     const { promptId, visibility } = event;
 
@@ -36,6 +37,7 @@ export class PromptVisibilityChangedEventHandler
       existingEntry.likedCount,
       existingEntry.createdAt,
       existingEntry.updatedAt,
+      existingEntry.tags,
     );
 
     // Save the updated entry
