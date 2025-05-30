@@ -292,6 +292,23 @@ model UserNotification {
   @@index([userId])
 }
 
+model NotificationPromptView {
+  id    String @id
+  title String
+
+  // author
+  authorId        String
+  authorName      String
+  authorAvatarUrl String?
+}
+
+model NotificationPromptUserView {
+  id        String  @id
+  name      String
+  email     String
+  avatarUrl String?
+}
+
 //===================================================
 
 // Accounts
