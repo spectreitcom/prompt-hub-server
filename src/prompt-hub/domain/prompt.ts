@@ -107,7 +107,11 @@ export class Prompt extends AggregateRoot {
     );
   }
 
-  updateContent(title: PromptTitle, content: PromptContent, instruction?: PromptInstruction): void {
+  updateContent(
+    title: PromptTitle,
+    content: PromptContent,
+    instruction?: PromptInstruction,
+  ): void {
     this.title = title;
     this.content = content;
     if (instruction) {
@@ -141,6 +145,7 @@ export class Prompt extends AggregateRoot {
         this.content,
         this.timestamps,
         this.status,
+        this.tags,
       ),
     );
   }
