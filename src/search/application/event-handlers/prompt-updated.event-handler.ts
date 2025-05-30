@@ -49,6 +49,7 @@ export class PromptUpdatedEventHandler
       existingEntry.likedCount,
       existingEntry.createdAt,
       timestamps.getUpdatedAt(),
+      existingEntry.tags,
     );
 
     // Save the updated entry
