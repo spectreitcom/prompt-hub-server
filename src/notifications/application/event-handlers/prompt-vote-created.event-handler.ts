@@ -42,7 +42,7 @@ export class PromptVoteCreatedEventHandler
     );
 
     const notification = UserNotification.create(
-      UserId.create(userId.getValue()),
+      UserId.create(notificationPromptView.author.id),
       notificationType,
       notificationPayload,
     );
