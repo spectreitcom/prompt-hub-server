@@ -8,4 +8,5 @@ export abstract class PromptDailyStatsViewRepository {
   abstract incrementDislikedCount(id: string): Promise<void>;
   abstract incrementFavoritesCount(id: string): Promise<void>;
   abstract incrementCopiedCount(id: string): Promise<void>;
+  abstract deleteByPromptId(promptId: string): Promise<void>;
 }
