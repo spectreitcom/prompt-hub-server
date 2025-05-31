@@ -17,6 +17,7 @@ import {
   SearchController,
   NotificationsController,
   TagsController,
+  StatisticsController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
@@ -52,6 +53,7 @@ import { StatisticsModule } from '../statistics';
     SearchController,
     NotificationsController,
     TagsController,
+    StatisticsController,
   ],
   providers: [AuthService, AuthGuard],
 })

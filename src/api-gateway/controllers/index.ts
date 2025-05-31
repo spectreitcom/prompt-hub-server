@@ -5,3 +5,4 @@ export * from './voting';
 export * from './search';
 export * from './notifications';
 export * from './tags';
+export * from './statistics';
