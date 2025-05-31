@@ -21,9 +21,7 @@ const EventHandlers = [
   PromptCreatedEventHandler,
 ];
 
-const QueryHandlers = [
-  GetPromptStatsQueryHandler,
-];
+const QueryHandlers = [GetPromptStatsQueryHandler];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
