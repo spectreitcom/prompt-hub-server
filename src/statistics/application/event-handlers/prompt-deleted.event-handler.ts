@@ -2,6 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { PromptDeletedEvent } from '../../../prompt-hub/domain';
 import {
   PromptDailyStatsViewRepository,
+  PromptStatisticsAuthorViewRepository,
   PromptStatisticsViewRepository,
 } from '../ports';
 
@@ -12,6 +13,7 @@ export class PromptDeletedEventHandler
   constructor(
     private readonly promptStatisticsViewRepository: PromptStatisticsViewRepository,
     private readonly promptDailyStatsViewRepository: PromptDailyStatsViewRepository,
+    private readonly promptStatisticsAuthorViewRepository: PromptStatisticsAuthorViewRepository,
   ) {}
 
   async handle(event: PromptDeletedEvent) {
@@ -23,5 +25,8 @@ export class PromptDeletedEventHandler
 
     // Delete daily statistics
     await this.promptDailyStatsViewRepository.deleteByPromptId(promptIdValue);
+
+    //
+    await this.promptStatisticsAuthorViewRepository.delete(promptIdValue);
   }
 }

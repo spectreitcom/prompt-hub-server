@@ -6,5 +6,6 @@ export class PromptDailyStatsView {
     public readonly dislikedCount: number,
     public readonly viewCount: number,
     public readonly favoritesCount: number,
+    public readonly copiedCount: number,
   ) {}
 }

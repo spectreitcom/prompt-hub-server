@@ -370,4 +370,11 @@ model PromptDailyStats {
   @@index([date])
 }
 
+model PromptStatisticsAuthor {
+  promptId String @id
+  authorId String
+
+  @@unique([authorId, promptId])
+}
+
 //===================================================

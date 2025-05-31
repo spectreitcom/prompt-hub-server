@@ -3,6 +3,7 @@ import { PromptCopiedEvent } from '../../../prompt-hub/domain';
 import {
   PromptDailyStatsViewRepository,
   PromptStatisticsViewRepository,
+  PromptStatisticsAuthorViewRepository,
 } from '../ports';
 
 @EventsHandler(PromptCopiedEvent)
@@ -12,15 +13,22 @@ export class PromptCopiedEventHandler
   constructor(
     private readonly promptStatisticsViewRepository: PromptStatisticsViewRepository,
     private readonly promptDailyStatsViewRepository: PromptDailyStatsViewRepository,
+    private readonly promptStatisticsAuthorViewRepository: PromptStatisticsAuthorViewRepository,
   ) {}
 
   async handle(event: PromptCopiedEvent) {
-    const { promptId, authorId, byUserId } = event;
+    const { promptId, byUserId } = event;
+    const promptIdValue = promptId.getValue();
 
-    // Perform the logic if user is guest or the user is not owner of the prompt
-    if (!byUserId || byUserId !== authorId) {
-      const promptIdValue = promptId.getValue();
+    const promptStatisticsAuthorView =
+      await this.promptStatisticsAuthorViewRepository.findByPromptId(
+        promptIdValue,
+      );
 
+    const { authorId } = promptStatisticsAuthorView || { authorId: null };
+
+    // Increment statistics only if user is guest or is not author of the prompt
+    if (!byUserId || !authorId || byUserId.getValue() !== authorId) {
       // Update overall statistics
       await this.promptStatisticsViewRepository.incrementCopiedCount(
         promptIdValue,

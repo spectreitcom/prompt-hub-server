@@ -22,9 +22,7 @@ export class PrismaPromptDailyStatsViewRepository
         dislikedCount: promptDailyStatsView.dislikedCount,
         viewCount: promptDailyStatsView.viewCount,
         favoritesCount: promptDailyStatsView.favoritesCount,
-        // Note: copiedCount is in the Prisma schema but not in the view model
-        // Using 0 as a default value
-        copiedCount: 0,
+        copiedCount: promptDailyStatsView.copiedCount,
       },
       create: {
         promptId: promptDailyStatsView.promptId,
@@ -33,7 +31,7 @@ export class PrismaPromptDailyStatsViewRepository
         dislikedCount: promptDailyStatsView.dislikedCount,
         viewCount: promptDailyStatsView.viewCount,
         favoritesCount: promptDailyStatsView.favoritesCount,
-        copiedCount: 0, // Default value
+        copiedCount: promptDailyStatsView.copiedCount,
       },
     });
   }
@@ -64,6 +62,7 @@ export class PrismaPromptDailyStatsViewRepository
       stats.dislikedCount,
       stats.viewCount,
       stats.favoritesCount,
+      stats.copiedCount,
     );
   }
 

@@ -156,7 +156,7 @@ export class Prompt extends AggregateRoot {
       throw new Error('Only published prompts can be copied.');
     }
 
-    this.apply(new PromptCopiedEvent(this.id, this.authorId, byUserId));
+    this.apply(new PromptCopiedEvent(this.id, byUserId));
   }
 
   makePrivate() {
@@ -173,7 +173,7 @@ export class Prompt extends AggregateRoot {
 
   viewed(byUserId?: UserId): void {
     if (byUserId && byUserId.equals(this.authorId)) return;
-    this.apply(new PromptViewedEvent(this.id, this.authorId, byUserId));
+    this.apply(new PromptViewedEvent(this.id, byUserId));
   }
 
   setVisibility(isPublic: boolean) {

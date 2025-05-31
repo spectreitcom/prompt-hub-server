@@ -3,10 +3,12 @@ import { PrismaModule } from '../../prisma';
 import {
   PrismaPromptStatisticsViewRepository,
   PrismaPromptDailyStatsViewRepository,
+  PrismaPromptStatisticsAuthorViewRepository,
 } from './persistence';
 import {
   PromptStatisticsViewRepository,
   PromptDailyStatsViewRepository,
+  PromptStatisticsAuthorViewRepository,
 } from '../application';
 
 @Module({
@@ -20,7 +22,15 @@ import {
       provide: PromptDailyStatsViewRepository,
       useClass: PrismaPromptDailyStatsViewRepository,
     },
+    {
+      provide: PromptStatisticsAuthorViewRepository,
+      useClass: PrismaPromptStatisticsAuthorViewRepository,
+    },
   ],
-  exports: [PromptStatisticsViewRepository, PromptDailyStatsViewRepository],
+  exports: [
+    PromptStatisticsViewRepository,
+    PromptDailyStatsViewRepository,
+    PromptStatisticsAuthorViewRepository,
+  ],
 })
 export class InfrastructureModule {}

@@ -2,6 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { PromptViewedEvent } from '../../../prompt-hub/domain';
 import {
   PromptDailyStatsViewRepository,
+  PromptStatisticsAuthorViewRepository,
   PromptStatisticsViewRepository,
 } from '../ports';
 
@@ -12,15 +13,24 @@ export class PromptViewedEventHandler
   constructor(
     private readonly promptStatisticsViewRepository: PromptStatisticsViewRepository,
     private readonly promptDailyStatsViewRepository: PromptDailyStatsViewRepository,
+    private readonly promptStatisticsAuthorViewRepository: PromptStatisticsAuthorViewRepository,
   ) {}
 
   async handle(event: PromptViewedEvent) {
-    const { promptId, authorId, byUserId } = event;
+    const { promptId, byUserId } = event;
+    const promptIdValue = promptId.getValue();
 
-    // Perform the logic if user is guest or the user is not owner of the prompt
-    if (!byUserId || byUserId !== authorId) {
-      const promptIdValue = promptId.getValue();
+    const promptStatisticsAuthorView =
+      await this.promptStatisticsAuthorViewRepository.findByPromptId(
+        promptIdValue,
+      );
 
+    // If we can't find author information or the user is a guest or the user is not the author
+    if (
+      !promptStatisticsAuthorView ||
+      !byUserId ||
+      byUserId.getValue() !== promptStatisticsAuthorView.authorId
+    ) {
       // Update overall statistics
       await this.promptStatisticsViewRepository.incrementViewCount(
         promptIdValue,
