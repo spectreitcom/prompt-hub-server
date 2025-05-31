@@ -191,4 +191,36 @@ export class PrismaPromptDailyStatsViewRepository
       where: { promptId },
     });
   }
+
+  async findByDateRange(
+    promptId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<PromptDailyStatsView[]> {
+    const stats = await this.prisma.promptDailyStats.findMany({
+      where: {
+        promptId,
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    return stats.map(
+      (stat) =>
+        new PromptDailyStatsView(
+          stat.promptId,
+          stat.date,
+          stat.likedCount,
+          stat.dislikedCount,
+          stat.viewCount,
+          stat.favoritesCount,
+          stat.copiedCount,
+        ),
+    );
+  }
 }

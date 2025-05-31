@@ -9,4 +9,9 @@ export abstract class PromptDailyStatsViewRepository {
   abstract incrementFavoritesCount(id: string): Promise<void>;
   abstract incrementCopiedCount(id: string): Promise<void>;
   abstract deleteByPromptId(promptId: string): Promise<void>;
+  abstract findByDateRange(
+    promptId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<PromptDailyStatsView[]>;
 }

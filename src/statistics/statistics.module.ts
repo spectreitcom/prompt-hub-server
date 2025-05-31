@@ -10,6 +10,7 @@ import {
   FavoritePromptCreatedEventHandler,
   PromptCreatedEventHandler,
   GetPromptStatsQueryHandler,
+  GetDailyStatsQueryHandler,
 } from './application';
 
 const EventHandlers = [
@@ -21,7 +22,7 @@ const EventHandlers = [
   PromptCreatedEventHandler,
 ];
 
-const QueryHandlers = [GetPromptStatsQueryHandler];
+const QueryHandlers = [GetPromptStatsQueryHandler, GetDailyStatsQueryHandler];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
