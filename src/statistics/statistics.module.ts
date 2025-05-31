@@ -7,6 +7,7 @@ import {
   PromptDeletedEventHandler,
   PromptViewedEventHandler,
   PromptVoteCreatedEventHandler,
+  FavoritePromptCreatedEventHandler,
 } from './application';
 
 const EventHandlers = [
@@ -14,6 +15,7 @@ const EventHandlers = [
   PromptDeletedEventHandler,
   PromptViewedEventHandler,
   PromptVoteCreatedEventHandler,
+  FavoritePromptCreatedEventHandler,
 ];
 
 @Module({
