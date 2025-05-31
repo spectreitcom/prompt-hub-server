@@ -50,6 +50,7 @@ export class PromptVoteChangedEventHandler
         existingEntry.likedCount + likedCountChange, // Adjust likedCount
         existingEntry.createdAt,
         existingEntry.updatedAt,
+        existingEntry.tags,
       );
 
       // Save the updated entry

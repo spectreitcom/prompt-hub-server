@@ -38,6 +38,7 @@ export class PromptVoteCreatedEventHandler
         existingEntry.likedCount + 1, // Increment likedCount
         existingEntry.createdAt,
         existingEntry.updatedAt,
+        existingEntry.tags,
       );
 
       // Save the updated entry
