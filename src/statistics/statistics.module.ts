@@ -9,6 +9,7 @@ import {
   PromptVoteCreatedEventHandler,
   FavoritePromptCreatedEventHandler,
   PromptCreatedEventHandler,
+  GetPromptStatsQueryHandler,
 } from './application';
 
 const EventHandlers = [
@@ -20,9 +21,13 @@ const EventHandlers = [
   PromptCreatedEventHandler,
 ];
 
+const QueryHandlers = [
+  GetPromptStatsQueryHandler,
+];
+
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...EventHandlers, StatisticsService],
+  providers: [...EventHandlers, ...QueryHandlers, StatisticsService],
   exports: [StatisticsService],
 })
 export class StatisticsModule {}
