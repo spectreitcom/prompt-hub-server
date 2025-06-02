@@ -1,2 +1,2 @@
 export * from './prompt-report.module';
-export { PromptReportService } from './application';
+export { PromptReportService, AdminPromptReportService } from './application';
