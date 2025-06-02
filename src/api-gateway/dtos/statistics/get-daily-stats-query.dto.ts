@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsDateString } from 'class-validator';
+import { IsDate, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetDailyStatsQueryDto {
@@ -8,18 +8,18 @@ export class GetDailyStatsQueryDto {
     example: '2023-01-01',
     required: false,
   })
+  @IsDate()
   @IsOptional()
-  @IsDateString()
   @Type(() => Date)
-  startDate?: Date;
+  readonly startDate?: Date;
 
   @ApiProperty({
     description: 'The end date for the statistics range',
     example: '2023-12-31',
     required: false,
   })
+  @IsDate()
   @IsOptional()
-  @IsDateString()
   @Type(() => Date)
-  endDate?: Date;
+  readonly endDate?: Date;
 }
