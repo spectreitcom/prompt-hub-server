@@ -5,3 +5,4 @@ export * from './search';
 export * from './notifications';
 export * from './favorites';
 export * from './tags';
+export * from './statistics';

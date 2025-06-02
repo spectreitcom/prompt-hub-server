@@ -346,3 +346,35 @@ model TagView {
 }
 
 //===================================================
+
+// Statistics
+model PromptStatisticsView {
+  promptId       String @id
+  copiedCount    Int
+  likedCount     Int
+  dislikedCount  Int
+  favoritesCount Int
+  viewCount      Int
+}
+
+model PromptDailyStats {
+  promptId       String
+  date           DateTime // tylko data, np. 2025-05-16
+  likedCount     Int
+  dislikedCount  Int
+  copiedCount    Int
+  viewCount      Int
+  favoritesCount Int
+
+  @@id([promptId, date])
+  @@index([date])
+}
+
+model PromptStatisticsAuthor {
+  promptId String @id
+  authorId String
+
+  @@unique([authorId, promptId])
+}
+
+//===================================================

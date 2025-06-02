@@ -17,10 +17,12 @@ import {
   SearchController,
   NotificationsController,
   TagsController,
+  StatisticsController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
 import { TagsModule } from '../tags';
+import { StatisticsModule } from '../statistics';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { TagsModule } from '../tags';
     AccountsModule,
     FavoritesModule,
     TagsModule,
+    StatisticsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -50,6 +53,7 @@ import { TagsModule } from '../tags';
     SearchController,
     NotificationsController,
     TagsController,
+    StatisticsController,
   ],
   providers: [AuthService, AuthGuard],
 })
