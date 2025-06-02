@@ -7,6 +7,7 @@ import {
   AcceptPromptReportCommandHandler,
   RejectPromptReportCommandHandler,
   CreatePromptReportCommandHandler,
+  PromptReportService,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -24,6 +25,7 @@ const CommandHandlers = [
 
 @Module({
   imports: [CqrsModule, InfrastructureModule],
-  providers: [...EventHandlers, ...CommandHandlers],
+  providers: [PromptReportService, ...EventHandlers, ...CommandHandlers],
+  exports: [PromptReportService],
 })
 export class PromptReportModule {}
