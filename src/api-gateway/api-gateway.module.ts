@@ -18,6 +18,7 @@ import {
   NotificationsController,
   TagsController,
   StatisticsController,
+  PromptReportController,
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
@@ -54,6 +55,7 @@ import { StatisticsModule } from '../statistics';
     NotificationsController,
     TagsController,
     StatisticsController,
+    PromptReportController,
   ],
   providers: [AuthService, AuthGuard],
 })

@@ -1,7 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { RejectPromptReportCommand } from '../commands';
 import { PromptReportRepository } from '../ports';
-import { PromptReportId } from '../../domain';
 
 @CommandHandler(RejectPromptReportCommand)
 export class RejectPromptReportCommandHandler
@@ -16,8 +15,7 @@ export class RejectPromptReportCommandHandler
     const { reportId } = command;
 
     // Find the prompt report
-    const reportIdObj = PromptReportId.create(reportId);
-    const report = await this.promptReportRepository.getByIdOrFail(reportIdObj);
+    const report = await this.promptReportRepository.getByIdOrFail(reportId);
 
     // Mark the report as an event publisher
     const reportWithEvents = this.eventPublisher.mergeObjectContext(report);

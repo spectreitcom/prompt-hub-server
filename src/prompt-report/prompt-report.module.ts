@@ -7,6 +7,9 @@ import {
   AcceptPromptReportCommandHandler,
   RejectPromptReportCommandHandler,
   CreatePromptReportCommandHandler,
+  UserReportedPromptQueryHandler,
+  PromptReportService,
+  AdminPromptReportService,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
 
@@ -22,8 +25,17 @@ const CommandHandlers = [
   CreatePromptReportCommandHandler,
 ];
 
+const QueryHandlers = [UserReportedPromptQueryHandler];
+
 @Module({
   imports: [CqrsModule, InfrastructureModule],
-  providers: [...EventHandlers, ...CommandHandlers],
+  providers: [
+    PromptReportService,
+    AdminPromptReportService,
+    ...EventHandlers,
+    ...CommandHandlers,
+    ...QueryHandlers,
+  ],
+  exports: [PromptReportService, AdminPromptReportService],
 })
 export class PromptReportModule {}
