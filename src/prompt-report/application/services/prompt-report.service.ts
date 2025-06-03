@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreatePromptReportCommand } from '../commands';
 import { UserReportedPromptQuery } from '../queries';
-import { PromptId, UserId } from '../../domain';
+import { PromptId, PromptReportReason, UserId } from '../../domain';
 
 @Injectable()
 export class PromptReportService {
@@ -24,7 +24,11 @@ export class PromptReportService {
     reporterId: string,
     reason: string,
   ): Promise<void> {
-    const command = new CreatePromptReportCommand(promptId, reporterId, reason);
+    const command = new CreatePromptReportCommand(
+      PromptId.create(promptId),
+      UserId.create(reporterId),
+      PromptReportReason.create(reason),
+    );
     return this.commandBus.execute(command);
   }
 

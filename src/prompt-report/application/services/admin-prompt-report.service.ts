@@ -4,6 +4,7 @@ import {
   RejectPromptReportCommand,
 } from '../commands';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { PromptReportId } from '../../domain';
 
 @Injectable()
 export class AdminPromptReportService {
@@ -19,7 +20,9 @@ export class AdminPromptReportService {
    * @return {Promise<void>} A promise that resolves when the command to accept the report is executed.
    */
   async acceptPromptReport(reportId: string): Promise<void> {
-    const command = new AcceptPromptReportCommand(reportId);
+    const command = new AcceptPromptReportCommand(
+      PromptReportId.create(reportId),
+    );
     return this.commandBus.execute(command);
   }
 
@@ -30,7 +33,9 @@ export class AdminPromptReportService {
    * @return {Promise<void>} A promise that resolves when the rejection process is completed.
    */
   async rejectPromptReport(reportId: string): Promise<void> {
-    const command = new RejectPromptReportCommand(reportId);
+    const command = new RejectPromptReportCommand(
+      PromptReportId.create(reportId),
+    );
     return this.commandBus.execute(command);
   }
 }
