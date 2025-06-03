@@ -1,12 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreatePromptReportCommand } from '../commands';
 import { PromptReportRepository } from '../ports';
-import {
-  PromptId,
-  PromptReportReason,
-  UserId,
-  PromptReport,
-} from '../../domain';
+import { PromptReport } from '../../domain';
 
 @CommandHandler(CreatePromptReportCommand)
 export class CreatePromptReportCommandHandler
