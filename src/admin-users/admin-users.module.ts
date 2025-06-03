@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { InfrastructureModule } from './infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
-import { GetPublicAdminUserViewQueryHandler } from './application';
+import {
+  GetPublicAdminUserViewQueryHandler,
+  AdminUserCreatedEventHandler,
+} from './application';
 
-const eventHandlers = [];
+const eventHandlers = [AdminUserCreatedEventHandler];
 
 const commandHandlers = [];
 

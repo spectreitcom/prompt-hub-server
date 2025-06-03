@@ -6,6 +6,7 @@ import {
   IsSuperuser,
   PasswordHash,
 } from './value-objects';
+import { AdminUserCreatedEvent } from './events';
 
 export class AdminUser extends AggregateRoot {
   private readonly id: AdminUserId;
@@ -57,14 +58,22 @@ export class AdminUser extends AggregateRoot {
     isActive: IsActive = IsActive.active(),
   ): AdminUser {
     const now = new Date();
-    return new AdminUser(
-      AdminUserId.create(),
-      EmailAddress.create(email),
+    const id = AdminUserId.create();
+    const emailAddress = EmailAddress.create(email);
+    const adminUser = new AdminUser(
+      id,
+      emailAddress,
       PasswordHash.create(passwordHash),
       isSuperuser,
       now,
       isActive,
     );
+
+    adminUser.apply(
+      new AdminUserCreatedEvent(id, emailAddress, isSuperuser, isActive, now),
+    );
+
+    return adminUser;
   }
 
   getId() {
