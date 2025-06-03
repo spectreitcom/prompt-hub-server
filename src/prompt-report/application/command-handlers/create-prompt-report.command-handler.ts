@@ -20,13 +20,8 @@ export class CreatePromptReportCommandHandler
   async execute(command: CreatePromptReportCommand): Promise<void> {
     const { promptId, reporterId, reason } = command;
 
-    // Create value objects
-    const promptIdObj = PromptId.create(promptId);
-    const reporterIdObj = UserId.create(reporterId);
-    const reasonObj = PromptReportReason.create(reason);
-
     // Create the prompt report
-    const report = PromptReport.create(promptIdObj, reporterIdObj, reasonObj);
+    const report = PromptReport.create(promptId, reporterId, reason);
 
     // Mark the report as an event publisher
     const reportWithEvents = this.eventPublisher.mergeObjectContext(report);

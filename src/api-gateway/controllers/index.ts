@@ -6,3 +6,4 @@ export * from './search';
 export * from './notifications';
 export * from './tags';
 export * from './statistics';
+export * from './prompt-report';
