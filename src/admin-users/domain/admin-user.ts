@@ -32,6 +32,24 @@ export class AdminUser extends AggregateRoot {
     this.isActive = isActive;
   }
 
+  static createFromData(
+    id: AdminUserId,
+    email: EmailAddress,
+    passwordHash: PasswordHash,
+    isSuperuser: IsSuperuser,
+    createdAt: Date,
+    isActive: IsActive,
+  ) {
+    return new AdminUser(
+      id,
+      email,
+      passwordHash,
+      isSuperuser,
+      createdAt,
+      isActive,
+    );
+  }
+
   static create(
     email: string,
     passwordHash: string,
