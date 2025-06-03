@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
-import { AdminUserReadRepository } from '../../application/ports';
+import { AdminUserReadRepository } from '../../application';
 import { AdminUserId } from '../../domain/value-objects';
 import { AdminUserView } from '../../views';
 
