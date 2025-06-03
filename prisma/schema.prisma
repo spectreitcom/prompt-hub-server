@@ -378,3 +378,15 @@ model PromptStatisticsAuthor {
 }
 
 //===================================================
+
+// Admin Users
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  isSuperuser  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  isActive     Boolean  @default(true)
+}
+
+//===================================================
