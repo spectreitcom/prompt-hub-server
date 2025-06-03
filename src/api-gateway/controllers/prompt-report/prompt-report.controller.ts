@@ -6,6 +6,7 @@ import {
   UseGuards,
   HttpStatus,
   Get,
+  BadRequestException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -63,7 +64,7 @@ export class PromptReportController {
     );
 
     if (hasReported) {
-      throw new Error('User has already reported this prompt');
+      throw new BadRequestException('User has already reported this prompt');
     }
 
     return this.promptReportService.createPromptReport(
