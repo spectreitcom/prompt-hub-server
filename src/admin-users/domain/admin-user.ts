@@ -1,21 +1,27 @@
-// Domain entity for AdminUser
 import { AggregateRoot } from '@nestjs/cqrs';
+import {
+  AdminUserId,
+  EmailAddress,
+  IsActive,
+  IsSuperuser,
+  PasswordHash,
+} from './value-objects';
 
 export class AdminUser extends AggregateRoot {
-  private readonly id: string;
-  private readonly email: string;
-  private readonly passwordHash: string;
-  private readonly isSuperuser: boolean;
+  private readonly id: AdminUserId;
+  private readonly email: EmailAddress;
+  private readonly passwordHash: PasswordHash;
+  private readonly isSuperuser: IsSuperuser;
   private readonly createdAt: Date;
-  private readonly isActive: boolean;
+  private readonly isActive: IsActive;
 
   private constructor(
-    id: string,
-    email: string,
-    passwordHash: string,
-    isSuperuser: boolean,
+    id: AdminUserId,
+    email: EmailAddress,
+    passwordHash: PasswordHash,
+    isSuperuser: IsSuperuser,
     createdAt: Date,
-    isActive: boolean,
+    isActive: IsActive,
   ) {
     super();
     this.id = id;
@@ -27,46 +33,43 @@ export class AdminUser extends AggregateRoot {
   }
 
   static create(
-    id: string,
     email: string,
     passwordHash: string,
-    isSuperuser: boolean = false,
-    isActive: boolean = true,
+    isSuperuser: IsSuperuser = IsSuperuser.notSuperuser(),
+    isActive: IsActive = IsActive.active(),
   ): AdminUser {
     const now = new Date();
-    const adminUser = new AdminUser(
-      id,
-      email,
-      passwordHash,
+    return new AdminUser(
+      AdminUserId.create(),
+      EmailAddress.create(email),
+      PasswordHash.create(passwordHash),
       isSuperuser,
       now,
       isActive,
     );
-
-    return adminUser;
   }
 
-  getId(): string {
+  getId() {
     return this.id;
   }
 
-  getEmail(): string {
+  getEmail() {
     return this.email;
   }
 
-  getPasswordHash(): string {
+  getPasswordHash() {
     return this.passwordHash;
   }
 
-  isSuperUser(): boolean {
+  isSuperUser() {
     return this.isSuperuser;
   }
 
-  getCreatedAt(): Date {
+  getCreatedAt() {
     return this.createdAt;
   }
 
-  isActiveUser(): boolean {
+  isActiveUser() {
     return this.isActive;
   }
 }
