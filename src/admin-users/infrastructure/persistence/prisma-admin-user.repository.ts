@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
-import { AdminUser } from '../../domain';
-import { AdminUserRepository } from '../../application/ports';
+import { AdminUserRepository } from '../../application';
 import {
   AdminUserId,
   EmailAddress,
   IsActive,
   IsSuperuser,
   PasswordHash,
-} from '../../domain/value-objects';
+  AdminUser,
+} from '../../domain';
 
 @Injectable()
 export class PrismaAdminUserRepository extends AdminUserRepository {
@@ -20,24 +20,24 @@ export class PrismaAdminUserRepository extends AdminUserRepository {
     await this.prisma.adminUser.upsert({
       where: { id: adminUser.getId().toString() },
       update: {
-        email: adminUser.getEmail().toString(),
-        passwordHash: adminUser.getPasswordHash().toString(),
+        email: adminUser.getEmail().getValue(),
+        passwordHash: adminUser.getPasswordHash().getValue(),
         isSuperuser: adminUser.isSuperUser().getValue(),
         isActive: adminUser.isActiveUser().getValue(),
       },
       create: {
-        id: adminUser.getId().toString(),
-        email: adminUser.getEmail().toString(),
-        passwordHash: adminUser.getPasswordHash().toString(),
+        id: adminUser.getId().getValue(),
+        email: adminUser.getEmail().getValue(),
+        passwordHash: adminUser.getPasswordHash().getValue(),
         isSuperuser: adminUser.isSuperUser().getValue(),
         isActive: adminUser.isActiveUser().getValue(),
       },
     });
   }
 
-  async findById(id: string): Promise<AdminUser> {
+  async findById(id: AdminUserId): Promise<AdminUser> {
     const adminUser = await this.prisma.adminUser.findUnique({
-      where: { id },
+      where: { id: id.getValue() },
     });
 
     if (!adminUser) {
@@ -47,9 +47,9 @@ export class PrismaAdminUserRepository extends AdminUserRepository {
     return this.mapToDomain(adminUser);
   }
 
-  async findByEmail(email: string): Promise<AdminUser> {
+  async findByEmail(email: EmailAddress): Promise<AdminUser> {
     const adminUser = await this.prisma.adminUser.findUnique({
-      where: { email },
+      where: { email: email.getValue() },
     });
 
     if (!adminUser) {

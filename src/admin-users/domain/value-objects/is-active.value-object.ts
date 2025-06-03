@@ -16,4 +16,8 @@ export class IsActive {
   static active() {
     return new IsActive(true);
   }
+
+  static inactive() {
+    return new IsActive(false);
+  }
 }

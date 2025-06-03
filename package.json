@@ -22,7 +22,9 @@
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "prisma:reset": "prisma migrate reset"
+    "prisma:reset": "prisma migrate reset",
+    "create-admin": "ts-node src/admin-users/application/cli/cli.ts create-admin",
+    "create-admin:dev": "ts-node src/admin-users/application/cli/cli.ts create-admin -e admin@example.com -p admin123"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.1",
@@ -35,12 +37,14 @@
     "@nestjs/throttler": "^6.4.0",
     "@prisma/client": "^6.7.0",
     "@types/uuid": "^10.0.0",
+    "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "google-auth-library": "^9.15.1",
     "googleapis": "^148.0.0",
     "helmet": "^8.1.0",
     "joi": "^17.13.3",
+    "nest-commander": "^3.17.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "uuid": "^11.1.0"

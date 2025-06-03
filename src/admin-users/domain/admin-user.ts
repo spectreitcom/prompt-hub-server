@@ -52,25 +52,24 @@ export class AdminUser extends AggregateRoot {
   }
 
   static create(
-    email: string,
-    passwordHash: string,
+    email: EmailAddress,
+    passwordHash: PasswordHash,
     isSuperuser: IsSuperuser = IsSuperuser.notSuperuser(),
     isActive: IsActive = IsActive.active(),
   ): AdminUser {
     const now = new Date();
     const id = AdminUserId.create();
-    const emailAddress = EmailAddress.create(email);
     const adminUser = new AdminUser(
       id,
-      emailAddress,
-      PasswordHash.create(passwordHash),
+      email,
+      passwordHash,
       isSuperuser,
       now,
       isActive,
     );
 
     adminUser.apply(
-      new AdminUserCreatedEvent(id, emailAddress, isSuperuser, isActive, now),
+      new AdminUserCreatedEvent(id, email, isSuperuser, isActive, now),
     );
 
     return adminUser;

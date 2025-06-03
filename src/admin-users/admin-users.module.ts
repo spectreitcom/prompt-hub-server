@@ -4,17 +4,22 @@ import { CqrsModule } from '@nestjs/cqrs';
 import {
   GetPublicAdminUserViewQueryHandler,
   AdminUserCreatedEventHandler,
+  CreateAdminUserCli,
+  CommandHandlers,
 } from './application';
 
 const eventHandlers = [AdminUserCreatedEventHandler];
-
-const commandHandlers = [];
 
 const queryHandlers = [GetPublicAdminUserViewQueryHandler];
 
 @Module({
   imports: [InfrastructureModule, CqrsModule],
-  providers: [...eventHandlers, ...commandHandlers, ...queryHandlers],
-  exports: [],
+  providers: [
+    ...eventHandlers,
+    ...CommandHandlers,
+    ...queryHandlers,
+    CreateAdminUserCli,
+  ],
+  exports: [CreateAdminUserCli],
 })
 export class AdminUsersModule {}
