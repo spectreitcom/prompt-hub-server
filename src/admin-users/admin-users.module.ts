@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { InfrastructureModule } from './infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
-import { GetPublicAdminUserViewQueryHandler } from './application/query-handlers';
+import { GetPublicAdminUserViewQueryHandler } from './application';
 
 const eventHandlers = [];
 

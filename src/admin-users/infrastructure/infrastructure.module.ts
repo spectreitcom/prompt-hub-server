@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../../prisma';
-import { PrismaAdminUserRepository, PrismaAdminUserReadRepository } from './persistence';
-import { AdminUserRepository, AdminUserReadRepository } from '../application/ports';
+import {
+  PrismaAdminUserRepository,
+  PrismaAdminUserReadRepository,
+} from './persistence';
+import { AdminUserRepository, AdminUserReadRepository } from '../application';
 
 @Module({
   imports: [PrismaModule],
