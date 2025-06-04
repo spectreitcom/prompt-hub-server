@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SignUpWithGmailCommand } from '../commands';
-import { GetPublicUserViewQuery, GetUserByIdQuery } from '../queries';
+import {
+  GetPublicUserViewQuery,
+  GetUserByIdQuery,
+  GetAllUsersQuery,
+} from '../queries';
 import { UserRepository } from '../ports';
 import {
   EmailAddress,
@@ -11,6 +15,7 @@ import {
   User,
 } from '../../domain';
 import { UserProfileView } from '../../views';
+import { GetAllUsersResult } from '../query-handlers';
 
 @Injectable()
 export class AccountsService {
@@ -74,6 +79,21 @@ export class AccountsService {
    */
   async getUserById(userId: string): Promise<User> {
     const query = new GetUserByIdQuery(userId);
+    return this.queryBus.execute(query);
+  }
+
+  /**
+   * Gets all users with pagination.
+   *
+   * @param {number} [skip=0] - The number of users to skip.
+   * @param {number} [take=10] - The number of users to take.
+   * @return {Promise<GetAllUsersResult>} A promise that resolves to an object containing the users and the total count.
+   */
+  async getAllUsers(
+    skip: number = 0,
+    take: number = 10,
+  ): Promise<GetAllUsersResult> {
+    const query = new GetAllUsersQuery(skip, take);
     return this.queryBus.execute(query);
   }
 }
