@@ -35,4 +35,14 @@ export class PrismaAdminUserReadRepository implements AdminUserReadRepository {
       adminUserData.isActive,
     );
   }
+
+  async findByEmail(email: string): Promise<AdminUserView> {
+    const adminUserData = await this.prisma.adminUser.findUnique({
+      where: { email },
+    });
+
+    if (!adminUserData) return null;
+
+    return this.mapToView(adminUserData);
+  }
 }
