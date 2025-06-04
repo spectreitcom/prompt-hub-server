@@ -49,9 +49,9 @@ export class AccountsService {
    * Finds a user by their email address.
    *
    * @param {string} email - The email address of the user to find.
-   * @return {Promise<Object|null>} A promise that resolves to the user object if found, or null if no user is found.
+   * @return {Promise<User>} A promise that resolves to the user object if found, or null if no user is found.
    */
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<User> {
     return this.userRepository.findByEmail(EmailAddress.create(email));
   }
 
