@@ -3,6 +3,7 @@ import { PrismaService } from '../../../prisma';
 import { UserReadRepository } from '../../application';
 import { UserId } from '../../domain';
 import { UserProfileView } from '../../views';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class PrismaUserReadRepository implements UserReadRepository {
@@ -18,7 +19,24 @@ export class PrismaUserReadRepository implements UserReadRepository {
     return this.mapToView(userData);
   }
 
-  private mapToView(userData: any): UserProfileView {
+  async findAllProfiles(
+    skip: number,
+    take: number,
+  ): Promise<UserProfileView[]> {
+    const users = await this.prisma.user.findMany({
+      skip,
+      take,
+      orderBy: { name: 'asc' },
+    });
+
+    return users.map((user) => this.mapToView(user));
+  }
+
+  async countAllProfiles(): Promise<number> {
+    return this.prisma.user.count();
+  }
+
+  private mapToView(userData: User): UserProfileView {
     return new UserProfileView(
       userData.id,
       userData.name,
