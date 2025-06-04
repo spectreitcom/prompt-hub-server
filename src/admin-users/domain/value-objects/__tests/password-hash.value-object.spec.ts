@@ -4,8 +4,12 @@ import * as bcrypt from 'bcryptjs';
 // Mock bcryptjs to avoid actual hashing in tests
 jest.mock('bcryptjs', () => ({
   genSaltSync: jest.fn().mockReturnValue('mockedSalt'),
-  hashSync: jest.fn().mockImplementation((password, salt) => `hashed_${password}`),
-  compareSync: jest.fn().mockImplementation((password, hash) => hash === `hashed_${password}`),
+  hashSync: jest
+    .fn()
+    .mockImplementation((password, salt) => `hashed_${password}`),
+  compareSync: jest
+    .fn()
+    .mockImplementation((password, hash) => hash === `hashed_${password}`),
 }));
 
 describe('PasswordHash', () => {
@@ -85,7 +89,9 @@ describe('PasswordHash', () => {
     it('should return false for different PasswordHash objects', () => {
       // Arrange
       const passwordHash1 = PasswordHash.createFromHash('hashed_password_123');
-      const passwordHash2 = PasswordHash.createFromHash('different_hashed_password');
+      const passwordHash2 = PasswordHash.createFromHash(
+        'different_hashed_password',
+      );
 
       // Act & Assert
       expect(passwordHash1.equals(passwordHash2)).toBe(false);
@@ -100,7 +106,10 @@ describe('PasswordHash', () => {
 
       // Act & Assert
       expect(passwordHash.comparePassword(password)).toBe(true);
-      expect(bcrypt.compareSync).toHaveBeenCalledWith(password, `hashed_${password}`);
+      expect(bcrypt.compareSync).toHaveBeenCalledWith(
+        password,
+        `hashed_${password}`,
+      );
     });
 
     it('should return false for non-matching password', () => {
@@ -111,7 +120,10 @@ describe('PasswordHash', () => {
 
       // Act & Assert
       expect(passwordHash.comparePassword(wrongPassword)).toBe(false);
-      expect(bcrypt.compareSync).toHaveBeenCalledWith(wrongPassword, `hashed_${password}`);
+      expect(bcrypt.compareSync).toHaveBeenCalledWith(
+        wrongPassword,
+        `hashed_${password}`,
+      );
     });
   });
 });

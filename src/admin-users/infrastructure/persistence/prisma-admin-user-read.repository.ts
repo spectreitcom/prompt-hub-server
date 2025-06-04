@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma';
 import { AdminUserReadRepository } from '../../application';
-import { AdminUserId } from '../../domain/value-objects';
 import { AdminUserView } from '../../views';
+import { AdminUser } from '@prisma/client';
 
 @Injectable()
 export class PrismaAdminUserReadRepository implements AdminUserReadRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findById(id: AdminUserId): Promise<AdminUserView> {
+  async findById(id: string): Promise<AdminUserView> {
     const adminUserData = await this.prisma.adminUser.findUnique({
-      where: { id: id.toString() },
+      where: { id },
     });
 
     if (!adminUserData) return null;
@@ -18,7 +18,16 @@ export class PrismaAdminUserReadRepository implements AdminUserReadRepository {
     return this.mapToView(adminUserData);
   }
 
-  private mapToView(adminUserData: any): AdminUserView {
+  async findAll(skip: number, take: number): Promise<AdminUserView[]> {
+    const adminUsersData = await this.prisma.adminUser.findMany({
+      skip,
+      take,
+    });
+
+    return adminUsersData.map((data) => this.mapToView(data));
+  }
+
+  private mapToView(adminUserData: AdminUser): AdminUserView {
     return new AdminUserView(
       adminUserData.id,
       adminUserData.email,

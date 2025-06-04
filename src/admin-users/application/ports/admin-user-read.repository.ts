@@ -1,6 +1,6 @@
 import { AdminUserView } from '../../views';
-import { AdminUserId } from '../../domain/value-objects';
 
 export abstract class AdminUserReadRepository {
-  abstract findById(id: AdminUserId): Promise<AdminUserView>;
+  abstract findById(id: string): Promise<AdminUserView>;
+  abstract findAll(skip: number, take: number): Promise<AdminUserView[]>;
 }

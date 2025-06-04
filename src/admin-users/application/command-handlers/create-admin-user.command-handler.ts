@@ -1,7 +1,13 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateAdminUserCommand } from '../commands';
 import { AdminUserRepository } from '../ports';
-import { AdminUser } from '../../domain';
+import {
+  AdminUser,
+  EmailAddress,
+  IsActive,
+  IsSuperuser,
+  PasswordHash,
+} from '../../domain';
 
 @CommandHandler(CreateAdminUserCommand)
 export class CreateAdminUserCommandHandler
@@ -11,7 +17,12 @@ export class CreateAdminUserCommandHandler
 
   async execute(command: CreateAdminUserCommand): Promise<void> {
     const { email, password, isSuperuser, isActive } = command;
-    const adminUser = AdminUser.create(email, password, isSuperuser, isActive);
+    const adminUser = AdminUser.create(
+      EmailAddress.create(email),
+      PasswordHash.create(password),
+      IsSuperuser.create(isSuperuser),
+      IsActive.create(isActive),
+    );
     await this.adminUserRepository.save(adminUser);
   }
 }

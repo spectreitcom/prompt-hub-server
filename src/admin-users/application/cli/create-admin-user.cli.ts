@@ -1,12 +1,6 @@
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateAdminUserCommand } from '../commands';
-import {
-  EmailAddress,
-  IsActive,
-  IsSuperuser,
-  PasswordHash,
-} from '../../domain';
 
 interface CreateAdminUserOptions {
   email: string;
@@ -36,12 +30,7 @@ export class CreateAdminUserCli extends CommandRunner {
     try {
       // Create an admin user with the provided options
       await this.commandBus.execute(
-        new CreateAdminUserCommand(
-          EmailAddress.create(options.email),
-          PasswordHash.create(options.password),
-          IsSuperuser.superuser(),
-          IsActive.active(),
-        ),
+        new CreateAdminUserCommand(options.email, options.password, true, true),
       );
       console.log(`Admin user ${options.email} created successfully`);
     } catch (error) {
