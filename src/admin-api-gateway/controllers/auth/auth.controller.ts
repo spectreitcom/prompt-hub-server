@@ -12,7 +12,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { LoginDto } from '../../dtos';
+import { LoginDto, AuthenticationResponseDto, AdminUserResponseDto } from '../../dtos';
 import { AuthService, AuthenticationResponse } from '../../services';
 import { AuthGuard } from '../../guards';
 import { GetAdminUserId } from '../../decorators';
