@@ -3,14 +3,15 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateAdminUserCommand } from '../commands';
 import { GetPublicAdminUserViewQuery } from '../queries';
 import { AdminUserView } from '../../views';
-import { AdminUserReadRepository } from '../ports';
+import { AdminUserRepository } from '../ports';
+import { AdminUser, EmailAddress } from '../../domain';
 
 @Injectable()
 export class AdminUsersService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private readonly adminUserReadRepository: AdminUserReadRepository,
+    private readonly adminUserRepository: AdminUserRepository,
   ) {}
 
   /**
@@ -47,9 +48,9 @@ export class AdminUsersService {
    * Fetches an AdminUserView object based on the provided email.
    *
    * @param {string} email - The email address of the admin user to retrieve.
-   * @return {Promise<AdminUserView>} A promise that resolves to the AdminUserView object associated with the given email.
+   * @return {Promise<AdminUser>} A promise that resolves to the AdminUserView object associated with the given email.
    */
-  async findByEmail(email: string): Promise<AdminUserView> {
-    return this.adminUserReadRepository.findByEmail(email);
+  async findByEmail(email: string): Promise<AdminUser> {
+    return this.adminUserRepository.findByEmail(EmailAddress.create(email));
   }
 }
