@@ -12,7 +12,11 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { LoginDto } from '../../dtos';
+import {
+  LoginDto,
+  AuthenticationResponseDto,
+  AdminUserResponseDto,
+} from '../../dtos';
 import { AuthService, AuthenticationResponse } from '../../services';
 import { AuthGuard } from '../../guards';
 import { GetAdminUserId } from '../../decorators';
@@ -20,23 +24,21 @@ import { GetAdminUserId } from '../../decorators';
 @ApiTags('admin/auth')
 @Controller('admin/auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @ApiOperation({ summary: 'Login as admin user' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Successfully authenticated',
+    type: AuthenticationResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid credentials',
+    type: AuthenticationResponseDto,
   })
-  async login(
-    @Body() loginDto: LoginDto,
-  ): Promise<AuthenticationResponse> {
+  async login(@Body() loginDto: LoginDto): Promise<AuthenticationResponse> {
     return await this.authService.login(loginDto);
   }
 
@@ -47,12 +49,15 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Returns the current admin user profile',
+    type: AdminUserResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: 'Admin user not authenticated',
   })
-  async getCurrentUser(@GetAdminUserId() adminUserId: string) {
+  async getCurrentUser(
+    @GetAdminUserId() adminUserId: string,
+  ): Promise<AdminUserResponseDto> {
     return this.authService.getPublicAdminUser(adminUserId);
   }
 }
