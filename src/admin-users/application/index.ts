@@ -5,3 +5,4 @@ export * from './event-handlers';
 export * from './commands';
 export * from './command-handlers';
 export * from './cli';
+export * from './services';
