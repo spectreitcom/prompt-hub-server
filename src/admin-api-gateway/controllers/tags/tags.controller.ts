@@ -7,6 +7,7 @@ import {
   Param,
   HttpCode,
   UseFilters,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -36,12 +37,12 @@ export class TagsController {
     type: GetAllTagsResponseDto,
   })
   @ApiResponse({
-    status: 401,
+    status: HttpStatus.UNAUTHORIZED,
     description: 'Unauthorized.',
     schema: {
       type: 'object',
       properties: {
-        statusCode: { type: 'number', example: 401 },
+        statusCode: { type: 'number', example: HttpStatus.UNAUTHORIZED },
         message: { type: 'string', example: 'Unauthorized' },
         error: { type: 'string', example: 'Unauthorized' },
       },
@@ -54,34 +55,34 @@ export class TagsController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.OK)
   @ApiBearerAuth(SWAGGER_ADMIN_AUTH)
   @ApiOperation({ summary: 'Remove a tag' })
   @ApiParam({ name: 'id', description: 'Tag ID', type: 'string' })
   @UseFilters(TagNotFoundExceptionFilter)
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.OK,
     description: 'Tag successfully removed',
   })
   @ApiResponse({
-    status: 401,
+    status: HttpStatus.UNAUTHORIZED,
     description: 'Unauthorized.',
     schema: {
       type: 'object',
       properties: {
-        statusCode: { type: 'number', example: 401 },
+        statusCode: { type: 'number', example: HttpStatus.UNAUTHORIZED },
         message: { type: 'string', example: 'Unauthorized' },
         error: { type: 'string', example: 'Unauthorized' },
       },
     },
   })
   @ApiResponse({
-    status: 404,
+    status: HttpStatus.NOT_FOUND,
     description: 'Tag not found.',
     schema: {
       type: 'object',
       properties: {
-        statusCode: { type: 'number', example: 404 },
+        statusCode: { type: 'number', example: HttpStatus.NOT_FOUND },
         message: { type: 'string', example: "Tag with id '123' not found" },
         error: { type: 'string', example: 'Not Found' },
       },
