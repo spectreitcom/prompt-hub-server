@@ -7,7 +7,7 @@ import { TagEntryView } from '../../views';
 
 @CommandHandler(CreateTagCommand)
 export class CreateTagCommandHandler
-  implements ICommandHandler<CreateTagCommand>
+  implements ICommandHandler<CreateTagCommand, TagEntryView>
 {
   constructor(
     private readonly tagRepository: TagRepository,

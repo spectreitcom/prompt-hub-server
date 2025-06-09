@@ -17,4 +17,5 @@ export abstract class TagEntryViewRepository {
     search?: string,
   ): Promise<TagEntryView[]>;
   abstract countAll(search?: string): Promise<number>;
+  abstract delete(id: string): Promise<void>;
 }

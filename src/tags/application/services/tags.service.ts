@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateTagCommand } from '../commands';
+import { CreateTagCommand, RemoveTagCommand } from '../commands';
 import { GetPopularTagsQuery, GetAllTagsQuery } from '../queries';
 import { TagEntryView } from '../../views';
 import { GetAllTagsResult } from '../query-handlers';
@@ -52,5 +52,15 @@ export class TagsService {
     search?: string,
   ): Promise<GetAllTagsResult> {
     return this.queryBus.execute(new GetAllTagsQuery(skip, take, search));
+  }
+
+  /**
+   * Removes a tag by its ID.
+   *
+   * @param {string} id - The ID of the tag to be removed.
+   * @return {Promise<void>} A promise that resolves when the tag is removed.
+   */
+  async removeTag(id: string): Promise<void> {
+    return this.commandBus.execute(new RemoveTagCommand(id));
   }
 }

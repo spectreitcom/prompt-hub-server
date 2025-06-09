@@ -9,7 +9,7 @@ export interface GetAllTagsResult {
 }
 
 @QueryHandler(GetAllTagsQuery)
-export class GetAllTagsQueryHandler implements IQueryHandler<GetAllTagsQuery> {
+export class GetAllTagsQueryHandler implements IQueryHandler<GetAllTagsQuery, GetAllTagsResult> {
   constructor(
     private readonly tagEntryViewRepository: TagEntryViewRepository,
   ) {}

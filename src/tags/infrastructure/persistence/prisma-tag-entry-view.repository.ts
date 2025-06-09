@@ -173,4 +173,12 @@ export class PrismaTagEntryViewRepository extends TagEntryViewRepository {
 
     return this.prisma.tagView.count({ where });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.tagView.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '../../../prisma';
 import { Tag, TagId, TagValue } from '../../domain';
-import { TagRepository } from '../../application/ports';
+import { TagRepository } from '../../application';
 
 @Injectable()
 export class PrismaTagRepository implements TagRepository {
@@ -27,9 +27,7 @@ export class PrismaTagRepository implements TagRepository {
       where: { id: id.getValue() },
     });
 
-    if (!tagData) {
-      throw new Error(`Tag with id ${id.getValue()} not found`);
-    }
+    if (!tagData) return null;
 
     return new Tag(
       TagId.create(tagData.id),
@@ -43,9 +41,7 @@ export class PrismaTagRepository implements TagRepository {
       where: { value: value.getValue() },
     });
 
-    if (!tagData) {
-      throw new Error(`Tag with value ${value.getValue()} not found`);
-    }
+    if (!tagData) return null;
 
     return new Tag(
       TagId.create(tagData.id),
@@ -60,5 +56,11 @@ export class PrismaTagRepository implements TagRepository {
     });
 
     return count > 0;
+  }
+
+  async remove(id: TagId): Promise<void> {
+    await this.prisma.tag.delete({
+      where: { id: id.getValue() },
+    });
   }
 }
