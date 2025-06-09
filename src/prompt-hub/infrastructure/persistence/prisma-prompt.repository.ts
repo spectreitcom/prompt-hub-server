@@ -137,4 +137,22 @@ export class PrismaPromptRepository implements PromptRepository {
       },
     });
   }
+
+  async findByTag(tag: TagValue): Promise<Prompt[]> {
+    const promptsWithTag = await this.prisma.prompt.findMany({
+      where: {
+        promptTags: {
+          some: {
+            tagValue: tag.getValue(),
+          },
+        },
+        isDeleted: false,
+      },
+      include: {
+        promptTags: true,
+      },
+    });
+
+    return promptsWithTag.map((promptData) => this.mapToDomain(promptData));
+  }
 }
