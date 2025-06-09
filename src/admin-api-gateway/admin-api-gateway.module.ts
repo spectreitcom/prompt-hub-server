@@ -3,7 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdminUsersModule } from '../admin-users';
 import { AccountsModule } from '../accounts';
-import { AuthController, UsersController } from './controllers';
+import { TagsModule } from '../tags';
+import { AuthController, UsersController, TagsController } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
 
@@ -19,8 +20,9 @@ import { AuthGuard } from './guards';
     }),
     AdminUsersModule,
     AccountsModule,
+    TagsModule,
   ],
-  controllers: [AuthController, UsersController],
+  controllers: [AuthController, UsersController, TagsController],
   providers: [AuthService, AuthGuard],
 })
 export class AdminApiGatewayModule {}
