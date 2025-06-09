@@ -15,15 +15,32 @@ export class TagRemovedEventHandler implements IEventHandler<TagRemovedEvent> {
 
     const tagValue = TagValue.create(value.getValue());
 
-    const prompts = await this.promptRepository.findByTag(tagValue);
+    const batchSize = 100;
+    let skip = 0;
+    let hasMorePrompts = true;
 
-    for (const prompt of prompts) {
-      const currentTags = prompt.getTags();
-      const newTags = currentTags.filter((tag) => !tag.equals(tagValue));
-      const promptWithEvents = this.eventPublisher.mergeObjectContext(prompt);
-      promptWithEvents.replaceTags(newTags);
-      await this.promptRepository.save(promptWithEvents);
-      promptWithEvents.commit();
+    while (hasMorePrompts) {
+      const prompts = await this.promptRepository.findByTag(
+        tagValue,
+        skip,
+        batchSize,
+      );
+
+      if (prompts.length === 0) {
+        hasMorePrompts = false;
+        break;
+      }
+
+      for (const prompt of prompts) {
+        const currentTags = prompt.getTags();
+        const newTags = currentTags.filter((tag) => !tag.equals(tagValue));
+        const promptWithEvents = this.eventPublisher.mergeObjectContext(prompt);
+        promptWithEvents.replaceTags(newTags);
+        await this.promptRepository.save(promptWithEvents);
+        promptWithEvents.commit();
+      }
+
+      skip += batchSize;
     }
   }
 }
