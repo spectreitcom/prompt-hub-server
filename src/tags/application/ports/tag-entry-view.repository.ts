@@ -11,4 +11,10 @@ export abstract class TagEntryViewRepository {
     search?: string,
   ): Promise<TagEntryView[]>;
   abstract findById(id: string): Promise<TagEntryView>;
+  abstract findAll(
+    skip: number,
+    take: number,
+    search?: string,
+  ): Promise<TagEntryView[]>;
+  abstract countAll(search?: string): Promise<number>;
 }
