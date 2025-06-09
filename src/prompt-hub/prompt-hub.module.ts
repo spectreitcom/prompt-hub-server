@@ -41,6 +41,7 @@ import {
   PromptVoteChangedEventHandler,
 } from './application';
 import { InfrastructureModule } from './infrastructure';
+import { TagRemovedEventHandler } from './application/event-handlers/tag-removed.event-handler';
 
 const EventHandlers = [
   PromptCopiedEventHandler,
@@ -59,6 +60,7 @@ const EventHandlers = [
   UserCreatedEventHandler,
   PromptVoteCreatedEventHandler,
   PromptVoteChangedEventHandler,
+  TagRemovedEventHandler,
 ];
 
 const CommandHandlers = [
