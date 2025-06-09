@@ -127,4 +127,58 @@ export class PrismaTagEntryViewRepository extends TagEntryViewRepository {
         new TagEntryView(tag.id, tag.value, tag.isActive, tag.usageCount),
     );
   }
+
+  async findAll(
+    skip: number,
+    take: number,
+    search?: string,
+  ): Promise<TagEntryView[]> {
+    const where: Prisma.TagViewWhereInput = {
+      ...(search
+        ? {
+            value: {
+              contains: search,
+              mode: 'insensitive',
+            },
+          }
+        : {}),
+    };
+
+    const tags = await this.prisma.tagView.findMany({
+      where,
+      orderBy: {
+        value: 'asc',
+      },
+      skip,
+      take,
+    });
+
+    return tags.map(
+      (tag) =>
+        new TagEntryView(tag.id, tag.value, tag.isActive, tag.usageCount),
+    );
+  }
+
+  async countAll(search?: string): Promise<number> {
+    const where: Prisma.TagViewWhereInput = {
+      ...(search
+        ? {
+            value: {
+              contains: search,
+              mode: 'insensitive',
+            },
+          }
+        : {}),
+    };
+
+    return this.prisma.tagView.count({ where });
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.tagView.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

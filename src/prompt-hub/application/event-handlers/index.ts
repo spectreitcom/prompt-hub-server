@@ -14,3 +14,4 @@ export * from './user-created.event-handler';
 export * from './prompt-vote-created.event-handler';
 export * from './prompt-vote-changed.event-handler';
 export * from './prompt-viewed.event-handler';
+export * from './prompt-deleted.event-handler';

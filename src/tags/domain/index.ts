@@ -2,3 +2,4 @@ export * from './events';
 export * from './types';
 export * from './value-objects';
 export * from './tag';
+export * from './exceptions';

@@ -4,6 +4,7 @@ import {
   TagActivatedEvent,
   TagCreatedEvent,
   TagDeactivatedEvent,
+  TagRemovedEvent,
 } from './events';
 import { TagId, TagValue } from './value-objects';
 
@@ -23,6 +24,10 @@ export class Tag extends AggregateRoot {
     tag.apply(new TagCreatedEvent(id, value, isActive));
 
     return tag;
+  }
+
+  remove(): void {
+    this.apply(new TagRemovedEvent(this.id, this.value));
   }
 
   activate(): void {
