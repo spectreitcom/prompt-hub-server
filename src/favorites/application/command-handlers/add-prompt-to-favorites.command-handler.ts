@@ -1,7 +1,10 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { AddPromptToFavoritesCommand } from '../commands';
 import { FavoritePromptRepository } from '../ports';
-import { FavoritePrompt, PromptAlreadyInFavoritesException } from '../../domain';
+import {
+  FavoritePrompt,
+  PromptAlreadyInFavoritesException,
+} from '../../domain';
 
 @CommandHandler(AddPromptToFavoritesCommand)
 export class AddPromptToFavoritesCommandHandler
@@ -23,7 +26,10 @@ export class AddPromptToFavoritesCommandHandler
       );
 
     if (exists) {
-      throw new PromptAlreadyInFavoritesException(promptId, userId);
+      throw new PromptAlreadyInFavoritesException(
+        promptId.getValue(),
+        userId.getValue(),
+      );
     }
 
     // Create a new favorite prompt

@@ -1,4 +1,8 @@
 import { NotificationType } from '../notification-type.value-object';
+import { 
+  NotificationTypeEmptyException,
+  NotificationTypeInvalidException
+} from '../../exceptions';
 
 describe('NotificationType', () => {
   describe('create', () => {
@@ -14,24 +18,14 @@ describe('NotificationType', () => {
     });
 
     it('should throw an error if the type is empty', () => {
-      expect(() => NotificationType.create('')).toThrow(
-        'Notification type cannot be empty.',
-      );
-      expect(() => NotificationType.create('   ')).toThrow(
-        'Notification type cannot be empty.',
-      );
-      expect(() => NotificationType.create(null)).toThrow(
-        'Notification type cannot be empty.',
-      );
-      expect(() => NotificationType.create(undefined)).toThrow(
-        'Notification type cannot be empty.',
-      );
+      expect(() => NotificationType.create('')).toThrow(NotificationTypeEmptyException);
+      expect(() => NotificationType.create('   ')).toThrow(NotificationTypeEmptyException);
+      expect(() => NotificationType.create(null)).toThrow(NotificationTypeEmptyException);
+      expect(() => NotificationType.create(undefined)).toThrow(NotificationTypeEmptyException);
     });
 
     it('should throw an error if the type is invalid', () => {
-      expect(() => NotificationType.create('INVALID_TYPE')).toThrow(
-        'Invalid notification type.',
-      );
+      expect(() => NotificationType.create('INVALID_TYPE')).toThrow(NotificationTypeInvalidException);
     });
   });
 

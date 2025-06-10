@@ -1,4 +1,8 @@
 import { isString } from 'class-validator';
+import {
+  NotificationTypeEmptyException,
+  NotificationTypeInvalidException,
+} from '../exceptions';
 
 export class NotificationType {
   static readonly SIMPLE_INFO = 'SIMPLE_INFO';
@@ -10,17 +14,13 @@ export class NotificationType {
 
   static create(type: string): NotificationType {
     if (!type || !isString(type) || type.trim() === '') {
-      throw new Error('Notification type cannot be empty.');
+      throw new NotificationTypeEmptyException();
     }
 
     const normalizedType = type.trim().toUpperCase();
 
     if (!NotificationType.VALID_TYPES.includes(normalizedType)) {
-      throw new Error(
-        `Invalid notification type. Valid types are: ${NotificationType.VALID_TYPES.join(
-          ', ',
-        )}`,
-      );
+      throw new NotificationTypeInvalidException(NotificationType.VALID_TYPES);
     }
 
     return new NotificationType(normalizedType);

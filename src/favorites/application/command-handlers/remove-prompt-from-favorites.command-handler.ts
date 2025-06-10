@@ -23,7 +23,10 @@ export class RemovePromptFromFavoritesCommandHandler
       );
 
     if (!favoritePrompt) {
-      throw new PromptNotInFavoritesException(promptId, userId);
+      throw new PromptNotInFavoritesException(
+        promptId.getValue(),
+        userId.getValue(),
+      );
     }
 
     // Mark the favorite prompt as an event publisher

@@ -1,15 +1,19 @@
 import { isUUID } from 'class-validator';
+import {
+  NotificationIdEmptyException,
+  NotificationIdInvalidException,
+} from '../exceptions';
 
 export class UserNotificationId {
   private constructor(private readonly value: string) {}
 
   static create(id: string): UserNotificationId {
     if (!id || id.trim() === '') {
-      throw new Error('Notification ID cannot be empty.');
+      throw new NotificationIdEmptyException();
     }
 
     if (!isUUID(id, '4')) {
-      throw new Error('Notification ID must be a valid UUID.');
+      throw new NotificationIdInvalidException();
     }
 
     return new UserNotificationId(id.trim());
