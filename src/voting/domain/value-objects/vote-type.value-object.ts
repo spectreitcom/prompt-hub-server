@@ -1,4 +1,5 @@
 import { VoteTypeValue } from '../types';
+import { VoteTypeInvalidException } from '../exceptions';
 
 export class VoteType {
   private constructor(private readonly value: VoteTypeValue) {}
@@ -14,7 +15,7 @@ export class VoteType {
   static create(value: string): VoteType {
     const upper = value.toUpperCase();
     if (upper !== 'UP' && upper !== 'DOWN') {
-      throw new Error('Invalid vote type');
+      throw new VoteTypeInvalidException();
     }
     return new VoteType(upper as VoteTypeValue);
   }
