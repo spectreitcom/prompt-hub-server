@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SWAGGER_USER_AUTH, SWAGGER_ADMIN_AUTH } from './shared';
 import { ValidationPipe } from '@nestjs/common';
+import { DomainExceptionsFilter } from './api-gateway/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,9 @@ async function bootstrap() {
       },
     }),
   );
+
+  // Apply global exception filter for domain exceptions
+  app.useGlobalFilters(new DomainExceptionsFilter());
 
   // Setup Swagger
   const config = new DocumentBuilder()

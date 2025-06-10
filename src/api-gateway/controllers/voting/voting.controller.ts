@@ -6,6 +6,7 @@ import {
   UseGuards,
   HttpStatus,
   Get,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,9 +20,11 @@ import { VotePromptDto, PromptIdParamDto } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('voting')
 @Controller('voting')
+@UseFilters(DomainExceptionsFilter)
 export class VotingController {
   constructor(private readonly votingService: VotingService) {}
 

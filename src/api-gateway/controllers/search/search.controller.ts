@@ -1,4 +1,4 @@
-import { Controller, Get, Query, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Query, HttpStatus, UseFilters } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -11,9 +11,11 @@ import {
   GetPromptListQueryDto,
   GetOtherAuthorPromptsQueryDto,
 } from '../../dtos';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('search')
 @Controller('search')
+@UseFilters(DomainExceptionsFilter)
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 

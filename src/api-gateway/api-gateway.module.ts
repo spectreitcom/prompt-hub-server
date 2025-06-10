@@ -22,6 +22,7 @@ import {
 } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
+import { DomainExceptionsFilter } from './filters';
 import { TagsModule } from '../tags';
 import { StatisticsModule } from '../statistics';
 
@@ -57,6 +58,7 @@ import { StatisticsModule } from '../statistics';
     StatisticsController,
     PromptReportController,
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, DomainExceptionsFilter],
+  exports: [DomainExceptionsFilter],
 })
 export class ApiGatewayModule {}
