@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import * as bcrypt from 'bcryptjs';
+import { PasswordHashEmptyException } from '../exceptions';
 
 export class PasswordHash {
   @IsNotEmpty({ message: 'Password hash cannot be empty.' })
@@ -7,7 +8,7 @@ export class PasswordHash {
 
   private constructor(passwordHash: string) {
     if (!passwordHash || passwordHash.trim() === '') {
-      throw new Error('Password hash cannot be empty.');
+      throw new PasswordHashEmptyException();
     }
     this.value = passwordHash;
   }

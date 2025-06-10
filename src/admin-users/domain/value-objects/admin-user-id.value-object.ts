@@ -1,5 +1,9 @@
 import { isUUID } from 'class-validator';
 import { randomUUID } from 'crypto';
+import {
+  AdminUserIdEmptyException,
+  AdminUserIdInvalidException,
+} from '../exceptions';
 
 export class AdminUserId {
   private constructor(private readonly value: string) {}
@@ -8,7 +12,7 @@ export class AdminUserId {
     // If id is undefined, use randomUUID()
     // If id is defined but empty or only whitespace, throw an error
     if (id !== undefined && (id === '' || id.trim() === '')) {
-      throw new Error('Admin User ID cannot be empty.');
+      throw new AdminUserIdEmptyException();
     }
 
     const adminUserId = id || randomUUID();
@@ -16,7 +20,7 @@ export class AdminUserId {
     const trimmedId = adminUserId.trim();
 
     if (!isUUID(trimmedId, '4')) {
-      throw new Error('Admin User ID must be a valid UUID.');
+      throw new AdminUserIdInvalidException();
     }
 
     return new AdminUserId(trimmedId);
