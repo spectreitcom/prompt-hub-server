@@ -10,6 +10,7 @@ import {
   TagValue,
   UserId,
 } from './value-objects';
+import { BusinessRuleViolationException } from './exceptions';
 import {
   PromptCopiedEvent,
   PromptCreatedEvent,
@@ -87,7 +88,7 @@ export class Prompt extends AggregateRoot {
   replaceTags(newTags: TagValue[]): void {
     // you can add max 5 tags
     if (newTags.length > 5) {
-      throw new Error('You can add max 5 tags.');
+      throw new BusinessRuleViolationException('You can add max 5 tags.');
     }
 
     // Store the previous tags before replacing them
@@ -132,7 +133,9 @@ export class Prompt extends AggregateRoot {
 
   makePublished(): void {
     if (!this.status.isDraft()) {
-      throw new Error('Only draft prompts can be published.');
+      throw new BusinessRuleViolationException(
+        'Only draft prompts can be published.',
+      );
     }
 
     this.status = PromptStatus.published();
@@ -153,7 +156,9 @@ export class Prompt extends AggregateRoot {
   copy(byUserId?: UserId): void {
     if (byUserId && byUserId.equals(this.authorId)) return;
     if (!this.status.isPublished()) {
-      throw new Error('Only published prompts can be copied.');
+      throw new BusinessRuleViolationException(
+        'Only published prompts can be copied.',
+      );
     }
 
     this.apply(new PromptCopiedEvent(this.id, byUserId));

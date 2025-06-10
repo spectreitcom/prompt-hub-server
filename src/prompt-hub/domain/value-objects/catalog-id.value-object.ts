@@ -1,4 +1,5 @@
 import { isUUID } from 'class-validator';
+import { CatalogValidationException } from '../exceptions';
 
 export class CatalogId {
   private constructor(private readonly value: string) {}

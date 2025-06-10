@@ -1,7 +1,12 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeletePromptCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptId, UserId } from '../../domain';
+import {
+  PromptId,
+  UserId,
+  PromptNotFoundException,
+  UnauthorizedPromptOperationException,
+} from '../../domain';
 
 @CommandHandler(DeletePromptCommand)
 export class DeletePromptCommandHandler
@@ -21,13 +26,13 @@ export class DeletePromptCommandHandler
     );
 
     if (!prompt) {
-      throw new Error(`Prompt with id ${promptId} not found.`);
+      throw new PromptNotFoundException(promptId);
     }
 
     // Check if the user is the owner of the prompt
     const userIdObj = UserId.create(userId);
     if (!prompt.getAuthorId().equals(userIdObj)) {
-      throw new Error('Only the owner of the prompt can delete it.');
+      throw new UnauthorizedPromptOperationException('delete');
     }
 
     // Mark the prompt as deleted in the domain model
