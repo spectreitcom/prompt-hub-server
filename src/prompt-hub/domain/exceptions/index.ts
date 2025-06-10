@@ -8,3 +8,6 @@ export * from './prompt-validation.exception';
 export * from './catalog-validation.exception';
 export * from './prompt-already-in-catalog.exception';
 export * from './business-rule-violation.exception';
+export * from './prompt-not-found-in-catalog.exception';
+export * from './user-validation.exception';
+export * from './catalog-item-validation.exception';

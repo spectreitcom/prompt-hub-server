@@ -1,10 +1,14 @@
+import { CatalogValidationException } from '../exceptions';
+
 export class CatalogName {
   private constructor(private readonly value: string) {}
 
   static create(value: string): CatalogName {
     const name = value.trim();
     if (name.length < 3 || name.length > 100) {
-      throw new Error('Catalog name must be between 3 and 100 characters');
+      throw new CatalogValidationException(
+        'Catalog name must be between 3 and 100 characters',
+      );
     }
     return new CatalogName(name);
   }

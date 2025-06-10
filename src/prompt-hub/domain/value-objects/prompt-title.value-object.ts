@@ -1,3 +1,5 @@
+import { PromptValidationException } from '../exceptions';
+
 export class PromptTitle {
   private constructor(private readonly value: string) {}
 
@@ -5,7 +7,9 @@ export class PromptTitle {
     const trimmed = raw.trim();
 
     if (trimmed.length < 3 || trimmed.length > 100) {
-      throw new Error('Prompt title must be between 3 and 100 characters.');
+      throw new PromptValidationException(
+        'Prompt title must be between 3 and 100 characters.',
+      );
     }
 
     return new PromptTitle(trimmed);

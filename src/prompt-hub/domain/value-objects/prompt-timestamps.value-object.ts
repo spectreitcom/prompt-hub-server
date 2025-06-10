@@ -1,3 +1,5 @@
+import { PromptValidationException } from '../exceptions';
+
 export class PromptTimestamps {
   private constructor(
     private readonly createdAt: Date,
@@ -6,15 +8,17 @@ export class PromptTimestamps {
 
   static create(createdAt: Date, updatedAt: Date): PromptTimestamps {
     if (!(createdAt instanceof Date) || isNaN(createdAt.getTime())) {
-      throw new Error('Created at must be a valid date.');
+      throw new PromptValidationException('Created at must be a valid date.');
     }
 
     if (!(updatedAt instanceof Date) || isNaN(updatedAt.getTime())) {
-      throw new Error('Updated at must be a valid date.');
+      throw new PromptValidationException('Updated at must be a valid date.');
     }
 
     if (updatedAt < createdAt) {
-      throw new Error('Updated at cannot be earlier than created at.');
+      throw new PromptValidationException(
+        'Updated at cannot be earlier than created at.',
+      );
     }
 
     return new PromptTimestamps(createdAt, updatedAt);
@@ -35,11 +39,13 @@ export class PromptTimestamps {
 
   withUpdatedAt(updatedAt: Date): PromptTimestamps {
     if (!(updatedAt instanceof Date) || isNaN(updatedAt.getTime())) {
-      throw new Error('Updated at must be a valid date.');
+      throw new PromptValidationException('Updated at must be a valid date.');
     }
 
     if (updatedAt < this.createdAt) {
-      throw new Error('Updated at cannot be earlier than created at.');
+      throw new PromptValidationException(
+        'Updated at cannot be earlier than created at.',
+      );
     }
 
     return new PromptTimestamps(this.createdAt, updatedAt);

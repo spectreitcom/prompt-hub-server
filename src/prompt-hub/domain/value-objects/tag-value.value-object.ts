@@ -1,3 +1,5 @@
+import { PromptValidationException } from '../exceptions';
+
 export class TagValue {
   private constructor(private readonly value: string) {}
 
@@ -5,14 +7,16 @@ export class TagValue {
     const trimmed = raw.trim();
 
     if (trimmed.length < 1 || trimmed.length > 50) {
-      throw new Error('Tag value must be between 1 and 50 characters.');
+      throw new PromptValidationException(
+        'Tag value must be between 1 and 50 characters.',
+      );
     }
 
     // Ensure the tag value is lowercase and contains only alphanumeric characters and hyphens
     const sanitized = trimmed.toLowerCase().replace(/[^a-z0-9-]/g, '');
 
     if (sanitized.length === 0) {
-      throw new Error(
+      throw new PromptValidationException(
         'Tag value must contain at least one alphanumeric character.',
       );
     }

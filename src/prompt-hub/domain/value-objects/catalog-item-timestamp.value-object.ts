@@ -1,9 +1,13 @@
+import { CatalogItemValidationException } from '../exceptions';
+
 export class CatalogItemTimestamp {
   private constructor(private readonly addedAt: Date) {}
 
   static create(addedAt: Date): CatalogItemTimestamp {
     if (!(addedAt instanceof Date) || isNaN(addedAt.getTime())) {
-      throw new Error('Added At must be a valid date.');
+      throw new CatalogItemValidationException(
+        'Added At must be a valid date.',
+      );
     }
 
     return new CatalogItemTimestamp(addedAt);
