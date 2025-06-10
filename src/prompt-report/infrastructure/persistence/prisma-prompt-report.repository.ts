@@ -8,6 +8,7 @@ import {
   PromptReportReason,
   PromptReportStatus,
   UserId,
+  UnknownPromptReportStatusException,
 } from '../../domain';
 
 @Injectable()
@@ -90,7 +91,7 @@ export class PrismaPromptReportRepository implements PromptReportRepository {
       case 'REJECTED':
         return PromptReportStatus.rejected();
       default:
-        throw new Error(`Unknown prompt report status: ${status}`);
+        throw new UnknownPromptReportStatusException(status);
     }
   }
 }
