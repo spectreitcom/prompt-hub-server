@@ -17,8 +17,7 @@ import {
   ApiParam,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { FavoritesService } from '../../../favorites';
-import { FavoritePromptEntryView } from '../../../favorites/views';
+import { FavoritesService, FavoritePromptEntryView } from '../../../favorites';
 import { PromptIdParamDto, GetFavoritePromptsQueryDto } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
