@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Injectable } from '@nestjs/common';
-import { UserCreatedEvent } from '../../../accounts/domain';
+import { UserCreatedEvent } from '../../../accounts';
 import { FavoriteUserPublicRepository } from '../ports';
 import { FavoriteUserPublicView } from '../../views';
 

@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { PromptTagsReplacedEvent } from '../../../prompt-hub/domain';
+import { PromptTagsReplacedEvent } from '../../../prompt-hub';
 import { TagEntryViewRepository } from '../ports';
 
 @EventsHandler(PromptTagsReplacedEvent)

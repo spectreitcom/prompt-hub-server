@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { PromptVoteCreatedEvent } from '../../../voting/domain';
+import { PromptVoteCreatedEvent } from '../../../voting';
 import {
   NotificationPromptViewRepository,
   UserNotificationRepository,
