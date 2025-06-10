@@ -1,4 +1,5 @@
 import { IsNotEmpty, validateSync, ValidationError } from 'class-validator';
+import { GoogleIdEmptyException, ValidationException } from '../exceptions';
 
 export class GoogleId {
   @IsNotEmpty({ message: 'GoogleId cannot be empty.' })
@@ -16,11 +17,16 @@ export class GoogleId {
   private validate(): void {
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints).join(', '))
+        .join(', ');
+
+      if (errorMessages.includes('cannot be empty')) {
+        throw new GoogleIdEmptyException();
+      }
+
+      // Fallback for any other validation errors
+      throw new ValidationException(errorMessages);
     }
   }
 

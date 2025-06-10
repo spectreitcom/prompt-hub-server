@@ -5,6 +5,12 @@ import {
   validateSync,
   ValidationError,
 } from 'class-validator';
+import {
+  PersonNameEmptyException,
+  PersonNameTooShortException,
+  PersonNameTooLongException,
+  ValidationException,
+} from '../exceptions';
 
 export class PersonName {
   @IsNotEmpty({ message: 'Person name cannot be empty.' })
@@ -24,11 +30,24 @@ export class PersonName {
   private validate(): void {
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints).join(', '))
+        .join(', ');
+
+      if (errorMessages.includes('cannot be empty')) {
+        throw new PersonNameEmptyException();
+      }
+
+      if (errorMessages.includes('must be at least 2 characters long')) {
+        throw new PersonNameTooShortException();
+      }
+
+      if (errorMessages.includes('cannot exceed 100 characters')) {
+        throw new PersonNameTooLongException();
+      }
+
+      // Fallback for any other validation errors
+      throw new ValidationException(errorMessages);
     }
   }
 
