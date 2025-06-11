@@ -1,172 +1,188 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Prompt Hub Server
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS-based backend application for managing and sharing prompts. This application allows users to create, publish, and manage prompts, organize them into catalogs, vote on prompts, report inappropriate content, and search for prompts.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Project Overview
 
-## Description
+Prompt Hub Server provides a robust API for client applications to interact with the prompt management system. The application uses modern TypeScript features and follows industry best practices for backend development. It integrates with Google authentication for user management and uses Prisma ORM for database access.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Architecture
 
-## Project setup
+The application follows a clean architecture pattern with Domain-Driven Design (DDD) principles and Command Query Responsibility Segregation (CQRS) pattern.
 
-### Standard Setup
+### Key Architectural Components:
 
-```bash
-$ yarn install
-```
+1. **API Gateway**: Acts as an entry point for all API requests and routes them to the appropriate domain modules. Includes controllers, DTOs, decorators, guards, and services for handling HTTP requests and responses.
+2. **Domain Modules**: Separate modules for different domains (accounts, favorites, prompt-hub, notifications, prompt-report, search, voting, etc.).
+3. **Clean Architecture Layers**:
+   - **Domain Layer**: Contains domain models, entities, value objects, and domain events.
+   - **Application Layer**: Contains application services, commands, command handlers, events, and event handlers.
+   - **Infrastructure Layer**: Contains implementations of repositories and other infrastructure concerns.
+   - **Views Layer**: Contains view models and DTOs for read operations.
+4. **CQRS Pattern**: Separates read and write operations using commands and queries.
+5. **Prisma ORM**: Used for database access and schema management.
+6. **Swagger**: Used for API documentation and testing.
 
-### Docker Setup
+## Code Organization
 
-The project includes Docker configuration for local development with the following services:
-- PostgreSQL database
-- Redis
-- Elasticsearch
-- NestJS application
-
-#### Prerequisites
-
-- Docker and Docker Compose installed on your machine
-
-#### Environment Variables
-
-Copy the example environment file:
-
-```bash
-$ cp .env-example .env
-```
-
-Modify the variables in `.env` if needed. The docker-compose.yml file is configured to use the .env file for all services.
-
-#### Running with Docker
-
-To start all services:
-
-```bash
-$ docker-compose up -d
-```
-
-This will start the application in watch mode (using the `start:dev` script from package.json), which automatically reloads when code changes are detected.
-
-To start only specific services:
-
-```bash
-$ docker-compose up -d [service_name]
-```
-
-To stop all services:
-
-```bash
-$ docker-compose down
-```
-
-To view logs:
-
-```bash
-$ docker-compose logs -f [service_name]
-```
-
-Available service names: `app`, `db`, `redis`, `elasticsearch`
-
-## Compile and run the project
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## API Documentation with Swagger
-
-This project includes Swagger for API documentation. Once the application is running, you can access the Swagger UI at:
+The codebase is organized as follows:
 
 ```
-http://localhost:3000/api/docs
+src/
+├── accounts/               # Accounts domain module
+│   ├── application/        # Application layer
+│   │   ├── command-handlers/ # Command handlers
+│   │   ├── commands/       # Command definitions
+│   │   ├── event-handlers/ # Event handlers
+│   │   ├── ports/          # Repository interfaces
+│   │   ├── queries/        # Query definitions
+│   │   ├── query-handlers/ # Query handlers
+│   │   └── services/       # Application services
+│   ├── domain/             # Domain layer
+│   │   ├── events/         # Domain events
+│   │   ├── types/          # Domain types
+│   │   └── value-objects/  # Value objects
+│   ├── infrastructure/     # Infrastructure layer
+│   │   └── persistence/    # Repository implementations
+│   └── views/              # Views layer
+├── api-gateway/            # API Gateway module
+│   ├── controllers/        # API controllers
+│   └── dtos/               # Data Transfer Objects
+├── favorites/              # Favorites domain module
+├── notifications/          # Notifications domain module
+├── prisma/                 # Prisma module
+├── prompt-hub/             # Prompt Hub domain module
+├── prompt-report/          # Prompt Report domain module
+├── search/                 # Search domain module
+├── shared/                 # Shared utilities and constants
+├── voting/                 # Voting domain module
+├── config/                 # Configuration module
+├── app.module.ts           # Root module
+└── main.ts                 # Application entry point
 ```
 
-### Features
+## Naming Conventions
 
-- Interactive API documentation
-- Test API endpoints directly from the browser
-- Detailed information about request/response schemas
-- Authentication support
+1. **Files**:
+   - Use kebab-case for file names: `user-notification.repository.ts`
+   - Use suffixes to indicate file type: `.module.ts`, `.controller.ts`, `.service.ts`, `.repository.ts`, `.command.ts`, `.command-handler.ts`, `.event.ts`, `.event-handler.ts`, `.value-object.ts`
 
-### Adding Documentation to New Controllers
+2. **Classes**:
+   - Use PascalCase for class names: `UserNotificationRepository`
+   - Use suffixes to indicate class type: `Module`, `Controller`, `Service`, `Repository`, `Command`, `CommandHandler`, `Event`, `EventHandler`, `ValueObject`
 
-See the example in `src/example/README.md` for detailed instructions on how to document your controllers and endpoints using Swagger decorators.
+3. **Methods and Properties**:
+   - Use camelCase for method and property names: `markAsRead()`
 
-## Run tests
+4. **Interfaces**:
+   - Use PascalCase for interface names: `UserNotificationRepository`
+   - Don't use `I` prefix for interfaces
 
-```bash
-# unit tests
-$ yarn run test
+5. **Enums**:
+   - Use PascalCase for enum names: `PromptStatus`
+   - Use UPPER_SNAKE_CASE for enum values: `DRAFT`, `PUBLISHED`
 
-# e2e tests
-$ yarn run test:e2e
+## Development Workflow
 
-# test coverage
-$ yarn run test:cov
-```
+### Setup
 
-## Deployment
+1. Clone the repository
+   ```bash
+   git clone <repository-url>
+   cd prompt-hub-server
+   ```
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+2. Install dependencies
+   ```bash
+   yarn install
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+3. Set up environment variables
+   ```bash
+   cp .env-example .env
+   # Update the .env file with your configuration
+   ```
 
-```bash
-$ yarn install -g mau
-$ mau deploy
-```
+4. Generate Prisma client
+   ```bash
+   yarn prisma:generate
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+5. Run database migrations
+   ```bash
+   yarn prisma:migrate:dev
+   ```
 
-## Resources
+### Development
 
-Check out a few resources that may come in handy when working with NestJS:
+1. Start the development server
+   ```bash
+   yarn start:dev
+   ```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+2. Access the API documentation
+   ```
+   http://localhost:3000/api/docs
+   ```
 
-## Support
+3. Use Prisma Studio to manage the database
+   ```bash
+   yarn prisma:studio
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Testing
 
-## Stay in touch
+1. Run tests
+   ```bash
+   yarn test
+   ```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+2. Run tests with coverage
+   ```bash
+   yarn test:cov
+   ```
+
+3. Run end-to-end tests
+   ```bash
+   yarn test:e2e
+   ```
+
+### Building and Deployment
+
+1. Build the application
+   ```bash
+   yarn build
+   ```
+
+2. Start the production server
+   ```bash
+   yarn start:prod
+   ```
+
+3. Deploy database migrations
+   ```bash
+   yarn prisma:migrate:deploy
+   ```
+
+## API Layer
+
+The API layer is implemented using NestJS controllers and Swagger for documentation. The API Gateway module acts as an entry point for all API requests and routes them to the appropriate domain modules.
+
+### API Documentation
+
+The API is documented using Swagger. The documentation is available at `/api/docs` when the application is running. The Swagger setup includes:
+
+- API endpoints with descriptions
+- Request and response schemas
+- Authentication requirements (JWT tokens for user and admin)
+
+### Authentication
+
+The application uses JWT tokens for authentication. There are two types of tokens:
+- User tokens: For regular user authentication
+- Admin tokens: For administrative access
+
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+[MIT](LICENSE)
