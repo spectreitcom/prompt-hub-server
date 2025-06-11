@@ -15,7 +15,7 @@ export class PromptTagsReplacedEventHandler
     private readonly promptDetailsViewRepository: PromptDetailsViewRepository,
   ) {}
 
-  async handle(event: PromptTagsReplacedEvent) {
+  async handle(event: PromptTagsReplacedEvent): Promise<void> {
     const { promptId, newTags } = event;
     const promptIdValue = promptId.getValue();
     const tagValues = newTags.map((tag) => tag.getValue());

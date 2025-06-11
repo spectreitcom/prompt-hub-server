@@ -59,6 +59,5 @@ import { StatisticsModule } from '../statistics';
     PromptReportController,
   ],
   providers: [AuthService, AuthGuard, DomainExceptionsFilter],
-  exports: [DomainExceptionsFilter],
 })
 export class ApiGatewayModule {}
