@@ -1,4 +1,11 @@
-import { Controller, Get, Query, UseGuards, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  Param,
+  UseFilters,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -15,10 +22,12 @@ import {
   GetUserByIdParamDto,
 } from '../../dtos';
 import { SWAGGER_ADMIN_AUTH } from '../../../shared';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('admin/users')
 @Controller('admin/users')
 @UseGuards(AuthGuard)
+@UseFilters(DomainExceptionsFilter)
 export class UsersController {
   constructor(private readonly accountsService: AccountsService) {}
 

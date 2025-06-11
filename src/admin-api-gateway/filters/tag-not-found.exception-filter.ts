@@ -1,4 +1,9 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpStatus,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { TagNotFoundException } from '../../tags/domain';
 
@@ -8,8 +13,8 @@ export class TagNotFoundExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    response.status(404).json({
-      statusCode: 404,
+    response.status(HttpStatus.NOT_FOUND).json({
+      statusCode: HttpStatus.NOT_FOUND,
       message: exception.message,
       error: 'Not Found',
     });

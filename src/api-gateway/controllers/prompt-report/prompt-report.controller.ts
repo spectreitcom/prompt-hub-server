@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Get,
   BadRequestException,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -20,9 +21,11 @@ import { CreatePromptReportDto, PromptIdParamDto } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('prompt-reports')
 @Controller('prompt-reports')
+@UseFilters(DomainExceptionsFilter)
 export class PromptReportController {
   constructor(private readonly promptReportService: PromptReportService) {}
 

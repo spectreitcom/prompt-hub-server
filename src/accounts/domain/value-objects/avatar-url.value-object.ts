@@ -4,6 +4,7 @@ import {
   validateSync,
   ValidationError,
 } from 'class-validator';
+import { AvatarUrlInvalidException, ValidationException } from '../exceptions';
 
 export class AvatarUrl {
   @ValidateIf((o) => o.value !== '')
@@ -35,11 +36,18 @@ export class AvatarUrl {
     // Validate URL format using class-validator
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints).join(', '))
+        .join(', ');
+
+      if (
+        errorMessages.includes('Avatar URL must be a valid HTTP or HTTPS URL')
+      ) {
+        throw new AvatarUrlInvalidException();
+      }
+
+      // Fallback for any other validation errors
+      throw new ValidationException(errorMessages);
     }
   }
 

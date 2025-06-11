@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, UseGuards, UseFilters } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -10,9 +10,11 @@ import { TagsService, TagEntryView } from '../../../tags';
 import { CreateTagDto, GetPopularTagsQueryDto } from '../../dtos';
 import { AuthGuard, OptionalAuthGuard } from '../../guards';
 import { SWAGGER_USER_AUTH } from '../../../shared';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('tags')
 @Controller('tags')
+@UseFilters(DomainExceptionsFilter)
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 

@@ -10,7 +10,7 @@ export class PromptTagsReplacedEventHandler
     private readonly tagEntryViewRepository: TagEntryViewRepository,
   ) {}
 
-  async handle(event: PromptTagsReplacedEvent) {
+  async handle(event: PromptTagsReplacedEvent): Promise<void> {
     const { previousTags, newTags } = event;
 
     try {

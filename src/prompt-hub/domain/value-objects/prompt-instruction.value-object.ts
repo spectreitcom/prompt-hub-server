@@ -1,3 +1,5 @@
+import { PromptValidationException } from '../exceptions';
+
 export class PromptInstruction {
   private constructor(private readonly value: string | null) {}
 
@@ -9,7 +11,7 @@ export class PromptInstruction {
     const normalized = raw.trim();
 
     if (normalized.length > 1000) {
-      throw new Error('Prompt instruction is too long.');
+      throw new PromptValidationException('Prompt instruction is too long.');
     }
 
     return new PromptInstruction(normalized.length === 0 ? null : normalized);

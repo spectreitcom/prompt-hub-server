@@ -1,8 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateTagCommand } from '../commands';
 import { TagRepository } from '../ports';
-import { Tag, TagValue } from '../../domain';
-import { ConflictException } from '@nestjs/common';
+import { Tag, TagValue, TagAlreadyExistsException } from '../../domain';
 import { TagEntryView } from '../../views';
 
 @CommandHandler(CreateTagCommand)
@@ -23,9 +22,7 @@ export class CreateTagCommandHandler
     // Check if tag with this value already exists
     const exists = await this.tagRepository.existsByValue(tagValue);
     if (exists) {
-      throw new ConflictException(
-        `Tag with value '${tagValue.getValue()}' already exists`,
-      );
+      throw new TagAlreadyExistsException(tagValue.getValue());
     }
 
     // Create new tag

@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { UserCreatedEvent } from '../../../accounts/domain';
+import { UserCreatedEvent } from '../../../accounts';
 import { PromptUserPublicRepository } from '../ports';
 import { PromptUserPublicView } from '../../views';
 

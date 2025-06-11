@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
 import { AdminUsersModule } from '../admin-users';
 import { AccountsModule } from '../accounts';
 import { TagsModule } from '../tags';
 import { AuthController, UsersController, TagsController } from './controllers';
 import { AuthService } from './services';
 import { AuthGuard } from './guards';
-import { TagNotFoundExceptionFilter } from './filters';
+import { DomainExceptionsFilter } from './filters';
 
 @Module({
   imports: [
@@ -25,13 +24,6 @@ import { TagNotFoundExceptionFilter } from './filters';
     TagsModule,
   ],
   controllers: [AuthController, UsersController, TagsController],
-  providers: [
-    AuthService,
-    AuthGuard,
-    {
-      provide: APP_FILTER,
-      useClass: TagNotFoundExceptionFilter,
-    },
-  ],
+  providers: [AuthService, AuthGuard, DomainExceptionsFilter],
 })
 export class AdminApiGatewayModule {}

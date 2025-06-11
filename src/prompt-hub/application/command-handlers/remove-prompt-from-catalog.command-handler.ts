@@ -1,7 +1,13 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { RemovePromptFromCatalogCommand } from '../commands';
 import { PromptCatalogItemRepository, PromptCatalogRepository } from '../ports';
-import { CatalogId, PromptId, UserId } from '../../domain';
+import {
+  CatalogId,
+  PromptId,
+  UserId,
+  UnauthorizedCatalogOperationException,
+  PromptNotFoundInCatalogException,
+} from '../../domain';
 
 @CommandHandler(RemovePromptFromCatalogCommand)
 export class RemovePromptFromCatalogCommandHandler
@@ -24,9 +30,7 @@ export class RemovePromptFromCatalogCommandHandler
     // Check if the user is the owner of the catalog
     const userIdVO = UserId.create(userId);
     if (!catalog.isOwnedBy(userIdVO)) {
-      throw new Error(
-        'Only the owner of the catalog can remove prompts from it.',
-      );
+      throw new UnauthorizedCatalogOperationException('remove prompts from');
     }
 
     // Find the catalog item
@@ -37,9 +41,7 @@ export class RemovePromptFromCatalogCommandHandler
       );
 
     if (!catalogItem) {
-      throw new Error(
-        `Prompt with id ${promptId} not found in catalog with id ${catalogId}.`,
-      );
+      throw new PromptNotFoundInCatalogException(promptId, catalogId);
     }
 
     // Mark the catalog item as removed in the domain model

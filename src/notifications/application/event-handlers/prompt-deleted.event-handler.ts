@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { NotificationPromptViewRepository } from '../ports';
-import { PromptDeletedEvent } from '../../../prompt-hub/domain';
+import { PromptDeletedEvent } from '../../../prompt-hub';
 
 @EventsHandler(PromptDeletedEvent)
 export class PromptDeletedEventHandler

@@ -5,6 +5,12 @@ import {
   validateSync,
   ValidationError,
 } from 'class-validator';
+import {
+  UserNameEmptyException,
+  UserNameTooShortException,
+  UserNameTooLongException,
+  ValidationException,
+} from '../exceptions';
 
 export class UserName {
   @IsNotEmpty({ message: 'Username cannot be empty.' })
@@ -24,11 +30,24 @@ export class UserName {
   private validate(): void {
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints).join(', '))
+        .join(', ');
+
+      if (errorMessages.includes('cannot be empty')) {
+        throw new UserNameEmptyException();
+      }
+
+      if (errorMessages.includes('must be at least 3 characters long')) {
+        throw new UserNameTooShortException();
+      }
+
+      if (errorMessages.includes('cannot exceed 50 characters')) {
+        throw new UserNameTooLongException();
+      }
+
+      // Fallback for any other validation errors
+      throw new ValidationException(errorMessages);
     }
   }
 

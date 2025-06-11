@@ -4,6 +4,7 @@ import {
   validateSync,
   ValidationError,
 } from 'class-validator';
+import { TagIdValidationException } from '../exceptions';
 
 export class TagId {
   @IsNotEmpty({ message: 'Tag ID cannot be empty.' })
@@ -22,11 +23,7 @@ export class TagId {
   private validate(): void {
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      throw new TagIdValidationException(errors);
     }
   }
 

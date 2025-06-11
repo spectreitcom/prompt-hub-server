@@ -4,6 +4,11 @@ import {
   validateSync,
   ValidationError,
 } from 'class-validator';
+import {
+  UserIdEmptyException,
+  UserIdInvalidException,
+  ValidationException,
+} from '../exceptions';
 
 export class UserId {
   @IsNotEmpty({ message: 'User ID cannot be empty.' })
@@ -22,11 +27,20 @@ export class UserId {
   private validate(): void {
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints).join(', '))
+        .join(', ');
+
+      if (errorMessages.includes('cannot be empty')) {
+        throw new UserIdEmptyException();
+      }
+
+      if (errorMessages.includes('must be a valid UUID')) {
+        throw new UserIdInvalidException();
+      }
+
+      // Fallback for any other validation errors
+      throw new ValidationException(errorMessages);
     }
   }
 

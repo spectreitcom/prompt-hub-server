@@ -20,11 +20,15 @@ import { TagsService } from '../../../tags';
 import { GetAllTagsQueryDto, GetAllTagsResponseDto } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { SWAGGER_ADMIN_AUTH } from '../../../shared';
-import { TagNotFoundExceptionFilter } from '../../filters';
+import {
+  TagNotFoundExceptionFilter,
+  DomainExceptionsFilter,
+} from '../../filters';
 
 @ApiTags('admin/tags')
 @Controller('admin/tags')
 @UseGuards(AuthGuard)
+@UseFilters(DomainExceptionsFilter)
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 

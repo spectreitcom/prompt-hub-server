@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Get,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -16,15 +17,16 @@ import {
   ApiParam,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { FavoritesService } from '../../../favorites';
-import { FavoritePromptEntryView } from '../../../favorites/views';
+import { FavoritesService, FavoritePromptEntryView } from '../../../favorites';
 import { PromptIdParamDto, GetFavoritePromptsQueryDto } from '../../dtos';
 import { AuthGuard } from '../../guards';
 import { GetUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('favorites')
 @Controller('favorites')
+@UseFilters(DomainExceptionsFilter)
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 

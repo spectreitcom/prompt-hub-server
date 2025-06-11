@@ -7,6 +7,7 @@ import {
   PromptInstruction,
   PromptTitle,
   UserId,
+  UnauthorizedPromptOperationException,
 } from '../../domain';
 
 @CommandHandler(UpdatePromptCommand)
@@ -28,7 +29,7 @@ export class UpdatePromptCommandHandler
     // Check if the user is the owner of the prompt
     const userIdObj = UserId.create(userId);
     if (!prompt.getAuthorId().equals(userIdObj)) {
-      throw new Error('Only the owner of the prompt can update it.');
+      throw new UnauthorizedPromptOperationException('update');
     }
 
     // Create value objects for title, content, and instruction

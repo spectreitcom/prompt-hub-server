@@ -1,7 +1,12 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { ReplacePromptTagsCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptId, TagValue, UserId } from '../../domain';
+import {
+  PromptId,
+  TagValue,
+  UserId,
+  UnauthorizedPromptOperationException,
+} from '../../domain';
 
 @CommandHandler(ReplacePromptTagsCommand)
 export class ReplacePromptTagsCommandHandler
@@ -22,7 +27,7 @@ export class ReplacePromptTagsCommandHandler
     // Check if the user is the owner of the prompt
     const userIdObj = UserId.create(userId);
     if (!prompt.getAuthorId().equals(userIdObj)) {
-      throw new Error('Only the owner of the prompt can update its tags.');
+      throw new UnauthorizedPromptOperationException('update its tags');
     }
 
     // Create TagValue objects from the string tags

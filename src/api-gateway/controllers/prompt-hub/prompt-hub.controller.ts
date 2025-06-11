@@ -10,6 +10,7 @@ import {
   Get,
   Query,
   ForbiddenException,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -37,9 +38,11 @@ import { AuthGuard, OptionalAuthGuard } from '../../guards';
 import { GetUserId, GetOptionalUserId } from '../../decorators';
 import { SWAGGER_USER_AUTH } from '../../../shared';
 import { UnauthorizedPromptAccessException } from '../../../prompt-hub';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('prompt-hub')
 @Controller('prompt-hub')
+@UseFilters(DomainExceptionsFilter)
 export class PromptHubController {
   constructor(private readonly promptHubService: PromptHubService) {}
 

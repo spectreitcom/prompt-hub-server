@@ -1,7 +1,12 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { DeletePromptCatalogCommand } from '../commands';
 import { PromptCatalogRepository } from '../ports';
-import { CatalogId, UserId } from '../../domain';
+import {
+  CatalogId,
+  UserId,
+  CatalogNotFoundException,
+  UnauthorizedCatalogOperationException,
+} from '../../domain';
 
 @CommandHandler(DeletePromptCatalogCommand)
 export class DeletePromptCatalogCommandHandler
@@ -21,13 +26,13 @@ export class DeletePromptCatalogCommandHandler
     );
 
     if (!catalog) {
-      throw new Error(`Catalog with id ${catalogId} not found.`);
+      throw new CatalogNotFoundException(catalogId);
     }
 
     // Check if the user is the owner of the catalog
     const userIdVO = UserId.create(userId);
     if (!catalog.isOwnedBy(userIdVO)) {
-      throw new Error('Only the owner of the catalog can delete it.');
+      throw new UnauthorizedCatalogOperationException('delete');
     }
 
     // Mark the catalog as deleted in the domain model

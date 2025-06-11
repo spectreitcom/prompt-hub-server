@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Get,
   UseGuards,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -20,9 +21,11 @@ import {
 import { AuthService, AuthenticationResponse } from '../../services';
 import { AuthGuard } from '../../guards';
 import { GetAdminUserId } from '../../decorators';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('admin/auth')
 @Controller('admin/auth')
+@UseFilters(DomainExceptionsFilter)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

@@ -1,4 +1,8 @@
 import { NotificationPayload } from '../notification-payload.value-object';
+import { 
+  NotificationTitleEmptyException,
+  NotificationContentInvalidException
+} from '../../exceptions';
 
 describe('NotificationPayload', () => {
   describe('create', () => {
@@ -28,27 +32,15 @@ describe('NotificationPayload', () => {
     });
 
     it('should throw an error if the title is empty', () => {
-      expect(() => NotificationPayload.create('')).toThrow(
-        'Notification title cannot be empty.',
-      );
-      expect(() => NotificationPayload.create('   ')).toThrow(
-        'Notification title cannot be empty.',
-      );
-      expect(() => NotificationPayload.create(null)).toThrow(
-        'Notification title cannot be empty.',
-      );
-      expect(() => NotificationPayload.create(undefined)).toThrow(
-        'Notification title cannot be empty.',
-      );
+      expect(() => NotificationPayload.create('')).toThrow(NotificationTitleEmptyException);
+      expect(() => NotificationPayload.create('   ')).toThrow(NotificationTitleEmptyException);
+      expect(() => NotificationPayload.create(null)).toThrow(NotificationTitleEmptyException);
+      expect(() => NotificationPayload.create(undefined)).toThrow(NotificationTitleEmptyException);
     });
 
     it('should throw an error if the content is provided but empty', () => {
-      expect(() => NotificationPayload.create('Test Title', '')).toThrow(
-        'Notification content must be a non-empty string if provided.',
-      );
-      expect(() => NotificationPayload.create('Test Title', '   ')).toThrow(
-        'Notification content must be a non-empty string if provided.',
-      );
+      expect(() => NotificationPayload.create('Test Title', '')).toThrow(NotificationContentInvalidException);
+      expect(() => NotificationPayload.create('Test Title', '   ')).toThrow(NotificationContentInvalidException);
     });
   });
 

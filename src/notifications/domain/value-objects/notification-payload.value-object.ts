@@ -1,4 +1,8 @@
 import { isString } from 'class-validator';
+import {
+  NotificationTitleEmptyException,
+  NotificationContentInvalidException,
+} from '../exceptions';
 
 export class NotificationPayload {
   private constructor(
@@ -8,7 +12,7 @@ export class NotificationPayload {
 
   static create(title: string, content?: string): NotificationPayload {
     if (!title || !isString(title) || title.trim() === '') {
-      throw new Error('Notification title cannot be empty.');
+      throw new NotificationTitleEmptyException();
     }
 
     // Content is optional, but if provided, it must be a string
@@ -16,9 +20,7 @@ export class NotificationPayload {
       content !== undefined &&
       (!isString(content) || content.trim() === '')
     ) {
-      throw new Error(
-        'Notification content must be a non-empty string if provided.',
-      );
+      throw new NotificationContentInvalidException();
     }
 
     return new NotificationPayload(

@@ -1,15 +1,19 @@
 import { isUUID } from 'class-validator';
+import {
+  PromptIdEmptyException,
+  PromptIdInvalidException,
+} from '../exceptions';
 
 export class PromptId {
   private constructor(private readonly value: string) {}
 
   static create(id: string): PromptId {
     if (!id || id.trim() === '') {
-      throw new Error('Prompt ID cannot be empty.');
+      throw new PromptIdEmptyException();
     }
 
     if (!isUUID(id, '4')) {
-      throw new Error('Prompt ID must be a valid UUID.');
+      throw new PromptIdInvalidException();
     }
 
     return new PromptId(id.trim());

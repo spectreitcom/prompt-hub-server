@@ -4,6 +4,11 @@ import {
   validateSync,
   ValidationError,
 } from 'class-validator';
+import {
+  EmailAddressEmptyException,
+  EmailAddressInvalidException,
+  ValidationException,
+} from '../exceptions';
 
 export class EmailAddress {
   @IsNotEmpty({ message: 'Email address cannot be empty.' })
@@ -22,11 +27,20 @@ export class EmailAddress {
   private validate(): void {
     const errors: ValidationError[] = validateSync(this);
     if (errors.length > 0) {
-      throw new Error(
-        errors
-          .map((error) => Object.values(error.constraints).join(', '))
-          .join(', '),
-      );
+      const errorMessages = errors
+        .map((error) => Object.values(error.constraints).join(', '))
+        .join(', ');
+
+      if (errorMessages.includes('cannot be empty')) {
+        throw new EmailAddressEmptyException();
+      }
+
+      if (errorMessages.includes('Invalid email address format')) {
+        throw new EmailAddressInvalidException();
+      }
+
+      // Fallback for any other validation errors
+      throw new ValidationException(errorMessages);
     }
   }
 

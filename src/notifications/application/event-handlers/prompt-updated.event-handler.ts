@@ -4,7 +4,7 @@ import {
   NotificationPromptViewRepository,
 } from '../ports';
 import { NotificationPromptView } from '../../views';
-import { PromptUpdatedEvent } from '../../../prompt-hub/domain';
+import { PromptUpdatedEvent } from '../../../prompt-hub';
 
 @EventsHandler(PromptUpdatedEvent)
 export class PromptUpdatedEventHandler

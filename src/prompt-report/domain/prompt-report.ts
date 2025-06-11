@@ -12,6 +12,7 @@ import {
   PromptReportCreatedEvent,
   PromptReportRejectedEvent,
 } from './events';
+import { ReportNotPendingException } from './exceptions';
 
 export class PromptReport extends AggregateRoot {
   private readonly id: PromptReportId;
@@ -66,7 +67,7 @@ export class PromptReport extends AggregateRoot {
 
   accept(): void {
     if (!this.isPending()) {
-      throw new Error('Only pending reports can be accepted');
+      throw new ReportNotPendingException('accepted');
     }
 
     this.status = PromptReportStatus.accepted();
@@ -75,7 +76,7 @@ export class PromptReport extends AggregateRoot {
 
   reject(): void {
     if (!this.isPending()) {
-      throw new Error('Only pending reports can be rejected');
+      throw new ReportNotPendingException('rejected');
     }
 
     this.status = PromptReportStatus.rejected();

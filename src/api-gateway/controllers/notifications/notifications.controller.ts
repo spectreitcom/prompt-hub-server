@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -23,9 +24,11 @@ import {
   NotificationIdParamDto,
   GetUserNotificationsQueryDto,
 } from '../../dtos';
+import { DomainExceptionsFilter } from '../../filters';
 
 @ApiTags('notifications')
 @Controller('notifications')
+@UseFilters(DomainExceptionsFilter)
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 

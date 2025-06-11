@@ -1,7 +1,10 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { AddPromptToFavoritesCommand } from '../commands';
 import { FavoritePromptRepository } from '../ports';
-import { FavoritePrompt } from '../../domain';
+import {
+  FavoritePrompt,
+  PromptAlreadyInFavoritesException,
+} from '../../domain';
 
 @CommandHandler(AddPromptToFavoritesCommand)
 export class AddPromptToFavoritesCommandHandler
@@ -23,8 +26,9 @@ export class AddPromptToFavoritesCommandHandler
       );
 
     if (exists) {
-      throw new Error(
-        `Prompt with id ${promptId} is already in favorites for user with id ${userId}.`,
+      throw new PromptAlreadyInFavoritesException(
+        promptId.getValue(),
+        userId.getValue(),
       );
     }
 

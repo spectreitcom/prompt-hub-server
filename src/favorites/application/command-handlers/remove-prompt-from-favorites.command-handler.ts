@@ -1,6 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { RemovePromptFromFavoritesCommand } from '../commands';
 import { FavoritePromptRepository } from '../ports';
+import { PromptNotInFavoritesException } from '../../domain';
 
 @CommandHandler(RemovePromptFromFavoritesCommand)
 export class RemovePromptFromFavoritesCommandHandler
@@ -22,8 +23,9 @@ export class RemovePromptFromFavoritesCommandHandler
       );
 
     if (!favoritePrompt) {
-      throw new Error(
-        `Prompt with id ${promptId} is not in favorites for user with id ${userId}.`,
+      throw new PromptNotInFavoritesException(
+        promptId.getValue(),
+        userId.getValue(),
       );
     }
 

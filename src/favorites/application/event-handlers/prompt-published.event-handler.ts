@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { PromptPublishedEvent } from '../../../prompt-hub/domain';
+import { PromptPublishedEvent } from '../../../prompt-hub';
 import { FavoritePromptViewRepository } from '../ports';
 import { FavoritePromptView } from '../../views';
 

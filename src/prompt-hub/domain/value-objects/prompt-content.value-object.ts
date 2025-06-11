@@ -1,3 +1,5 @@
+import { PromptValidationException } from '../exceptions';
+
 export class PromptContent {
   private constructor(private readonly value: string) {}
 
@@ -5,11 +7,11 @@ export class PromptContent {
     const normalized = raw.trim();
 
     if (normalized.length === 0) {
-      throw new Error('Prompt content cannot be empty.');
+      throw new PromptValidationException('Prompt content cannot be empty.');
     }
 
     if (normalized.length > 5000) {
-      throw new Error('Prompt content is too long.');
+      throw new PromptValidationException('Prompt content is too long.');
     }
 
     return new PromptContent(normalized);

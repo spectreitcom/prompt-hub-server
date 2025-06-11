@@ -1,7 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CopyPromptCommand } from '../commands';
 import { PromptRepository } from '../ports';
-import { PromptId, UserId } from '../../domain';
+import { PromptId, UserId, PromptNotFoundException } from '../../domain';
 
 @CommandHandler(CopyPromptCommand)
 export class CopyPromptCommandHandler
@@ -21,7 +21,7 @@ export class CopyPromptCommandHandler
     );
 
     if (!prompt) {
-      throw new Error(`Prompt with id ${promptId} not found.`);
+      throw new PromptNotFoundException(promptId);
     }
 
     // Only create UserId if userId is provided
